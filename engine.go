@@ -7,10 +7,10 @@ type engine struct {
 }
 
 // NewEngine ...
-func NewEngine() *engine {
+func NewEngine(entityManager *EntityManager, systemManager *SystemManager) *engine {
 	return &engine{
-		entityManager: NewEntityManager(),
-		systemManager: NewSystemManager(),
+		entityManager: entityManager,
+		systemManager: systemManager,
 	}
 }
 
