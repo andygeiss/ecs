@@ -9,6 +9,28 @@ type System interface {
 	Teardown()
 }
 
+// SystemManager ...
+type SystemManager struct {
+	systems []System
+}
+
+// NewSystemManager ...
+func NewSystemManager() *SystemManager {
+	return &SystemManager{
+		systems: []System{},
+	}
+}
+
+// Add ...
+func (m *SystemManager) Add(system System) {
+	m.systems = append(m.systems, system)
+}
+
+// Systems ...
+func (m *SystemManager) Systems() []System {
+	return m.systems
+}
+
 // Filter ...
 func Filter(entity Entity, names ...string) (filtered map[string]Component, isComplete bool) {
 	filtered = map[string]Component{}
