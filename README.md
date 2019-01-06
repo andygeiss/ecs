@@ -2,7 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/andygeiss/ecs)](https://goreportcard.com/report/github.com/andygeiss/ecs)
 
-**A simple API to use an Entity Component System in Golang ;-)**
+**A simple API to use an Entity Component System in Golang**
 
 The architectural pattern of an ECS is mostly used in game development,
 to provide long-term maintainability and extendability of large, dynamic systems.
@@ -55,7 +55,7 @@ type PlayerEntity struct {
 	components []ecs.Component
 	id string
 }
-func (e *PlayerEntity) Components() string { return e.components }
+func (e *PlayerEntity) Components() []ecs.Component { return e.components }
 func (e *PlayerEntity) ID() string { return e.id }
 ```
 
@@ -64,37 +64,59 @@ func (e *PlayerEntity) ID() string { return e.id }
 A System must implement a <code>Setup</code>, <code>Process</code> and <code>Teardown</code> method.
 
 ```go
-type MovementSystem struct {}
-func (s *MovementSystem) Process(entities []ecs.Entities) { 
-    for _, e := range entities {
+
+type rendering struct {}
+
+func NewRendering() ecs.System {
+    return &rendering{}
+}
+
+// Process ...
+func (s *rendering) Process(entityManager *ecs.EntityManager) {
+    rl.BeginDrawing()
+    rl.ClearBackground(rl.Black)
+    for _, e := range entityManager.Entities() {
         // Filter entity components, but skip further action
         // if the filter could not be applied completely.
-        filtered, complete := ecs.Filter(e, "position", "velocity")
+        filtered, complete := ecs.Filter(e, "position", "size")
         if !complete {
             continue
         }
         // Map the filter to concrete components.
         position := filtered["position"].(*components.Position)
-        velocity := filtered["velocity"].(*components.Velocity)
+        size := filtered["size"].(*components.Size)
         // Apply the system logic.
-        position.X += velocity.X
-        position.Y += velocity.Y
+        rl.DrawRectangleLines(
+            int32(position.X),
+            int32(position.Y),
+            int32(size.Width),
+            int32(size.Height),
+            rl.RayWhite,
+        )
     }
+    rl.EndDrawing()
 }
-func (s *MovementSystem) Setup() {}
-func (s *MovementSystem) Teardown() {}
+
+// Setup ...
+func (s *rendering) Setup() {
+    rl.InitWindow(1024, 576, "Demo")
+    rl.SetTargetFPS(60)
+}
+
+// Teardown ...
+func (s *rendering) Teardown() {
+    rl.CloseWindow()
+}
 ```
 
-**Games**
+**Engine**
 
-A game loop for each frame should now run each <code>Process</code> method for all active entities by the existing systems.
+A simple game engine triggers the <code>Process</code> method every frame.
 
 ```go
-func (game *Game) Run() {
-	for !game.Over {
-		for _, system := range g.systems {
-			system.Process(g.entities)
-		}
-	}
+func (g *engine) Run() {
+    for _, system := range g.systems {
+        system.Process(g.entityManager)
+    }
 }
 ```

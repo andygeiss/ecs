@@ -5,7 +5,7 @@ import "strings"
 // System ...
 type System interface {
 	Setup()
-	Process(entities []Entity)
+	Process(entityManager *EntityManager)
 	Teardown()
 }
 
