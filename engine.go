@@ -1,5 +1,8 @@
 package ecs
 
+// ShouldEngineStop ...
+var ShouldEngineStop bool
+
 // engine ...
 type engine struct {
 	entityManager *EntityManager
@@ -16,13 +19,16 @@ func NewEngine(entityManager *EntityManager, systemManager *SystemManager) *engi
 
 // Run ...
 func (g *engine) Run() {
-	for _, system := range g.systemManager.Systems() {
-		system.Process(g.entityManager)
+	for !ShouldEngineStop {
+		for _, system := range g.systemManager.Systems() {
+			system.Process(g.entityManager)
+		}
 	}
 }
 
 // Setup ...
 func (g *engine) Setup() {
+	ShouldEngineStop = false
 	for _, sys := range g.systemManager.Systems() {
 		sys.Setup()
 	}
