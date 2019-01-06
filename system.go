@@ -22,8 +22,10 @@ func NewSystemManager() *SystemManager {
 }
 
 // Add ...
-func (m *SystemManager) Add(system System) {
-	m.systems = append(m.systems, system)
+func (m *SystemManager) Add(systems ...System) {
+	for _, system := range systems {
+		m.systems = append(m.systems, system)
+	}
 }
 
 // Systems ...

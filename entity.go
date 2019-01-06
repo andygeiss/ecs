@@ -19,11 +19,10 @@ func NewEntityManager() *EntityManager {
 }
 
 // Add ...
-func (m *EntityManager) Add(entity Entity) {
-	if _, found := m.entities[entity.ID()]; found {
-		return
+func (m *EntityManager) Add(entities ...Entity) {
+	for _, entity := range entities {
+		m.entities[entity.ID()] = entity
 	}
-	m.entities[entity.ID()] = entity
 }
 
 // Entities ...
