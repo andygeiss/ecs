@@ -48,15 +48,23 @@ func (c *HealthComponent) Name() string { return "health" }
 
 **Entities**
 
-An entity must implement a <code>Components</code> and <code>ID</code> method.
+An entity must implement a <code>Components</code>, <code>Get</code> and <code>ID</code> method.
 
 ```go
 type PlayerEntity struct {
 	components []ecs.Component
 	id string
 }
-func (e *PlayerEntity) Components() []ecs.Component { return e.components }
-func (e *PlayerEntity) ID() string { return e.id }
+func (e *PlayerEntity) Components() (component []ecs.Component) { return e.components }
+func (e *PlayerEntity) Get(name string) (component ecs.Component) {
+	for _, c := range e.components {
+		if c.Name() == name {
+			return c
+		}
+	}
+	return
+}
+func (e *PlayerEntity) ID() (id string) { return e.id }
 ```
 
 **Systems**
@@ -65,44 +73,30 @@ A System must implement a <code>Setup</code>, <code>Process</code> and <code>Tea
 
 ```go
 
-type rendering struct {}
 
-func NewRendering() ecs.System {
-    return &rendering{}
+// Movement ...
+type Movement struct{}
+
+// NewMovement ...
+func NewMovement() ecs.System {
+    return &Movement{}
 }
 
 // Process ...
-func (s *rendering) Process(entityManager *ecs.EntityManager) {
-    rl.BeginDrawing()
-    rl.ClearBackground(rl.Black)
-    // Filter entity components, but skip further action
-    // if the filter could not be applied completely.
-    for _, e := range entityManager.Filter("position", "size") {
-        // Map the filter to concrete components.
-        position := filtered["position"].(*components.Position)
-        size := filtered["size"].(*components.Size)
-        // Apply the system logic.
-        rl.DrawRectangleLines(
-            int32(position.X),
-            int32(position.Y),
-            int32(size.Width),
-            int32(size.Height),
-            rl.RayWhite,
-        )
+func (p *Movement) Process(entityManager *ecs.EntityManager) {
+    for _, e := range entityManager.FilterBy("position", "velocity") {
+        position := e.Get("position").(*components.Position)
+        velocity := e.Get("velocity").(*components.Velocity)
+        position.X += velocity.X
+        position.Y += velocity.Y
     }
-    rl.EndDrawing()
 }
 
 // Setup ...
-func (s *rendering) Setup() {
-    rl.InitWindow(1024, 576, "Demo")
-    rl.SetTargetFPS(60)
-}
+func (p *Movement) Setup() {}
 
 // Teardown ...
-func (s *rendering) Teardown() {
-    rl.CloseWindow()
-}
+func (p *Movement) Teardown() {}
 ```
 
 **Engine**
