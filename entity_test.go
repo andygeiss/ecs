@@ -18,7 +18,15 @@ type mockEntity struct {
 }
 
 func (e *mockEntity) Components() []ecs.Component { return e.components }
-func (e *mockEntity) ID() string                  { return e.id }
+func (e *mockEntity) Get(name string) (component ecs.Component) {
+	for _, c := range e.components {
+		if c.Name() == name {
+			return c
+		}
+	}
+	return
+}
+func (e *mockEntity) ID() string { return e.id }
 
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Adding_One_Entity(t *testing.T) {
 	m := ecs.NewEntityManager()
