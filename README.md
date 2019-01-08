@@ -75,13 +75,9 @@ func NewRendering() ecs.System {
 func (s *rendering) Process(entityManager *ecs.EntityManager) {
     rl.BeginDrawing()
     rl.ClearBackground(rl.Black)
-    for _, e := range entityManager.Entities() {
-        // Filter entity components, but skip further action
-        // if the filter could not be applied completely.
-        filtered, complete := ecs.Filter(e, "position", "size")
-        if !complete {
-            continue
-        }
+    // Filter entity components, but skip further action
+    // if the filter could not be applied completely.
+    for _, e := range entityManager.Filter("position", "size") {
         // Map the filter to concrete components.
         position := filtered["position"].(*components.Position)
         size := filtered["size"].(*components.Size)
