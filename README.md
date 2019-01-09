@@ -84,9 +84,12 @@ func NewMovement() ecs.System {
 
 // Process ...
 func (p *Movement) Process(entityManager *ecs.EntityManager) {
+    // Select entities which have a position and velocity.
     for _, e := range entityManager.FilterBy("position", "velocity") {
+    	// Access the components ...
         position := e.Get("position").(*components.Position)
         velocity := e.Get("velocity").(*components.Velocity)
+        // Modify the data.
         position.X += velocity.X
         position.Y += velocity.Y
     }
