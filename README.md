@@ -38,41 +38,41 @@ A **System** handles the behaviour or logic of the components. A movement system
 
 **Components**
 
-A component must implement a <code>Name</code> method,
-which will be used later to filter entities with specific components.
+A component defines a specific part of an entity, 
+which could be represented as a state by using a data structure. 
 
 ```go
-type HealthComponent int
-func (c *HealthComponent) Name() string { return "health" }
+package components
+...
+type Health struct { Value int }
+func (c *Health) Name() string { return "health" }
 ```
 
 **Entities**
 
-An entity must implement a <code>Components</code>, <code>Get</code> and <code>ID</code> method.
+An entity could be defined by adding specific components:
 
 ```go
-type PlayerEntity struct {
-	components []ecs.Component
-	id string
-}
-func (e *PlayerEntity) Components() (component []ecs.Component) { return e.components }
-func (e *PlayerEntity) Get(name string) (component ecs.Component) {
-	for _, c := range e.components {
-		if c.Name() == name {
-			return c
-		}
+package entities
+...
+player := ecs.Entity{
+	Id: "player",
+	Components: []ecs.Component{
+		&components.Health{Value: 100},     // health
+		&components.Job{Title: "warrior"},  // job
+		&components.Position{X: 10, Y: 10}, // position
+		&components.Velocity{X: 1, Y: 0},   // velocity
 	}
-	return
 }
-func (e *PlayerEntity) ID() (id string) { return e.id }
 ```
 
 **Systems**
 
-A System must implement a <code>Setup</code>, <code>Process</code> and <code>Teardown</code> method.
+A System must implement the behaviour of a component 
+or the combination of some components:
 
 ```go
-
+package systems
 
 // Movement ...
 type Movement struct{}
