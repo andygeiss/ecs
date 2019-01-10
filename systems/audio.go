@@ -20,6 +20,13 @@ func NewAudio() ecs.System {
 
 // Process ...
 func (s *Audio) Process(entityManager *ecs.EntityManager) {
+	if rl.WindowShouldClose() {
+		ecs.ShouldEngineStop = true
+		return
+	}
+	if ecs.ShouldEnginePause {
+		return
+	}
 	for _, e := range entityManager.FilterBy("sound") {
 		sound := e.Get("sound").(*components.Sound)
 		fileName := sound.Filename

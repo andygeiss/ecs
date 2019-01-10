@@ -3,6 +3,7 @@ package systems
 import (
 	"github.com/andygeiss/ecs"
 	"github.com/andygeiss/ecs/components"
+	"github.com/gen2brain/raylib-go/raylib"
 )
 
 // Movement ...
@@ -15,6 +16,13 @@ func NewMovement() ecs.System {
 
 // Process ...
 func (s *Movement) Process(entityManager *ecs.EntityManager) {
+	if rl.WindowShouldClose() {
+		ecs.ShouldEngineStop = true
+		return
+	}
+	if ecs.ShouldEnginePause {
+		return
+	}
 	for _, e := range entityManager.FilterBy("position", "velocity") {
 		s.handleMovement(e)
 	}
