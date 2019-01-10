@@ -4,6 +4,7 @@ import (
 	"github.com/andygeiss/ecs"
 	"github.com/andygeiss/ecs/components"
 	"github.com/gen2brain/raylib-go/raylib"
+	"time"
 )
 
 type rendering struct {
@@ -34,6 +35,7 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 		return
 	}
 	if s.pauseEngineIfPresent() {
+		time.Sleep(time.Millisecond*100)
 		return
 	}
 	rl.BeginDrawing()
@@ -51,7 +53,7 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 }
 
 func (s *rendering) pauseEngineIfPresent() (shouldPause bool) {
-	if rl.IsKeyDown(rl.KeyP) {
+	if rl.IsKeyPressed(rl.KeyP) {
 		if ecs.ShouldEnginePause {
 			ecs.ShouldEnginePause = false
 		} else {
