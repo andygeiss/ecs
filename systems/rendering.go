@@ -44,6 +44,7 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 		}
 		s.renderTextIfPresent(e)
 	}
+	s.renderPauseIfPresent()
 	rl.EndDrawing()
 }
 
@@ -102,6 +103,29 @@ func (s *rendering) renderBoundingBox(entity *ecs.Entity) {
 		int32(size.Height),
 		rl.RayWhite,
 	)
+}
+
+func (s *rendering) renderPauseIfPresent() {
+	keyC := rl.IsKeyPressed(rl.KeyC)
+	if keyC {
+		ecs.ShouldEnginePause = false
+	}
+	keyP := rl.IsKeyPressed(rl.KeyP)
+	if keyP {
+		ecs.ShouldEnginePause = true
+	}
+	if ecs.ShouldEnginePause {
+		fontSize := int32(60)
+		text := "Press C to continue"
+		textLength := int32(rl.MeasureText(text, int32(fontSize)))
+		rl.DrawText(
+			text,
+			int32(s.windowWidth)/2-textLength/2,
+			int32(s.windowHeight)/2+fontSize/2,
+			fontSize,
+			rl.Red,
+		)
+	}
 }
 
 func (s *rendering) renderTextIfPresent(entity *ecs.Entity) (present bool) {
