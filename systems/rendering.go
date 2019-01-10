@@ -58,8 +58,9 @@ func (s *rendering) pauseEngineIfPresent() (shouldPause bool) {
 			ecs.ShouldEnginePause = false
 			return false
 		}
+		return true
 	}
-	return true
+	return false
 }
 
 // Setup ...
