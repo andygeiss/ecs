@@ -34,11 +34,6 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 		return
 	}
 	if ecs.ShouldEnginePause {
-		if rl.IsKeyPressed(rl.KeyP) {
-			ecs.ShouldEnginePause = false
-		}
-	}
-	if ecs.ShouldEnginePause {
 		return
 	}
 	rl.BeginDrawing()
