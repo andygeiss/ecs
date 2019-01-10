@@ -34,8 +34,12 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 		return
 	}
 	if ecs.ShouldEnginePause {
-		for !rl.IsKeyPressed(rl.KeySpace) {}
-		ecs.ShouldEnginePause = false
+		if rl.IsKeyPressed(rl.KeyP) {
+			ecs.ShouldEnginePause = false
+		}
+	}
+	if ecs.ShouldEnginePause {
+		return
 	}
 	rl.BeginDrawing()
 	rl.ClearBackground(s.background)
