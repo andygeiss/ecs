@@ -1,2 +1,4 @@
 github.com/andygeiss/assert v0.0.5 h1:UTZmjmkgAWgyrnx4jFLXq65QbA2AKIC5SyBAUYpc4rU=
 github.com/andygeiss/assert v0.0.5/go.mod h1:ztUvWrfUo43X0zMA1XfX8esn5Uavk6ANSKTT0w2qvAI=
+github.com/gen2brain/raylib-go v0.0.0-20181117203910-90a4ff59bb7d h1:MF8XIlS+Dsw5vHoVwCzGN5D61XuKkfQ85EtUr4dWJ1U=
+github.com/gen2brain/raylib-go v0.0.0-20181117203910-90a4ff59bb7d/go.mod h1:LUVRDQbnxUaOgzLzW5lMS+IcbqlXHIqIA9wq8wxzmcA=
