@@ -192,8 +192,7 @@ func (s *rendering) renderTextureIfPresent(entity *ecs.Entity) (present bool) {
 }
 
 func (s *rendering) toggleFullscreenIfPresent() {
-	keyT := rl.IsKeyPressed(rl.KeyT)
-	if keyT {
+	if rl.IsKeyPressed(rl.KeyT) {
 		rl.ToggleFullscreen()
 	}
 }

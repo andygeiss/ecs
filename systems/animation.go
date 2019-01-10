@@ -9,16 +9,11 @@ import (
 // Animation ...
 type Animation struct {
 	frameCounter int64
-	windowHeight int32
-	windowWidth  int32
 }
 
 // NewAnimation ...
-func NewAnimation(windowWidth, windowHeight int32) ecs.System {
-	return &Animation{
-		windowHeight: windowHeight,
-		windowWidth:  windowWidth,
-	}
+func NewAnimation() ecs.System {
+	return &Animation{}
 }
 
 // Process ...
