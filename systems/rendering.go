@@ -137,7 +137,7 @@ func (s *rendering) renderTextIfPresent(entity *ecs.Entity) (present bool) {
 		x,
 		y,
 		txt.FontSize,
-		rl.RayWhite,
+		txt.Color,
 	)
 	return true
 }
