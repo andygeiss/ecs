@@ -45,6 +45,7 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 		s.renderTextIfPresent(e)
 	}
 	s.renderPauseIfPresent()
+	s.toggleFullscreenIfPresent()
 	rl.EndDrawing()
 }
 
@@ -188,4 +189,11 @@ func (s *rendering) renderTextureIfPresent(entity *ecs.Entity) (present bool) {
 		rl.RayWhite,
 	)
 	return true
+}
+
+func (s *rendering) toggleFullscreenIfPresent() {
+	keyT := rl.IsKeyPressed(rl.KeyT)
+	if keyT {
+		rl.ToggleFullscreen()
+	}
 }
