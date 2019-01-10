@@ -33,9 +33,6 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 		ecs.ShouldEngineStop = true
 		return
 	}
-	if ecs.ShouldEnginePause {
-		return
-	}
 	rl.BeginDrawing()
 	rl.ClearBackground(s.background)
 	for _, e := range entityManages.FilterBy("position", "size") {
