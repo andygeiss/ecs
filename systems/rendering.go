@@ -35,7 +35,7 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 		return
 	}
 	if s.pauseEngineIfPresent() {
-		time.Sleep(time.Millisecond*100)
+		time.Sleep(time.Millisecond * 100)
 		return
 	}
 	rl.BeginDrawing()
@@ -53,15 +53,13 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 }
 
 func (s *rendering) pauseEngineIfPresent() (shouldPause bool) {
-	if rl.IsKeyPressed(rl.KeyP) {
-		if ecs.ShouldEnginePause {
+	if ecs.ShouldEnginePause {
+		if rl.IsKeyPressed(rl.KeyP) {
 			ecs.ShouldEnginePause = false
-		} else {
-			ecs.ShouldEnginePause = true
-			return true
+			return false
 		}
 	}
-	return false
+	return true
 }
 
 // Setup ...
