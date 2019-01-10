@@ -26,7 +26,7 @@ func (s *Animation) Process(entityManager *ecs.EntityManager) {
 		return
 	}
 	for _, e := range entityManager.FilterBy("animation") {
-		if s.frameCounter % 8 == 0 {
+		if s.frameCounter % 4 == 0 {
 			animation := e.Get("animation").(*components.Animation)
 			animation.Index++
 			if animation.Index == animation.Count {
