@@ -33,6 +33,9 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 		ecs.ShouldEngineStop = true
 		return
 	}
+	if s.pauseEngineIfPresent() {
+		return
+	}
 	rl.BeginDrawing()
 	rl.ClearBackground(s.background)
 	for _, e := range entityManages.FilterBy("position", "size") {
@@ -45,6 +48,18 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 		s.renderTextIfPresent(e)
 	}
 	rl.EndDrawing()
+}
+
+func (s *rendering) pauseEngineIfPresent() (shouldPause bool) {
+	if rl.IsKeyDown(rl.KeyP) {
+		if ecs.ShouldEnginePause {
+			ecs.ShouldEnginePause = false
+		} else {
+			ecs.ShouldEnginePause = true
+			return true
+		}
+	}
+	return false
 }
 
 // Setup ...

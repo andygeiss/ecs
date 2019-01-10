@@ -1,7 +1,5 @@
 package ecs
 
-import "github.com/gen2brain/raylib-go/raylib"
-
 // ShouldEngineStop is a public flag to break the loop which is started during the Run() stage.
 var ShouldEngineStop bool
 // ShouldEnginePause is able to pause the engine temporarily.
@@ -26,10 +24,6 @@ func NewEngine(entityManager *EntityManager, systemManager *SystemManager) *engi
 // until ShouldEngineStop is set to true.
 func (e *engine) Run() {
 	for !ShouldEngineStop {
-		if ShouldEnginePause && !rl.IsKeyDown(rl.KeyP) {
-			continue
-		}
-		ShouldEnginePause = false
 		for _, system := range e.systemManager.Systems() {
 			system.Process(e.entityManager)
 		}
