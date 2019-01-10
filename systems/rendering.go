@@ -39,7 +39,7 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 		isAnimationPresent := s.renderAnimationIfPresent(e)
 		isTexturePresent := s.renderTextureIfPresent(e)
 		// Render a colored rectangle if no texture and animation is present.
-		if isAnimationPresent && !isTexturePresent {
+		if !isAnimationPresent && !isTexturePresent {
 			s.renderBoundingBox(e)
 		}
 	}
