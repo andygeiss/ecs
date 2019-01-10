@@ -42,6 +42,7 @@ func (s *rendering) Process(entityManages *ecs.EntityManager) {
 		if !isAnimationPresent && !isTexturePresent {
 			s.renderBoundingBox(e)
 		}
+		s.renderTextIfPresent(e)
 	}
 	rl.EndDrawing()
 }
@@ -101,6 +102,44 @@ func (s *rendering) renderBoundingBox(entity *ecs.Entity) {
 		int32(size.Height),
 		rl.RayWhite,
 	)
+}
+
+func (s *rendering) renderTextIfPresent(entity *ecs.Entity) (present bool) {
+	position := entity.Get("position").(*components.Position)
+	size := entity.Get("size").(*components.Size)
+	// Return if text is not present.
+	text := entity.Get("text")
+	if text == nil {
+		return false
+	}
+	var x, y int32
+	txt := text.(*components.Text)
+	txtLength := rl.MeasureText(txt.Content, txt.FontSize)
+	switch txt.Align {
+	case components.TextAlignBottom:
+		x = int32(position.X) + int32(size.Width)/2 - txtLength/2
+		y = int32(position.Y) + int32(size.Height) + 4
+	case components.TextAlignCenter:
+		x = int32(position.X) + int32(size.Width)/2 - txtLength/2
+		y = int32(position.Y) + int32(size.Height)/2 + 4
+	case components.TextAlignLeft:
+		x = int32(position.X) - txtLength - 4
+		y = int32(position.Y) + int32(size.Height)/2
+	case components.TextAlignRight:
+		x = int32(position.X) + int32(size.Width) + 4
+		y = int32(position.Y) + int32(size.Height)/2
+	case components.TextAlignTop:
+		x = int32(position.X) + int32(size.Width)/2 - txtLength/2
+		y = int32(position.Y) - 4
+	}
+	rl.DrawText(
+		txt.Content,
+		x,
+		y,
+		txt.FontSize,
+		rl.RayWhite,
+	)
+	return true
 }
 
 func (s *rendering) renderTextureIfPresent(entity *ecs.Entity) (present bool) {
