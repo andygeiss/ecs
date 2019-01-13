@@ -28,20 +28,25 @@ func NewRendering(width, height int32, title string, background rl.Color) ecs.Sy
 }
 
 // Process ...
-func (s *rendering) Process(entityManages *ecs.EntityManager) {
+func (s *rendering) Process(entityManager *ecs.EntityManager) {
 	if rl.WindowShouldClose() {
 		ecs.ShouldEngineStop = true
 		return
 	}
 	rl.BeginDrawing()
 	rl.ClearBackground(s.background)
-	for _, e := range entityManages.FilterBy("position", "size") {
+	for _, e := range entityManager.FilterBy("position", "size") {
 		isAnimationPresent := s.renderAnimationIfPresent(e)
 		isTexturePresent := s.renderTextureIfPresent(e)
-		// Render a colored rectangle if no texture and animation is present.
 		if !isAnimationPresent && !isTexturePresent {
+			if e.Get("text") != nil {
+				continue
+			}
 			s.renderBoundingBox(e)
 		}
+	}
+	// Ensure that text will always drawn on top.
+	for _, e := range entityManager.FilterBy("text") {
 		s.renderTextIfPresent(e)
 	}
 	s.renderPauseIfPresent()
