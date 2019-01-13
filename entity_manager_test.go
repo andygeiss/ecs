@@ -4,6 +4,7 @@ import (
 	"github.com/andygeiss/assert"
 	"github.com/andygeiss/assert/is"
 	"github.com/andygeiss/ecs"
+	"strconv"
 	"testing"
 )
 
@@ -29,13 +30,6 @@ func TestEntityManager_Entities_Should_Have_Two_Entities_After_Adding_Two_Entiti
 	m.Add(&ecs.Entity{Id: "1"})
 	m.Add(&ecs.Entity{Id: "2"})
 	assert.That(t, len(m.Entities()), is.Equal(2))
-}
-
-func TestEntityManager_Entities_Should_Have_One_Entity_After_Adding_Two_Entities_With_The_Same_ID(t *testing.T) {
-	m := ecs.NewEntityManager()
-	m.Add(&ecs.Entity{Id: "1"})
-	m.Add(&ecs.Entity{Id: "1"})
-	assert.That(t, len(m.Entities()), is.Equal(1))
 }
 
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two_Entities(t *testing.T) {
@@ -72,4 +66,22 @@ func TestEntityManager_FilterBy_Should_Return_One_Entity_Out_Of_Two(t *testing.T
 	entities := em.FilterBy("position")
 	assert.That(t, len(entities), is.Equal(1))
 	assert.That(t, entities[0], is.Equal(e1))
+}
+
+func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {
+	m := ecs.NewEntityManager()
+	m.Add(&ecs.Entity{Id: "foo"})
+	for i := 0; i < b.N; i++ {
+		m.Get("foo")
+	}
+}
+
+func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
+	m := ecs.NewEntityManager()
+	for i := 0; i < 1000; i++ {
+		m.Add(&ecs.Entity{Id: strconv.Itoa(i)})
+	}
+	for i := 0; i < b.N; i++ {
+		m.Get("1000")
+	}
 }

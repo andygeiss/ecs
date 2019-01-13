@@ -2,29 +2,27 @@ package ecs
 
 // EntityManager handles the access to each entity.
 type EntityManager struct {
-	entities map[string]*Entity
+	entities []*Entity
+	index []int
 }
 
 // NewEntityManager creates a new EntityManager and returns its address.
 func NewEntityManager() *EntityManager {
 	return &EntityManager{
-		entities: map[string]*Entity{},
+		entities: []*Entity{},
 	}
 }
 
-// Add creates new map entries for the entities by id.
+// Add entries to the manager.
 func (m *EntityManager) Add(entities ...*Entity) {
 	for _, entity := range entities {
-		m.entities[entity.Id] = entity
+		m.entities = append(m.entities, entity)
 	}
 }
 
-// Entities returns all the mapped entities.
+// Entities returns all the entities.
 func (m *EntityManager) Entities() (entities []*Entity) {
-	for _, e := range m.entities {
-		entities = append(entities, e)
-	}
-	return
+	return m.entities
 }
 
 // FilterBy returns the mapped entities, which components name matched.
@@ -40,8 +38,7 @@ func (m *EntityManager) FilterBy(components ...string) (entities []*Entity) {
 				}
 			}
 		}
-		// Add the entity to the filter list,
-		// if all components are found.
+		// Add the entity to the filter list, if all components are found.
 		if count == wanted {
 			entities = append(entities, e)
 		}
@@ -59,7 +56,14 @@ func (m *EntityManager) Get(id string) (entity *Entity) {
 	return
 }
 
-// Remove a specific entity from the map.
+// Remove a specific entity.
 func (m *EntityManager) Remove(entity *Entity) {
-	delete(m.entities, entity.Id)
+	for i, e := range m.entities {
+		if e.Id == entity.Id {
+			copy(m.entities[i:], m.entities[i+1:])
+			m.entities[len(m.entities)-1] = nil
+			m.entities = m.entities[:len(m.entities)-1]
+			break
+		}
+	}
 }
