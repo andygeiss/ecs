@@ -92,7 +92,7 @@ func (s *rendering) renderAnimationIfPresent(entity *ecs.Entity) (present bool) 
 	}
 	rl.DrawTextureRec(
 		tx,
-		rl.NewRectangle(animation.Index*size.Width, 0, size.Width, size.Height),
+		rl.NewRectangle(animation.SpriteIndex*size.Width, 0, size.Width, size.Height),
 		rl.NewVector2(position.X, position.Y),
 		rl.RayWhite,
 	)

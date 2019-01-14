@@ -26,11 +26,11 @@ func (s *Animation) Process(entityManager *ecs.EntityManager) {
 		return
 	}
 	for _, e := range entityManager.FilterBy("animation") {
-		if s.frameCounter % 4 == 0 {
-			animation := e.Get("animation").(*components.Animation)
-			animation.Index++
-			if animation.Index == animation.Count {
-				animation.Index = 0
+		animation := e.Get("animation").(*components.Animation)
+		if s.frameCounter % (10 - animation.Speed) == 0 {
+			animation.SpriteIndex++
+			if animation.SpriteIndex == animation.SpriteCount {
+				animation.SpriteIndex = 0
 			}
 		}
 	}
