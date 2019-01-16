@@ -28,6 +28,13 @@ func (s *Movement) Process(entityManager *ecs.EntityManager) {
 		velocity := e.Get("velocity").(*components.Velocity)
 		position.X += velocity.X
 		position.Y += velocity.Y
+		cameraTarget := e.Get("cameraTarget")
+		if cameraTarget == nil {
+			continue
+		}
+		ct := cameraTarget.(*components.CameraTarget)
+		ct.OffsetX -= velocity.X
+		ct.OffsetY -= velocity.Y
 	}
 }
 
