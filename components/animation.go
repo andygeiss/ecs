@@ -11,6 +11,7 @@ type Animation struct {
 	EventFilename map[string]string
 	Filename      string
 	Height        float32
+	IsEnabled     bool
 	Speed         int64
 	SpriteCount   float32
 	SpriteIndex   float32

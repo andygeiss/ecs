@@ -82,6 +82,9 @@ func (s *rendering) renderAnimationIfPresent(entity *ecs.Entity) (present bool) 
 	// Get texture from cache or load it from the filesystem into the cache.
 	animation := anim.(*components.Animation)
 	filename := animation.Filename
+	if filename == "" || !animation.IsEnabled {
+		return false
+	}
 	tx, exists := s.textures[filename]
 	if !exists {
 		img := rl.LoadImage(filename)
@@ -144,6 +147,9 @@ func (s *rendering) renderTextIfPresent(entity *ecs.Entity) (present bool) {
 	}
 	var x, y int32
 	txt := text.(*components.Text)
+	if !txt.IsEnabled {
+		return false
+	}
 	txtLength := rl.MeasureText(txt.Content, txt.FontSize)
 	switch txt.Align {
 	case components.TextAlignBottom:
@@ -181,7 +187,11 @@ func (s *rendering) renderTextureIfPresent(entity *ecs.Entity) (present bool) {
 		return false
 	}
 	// Get texture from cache or load it from the filesystem into the cache.
-	fileName := texture.(*components.Texture).Filename
+	tex := texture.(*components.Texture)
+	fileName := tex.Filename
+	if fileName == "" || !tex.IsEnabled {
+		return false
+	}
 	tx, exists := s.textures[fileName]
 	if !exists {
 		s.textures[fileName] = rl.LoadTexture(fileName)

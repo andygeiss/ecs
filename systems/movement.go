@@ -24,7 +24,10 @@ func (s *Movement) Process(entityManager *ecs.EntityManager) {
 		return
 	}
 	for _, e := range entityManager.FilterBy("position", "velocity") {
-		s.handleMovement(e)
+		position := e.Get("position").(*components.Position)
+		velocity := e.Get("velocity").(*components.Velocity)
+		position.X += velocity.X
+		position.Y += velocity.Y
 	}
 }
 
@@ -33,10 +36,3 @@ func (s *Movement) Setup() {}
 
 // Teardown ...
 func (s *Movement) Teardown() {}
-
-func (s *Movement) handleMovement(e *ecs.Entity) {
-	position := e.Get("position").(*components.Position)
-	velocity := e.Get("velocity").(*components.Velocity)
-	position.X += velocity.X
-	position.Y += velocity.Y
-}

@@ -27,7 +27,11 @@ func (s *Animation) Process(entityManager *ecs.EntityManager) {
 	}
 	for _, e := range entityManager.FilterBy("animation") {
 		animation := e.Get("animation").(*components.Animation)
-		if s.frameCounter % (10 - animation.Speed) == 0 {
+		fileName := animation.Filename
+		if fileName == "" || !animation.IsEnabled {
+			continue
+		}
+		if s.frameCounter%(10-animation.Speed) == 0 {
 			animation.SpriteIndex++
 			if animation.SpriteIndex == animation.SpriteCount {
 				animation.SpriteIndex = 0

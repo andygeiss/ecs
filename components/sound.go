@@ -4,6 +4,8 @@ package components
 type Sound struct {
 	EventFilename map[string]string
 	Filename      string
+	IsEnabled     bool
+	Volume        float32
 }
 
 // Name ...

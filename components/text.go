@@ -12,10 +12,11 @@ const (
 
 // Text ...
 type Text struct {
-	Align    int
-	Color    rl.Color
-	Content  string
-	FontSize int32
+	Align     int
+	Color     rl.Color
+	Content   string
+	FontSize  int32
+	IsEnabled bool
 }
 
 // Name ...

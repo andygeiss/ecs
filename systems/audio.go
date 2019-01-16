@@ -30,7 +30,7 @@ func (s *Audio) Process(entityManager *ecs.EntityManager) {
 	for _, e := range entityManager.FilterBy("sound") {
 		sound := e.Get("sound").(*components.Sound)
 		fileName := sound.Filename
-		if fileName == "" {
+		if fileName == "" || !sound.IsEnabled {
 			continue
 		}
 		// Playing a sound should be event-based.

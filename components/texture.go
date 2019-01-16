@@ -2,7 +2,8 @@ package components
 
 // Texture contains the filename of the current texture.
 type Texture struct {
-	Filename string
+	Filename  string
+	IsEnabled bool
 }
 
 // Name ...
