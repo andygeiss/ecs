@@ -8,6 +8,7 @@ import (
 
 type rendering struct {
 	background   rl.Color
+	camera       rl.Camera2D
 	images       map[string]*rl.Image
 	textures     map[string]rl.Texture2D
 	title        string
@@ -34,6 +35,7 @@ func (s *rendering) Process(entityManager *ecs.EntityManager) {
 		return
 	}
 	rl.BeginDrawing()
+	rl.BeginMode2D(s.camera)
 	rl.ClearBackground(s.background)
 	for _, e := range entityManager.FilterBy("position", "size") {
 		isAnimationPresent := s.renderAnimationIfPresent(e)
@@ -44,6 +46,7 @@ func (s *rendering) Process(entityManager *ecs.EntityManager) {
 			}
 			s.renderBoundingBox(e)
 		}
+		s.moveCameraTargetIfPresent(e)
 	}
 	// Ensure that text will always drawn on top.
 	for _, e := range entityManager.FilterBy("text") {
@@ -51,12 +54,19 @@ func (s *rendering) Process(entityManager *ecs.EntityManager) {
 	}
 	s.renderPauseIfPresent()
 	s.toggleFullscreenIfPresent()
+	rl.EndMode2D()
 	rl.EndDrawing()
 }
 
 // Setup ...
 func (s *rendering) Setup() {
 	rl.InitWindow(s.windowWidth, s.windowHeight, s.title)
+	s.camera = rl.NewCamera2D(
+		rl.NewVector2(0, 0),
+		rl.NewVector2(float32(s.windowWidth/2), float32(s.windowHeight/2)),
+		0.0,
+		1.0,
+	)
 	rl.SetTargetFPS(60)
 }
 
@@ -69,6 +79,19 @@ func (s *rendering) Teardown() {
 		rl.UnloadTexture(tx)
 	}
 	rl.CloseWindow()
+}
+
+func (s *rendering) moveCameraTargetIfPresent(entity *ecs.Entity) (present bool) {
+	cameraTarget := entity.Get("cameraTarget")
+	if cameraTarget == nil {
+		return false
+	}
+	ct := cameraTarget.(*components.CameraTarget)
+	s.camera.Target = rl.NewVector2(ct.X, ct.Y)
+	s.camera.Offset = rl.NewVector2(ct.OffsetX, ct.OffsetY)
+	s.camera.Rotation = ct.Rotation
+	s.camera.Zoom = ct.Zoom
+	return true
 }
 
 func (s *rendering) renderAnimationIfPresent(entity *ecs.Entity) (present bool) {
