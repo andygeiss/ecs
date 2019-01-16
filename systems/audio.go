@@ -38,7 +38,9 @@ func (s *Audio) Process(entityManager *ecs.EntityManager) {
 		// Therefore a sound contains a map of event/filename pairs.
 		// Preload the sound first, if the file is not currently loaded.
 		if _, exists := s.sounds[fileName]; !exists {
-			s.sounds[fileName] = rl.LoadSound(fileName)
+			snd := rl.LoadSound(fileName)
+			rl.SetSoundVolume(snd, sound.Volume)
+			s.sounds[fileName] = snd
 		}
 		// Now Play the sound in the background.
 		go func() {
