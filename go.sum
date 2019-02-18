@@ -1,8 +1,2 @@
-github.com/andygeiss/assert v0.0.5 h1:UTZmjmkgAWgyrnx4jFLXq65QbA2AKIC5SyBAUYpc4rU=
-github.com/andygeiss/assert v0.0.5/go.mod h1:ztUvWrfUo43X0zMA1XfX8esn5Uavk6ANSKTT0w2qvAI=
-github.com/andygeiss/check v0.0.2 h1:CCZsvhhlZ497qcdGGZepxZI1jdVkIvHOFIcYCfnhvsw=
-github.com/andygeiss/check v0.0.2/go.mod h1:WD9GLvm08V6Im6HtA8xTkTEWB77cUFKgv5tfcnY2jdQ=
-github.com/andygeiss/log v0.0.1 h1:J/ngruxpIizht69P1JSEFlX59ultp2bVscQdZ51WhRI=
-github.com/andygeiss/log v0.0.1/go.mod h1:kY6tA77gUeTk4jY+yunCIHGJ95Xy3O94JzNT4uXI7Ao=
-github.com/gen2brain/raylib-go v0.0.0-20181117203910-90a4ff59bb7d h1:MF8XIlS+Dsw5vHoVwCzGN5D61XuKkfQ85EtUr4dWJ1U=
-github.com/gen2brain/raylib-go v0.0.0-20181117203910-90a4ff59bb7d/go.mod h1:LUVRDQbnxUaOgzLzW5lMS+IcbqlXHIqIA9wq8wxzmcA=
+github.com/andygeiss/assert v0.0.6 h1:FyiAIudVwnxp55GIcNOaZ2ABr8n2RI9SXmaXG7+Y53o=
+github.com/andygeiss/assert v0.0.6/go.mod h1:ztUvWrfUo43X0zMA1XfX8esn5Uavk6ANSKTT0w2qvAI=
