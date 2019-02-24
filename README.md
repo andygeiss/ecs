@@ -7,14 +7,11 @@
 The architectural pattern of an ECS is mostly used in game development,
 to provide long-term maintainability and extendability of large, dynamic systems.
 
+[![Overview](ecs.svg)](ecs.svg)
+
 An **Entity** is basically a composition of different components and has an ID.  
 A **Component** contains only the state or data of one specific aspect like health, position, velocity etc.  
 A **System** handles the behaviour or logic of the components. A movement system uses the position and velocity to implement an entities movement. 
-
-    Entity  +-------has------>  Component  <-----handles----+  System
-    
-    Compositon of               State                          Behaviour
-    Components                  Data                           Logic
 
 **Table of Contents**
 
