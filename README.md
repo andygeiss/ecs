@@ -2,7 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/andygeiss/ecs)](https://goreportcard.com/report/github.com/andygeiss/ecs)
 
-**A simple API to use an Entity Component System in Golang**
+**Build scalable solutions based on the Entity Component System concept in Golang**
 
 The architectural pattern of an ECS is mostly used in game development,
 to provide long-term maintainability and extendability of large, dynamic systems.
