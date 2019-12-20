@@ -31,7 +31,7 @@ func (e *engine) Setup() {
 	}
 }
 
-// Teardown calls the Teardown(= method for each System.
+// Teardown calls the Teardown() method for each System.
 func (e *engine) Teardown() {
 	for _, sys := range e.systemManager.Systems() {
 		sys.Teardown()
