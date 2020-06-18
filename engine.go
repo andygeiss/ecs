@@ -1,5 +1,10 @@
 package ecs
 
+var (
+	ShouldEnginePause = false
+	ShouldEngineStop  = false
+)
+
 // engine is simple a composition of an EntityManager and a SystemManager.
 // It handles the stages Setup(), Run() and Teardown() for all the systems.
 type engine struct {
