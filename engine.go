@@ -1,9 +1,9 @@
 package ecs
 
-var (
-	ShouldEnginePause = false
-	ShouldEngineStop  = false
-)
+// ShouldEngineStop is a public flag to break the loop which is started during the Run() stage.
+var ShouldEngineStop bool
+// ShouldEnginePause is able to pause the engine temporarily.
+var ShouldEnginePause bool
 
 // engine is simple a composition of an EntityManager and a SystemManager.
 // It handles the stages Setup(), Run() and Teardown() for all the systems.
@@ -23,14 +23,18 @@ func NewEngine(entityManager *EntityManager, systemManager *SystemManager) *engi
 // Run calls the Process() method for each System
 // until ShouldEngineStop is set to true.
 func (e *engine) Run() {
-	for _, system := range e.systemManager.Systems() {
-		system.Process(e.entityManager)
+	for !ShouldEngineStop {
+		for _, system := range e.systemManager.Systems() {
+			system.Process(e.entityManager)
+		}
 	}
 }
 
 // Setup calls the Setup() method for each System
 // and initializes ShouldEngineStop and ShouldEnginePause with false.
 func (e *engine) Setup() {
+	ShouldEnginePause = false
+	ShouldEngineStop = false
 	for _, sys := range e.systemManager.Systems() {
 		sys.Setup()
 	}
