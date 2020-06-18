@@ -1,3 +1,5 @@
 module github.com/andygeiss/ecs
 
-require github.com/andygeiss/assert v0.0.6
+go 1.14
+
+require github.com/andygeiss/assert v0.0.9
