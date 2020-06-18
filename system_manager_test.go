@@ -29,5 +29,5 @@ func TestSystemManager_Systems_Should_Have_Two_System_After_Adding_Two_System(t 
 	s1 := &MockSystem{}
 	s2 := &MockSystem{}
 	m.Add(s1, s2)
-	assert.That("manager should have two systems", t, len(m.Systems()), 0)
+	assert.That("manager should have two systems", t, len(m.Systems()), 2)
 }

@@ -21,7 +21,7 @@ func (c *mockComponent) Name() string { return c.name }
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Adding_One_Entity(t *testing.T) {
 	m := ecs.NewEntityManager()
 	m.Add(&ecs.Entity{})
-	assert.That("manager should have one entity", t, len(m.Entities()), 0)
+	assert.That("manager should have one entity", t, len(m.Entities()), 1)
 }
 
 func TestEntityManager_Entities_Should_Have_Two_Entities_After_Adding_Two_Entities(t *testing.T) {
