@@ -1,5 +1,10 @@
 package ecs
 
+const (
+	StateEngineContinue = 0
+	StateEngineStop     = 1
+)
+
 // engine is simple a composition of an EntityManager and a SystemManager.
 // It handles the stages Setup(), Run() and Teardown() for all the systems.
 type engine struct {
@@ -22,7 +27,7 @@ func (e *engine) Run() {
 	for !shouldStop {
 		for _, system := range e.systemManager.Systems() {
 			state := system.Process(e.entityManager)
-			if state == StateShouldEngineStop {
+			if state == StateEngineStop {
 				shouldStop = true
 				break
 			}
