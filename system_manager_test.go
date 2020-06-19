@@ -13,9 +13,11 @@ func TestSystemManager_Systems_Should_Have_No_System_At_Start(t *testing.T) {
 
 type MockSystem struct{}
 
-func (s *MockSystem) Process(entityManager *ecs.EntityManager) {}
-func (s *MockSystem) Setup()                                   {}
-func (s *MockSystem) Teardown()                                {}
+func (s *MockSystem) Process(entityManager *ecs.EntityManager) (state int) {
+	return ecs.StateEngineContinue
+}
+func (s *MockSystem) Setup()    {}
+func (s *MockSystem) Teardown() {}
 
 func TestSystemManager_Systems_Should_Have_One_System_After_Adding_One_System(t *testing.T) {
 	m := ecs.NewSystemManager()
