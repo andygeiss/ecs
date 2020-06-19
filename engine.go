@@ -1,5 +1,7 @@
 package ecs
 
+import rl "github.com/gen2brain/raylib-go/raylib"
+
 // engine is simple a composition of an EntityManager and a SystemManager.
 // It handles the stages Setup(), Run() and Teardown() for all the systems.
 type engine struct {
@@ -18,8 +20,15 @@ func NewEngine(entityManager *EntityManager, systemManager *SystemManager) *engi
 // Run calls the Process() method for each System
 // until ShouldEngineStop is set to true.
 func (e *engine) Run() {
-	for _, system := range e.systemManager.Systems() {
-		system.Process(e.entityManager)
+	done := false
+	for !done {
+		for _, system := range e.systemManager.Systems() {
+			system.Process(e.entityManager)
+			if rl.WindowShouldClose() {
+				done = true
+				break
+			}
+		}
 	}
 }
 
