@@ -36,6 +36,8 @@ A **System** handles the behaviour or logic of the components. A movement system
 
 See a real-world example at [ecs-pong](https://github.com/andygeiss/ecs-pong).
 
+![ecs-pong](https://github.com/andygeiss/ecs-pong/blob/master/assets/pong.png)
+
 ## Benchmarks
 
 Run the benchmarks on your current machine by using the following command:
