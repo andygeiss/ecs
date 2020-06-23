@@ -12,12 +12,6 @@ func TestEntityManager_Entities_Should_Have_No_Entity_At_Start(t *testing.T) {
 	assert.That("manager should have no entity at start", t, len(m.Entities()), 0)
 }
 
-type mockComponent struct {
-	name string
-}
-
-func (c *mockComponent) Name() string { return c.name }
-
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Adding_One_Entity(t *testing.T) {
 	m := ecs.NewEntityManager()
 	m.Add(&ecs.Entity{})
@@ -83,3 +77,17 @@ func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
 		m.Get("1000")
 	}
 }
+
+/*
+       _   _ _
+ _   _| |_(_) |___
+| | | | __| | / __|
+| |_| | |_| | \__ \
+ \__,_|\__|_|_|___/
+*/
+
+type mockComponent struct {
+	name string
+}
+
+func (c *mockComponent) Name() string { return c.name }
