@@ -11,6 +11,7 @@ type Component interface {
 type Entity struct {
 	Components []Component
 	Id         string
+	mask       uint64
 }
 
 // Get a specific component by a bitmask.
@@ -21,4 +22,22 @@ func (e *Entity) Get(mask uint64) Component {
 		}
 	}
 	return nil
+}
+
+// Mask returns a pre-calculated mask to identify the components.
+func (e *Entity) Mask() uint64 {
+	return e.mask
+}
+
+// NewEntity creates a new entity and pre-calculates the component mask.
+func NewEntity(id string, components []Component) *Entity {
+	mask := uint64(0)
+	for _, c := range components {
+		mask = mask | c.Mask()
+	}
+	return &Entity{
+		Components: components,
+		Id:         id,
+		mask:       mask,
+	}
 }

@@ -31,13 +31,10 @@ func (m *EntityManager) FilterByMask(mask uint64) (entities []*Entity) {
 	entities = make([]*Entity, len(m.entities))
 	index := 0
 	for _, e := range m.entities {
-		observed := uint64(0)
-		// Add each bits from the component mask.
-		for _, c := range e.Components {
-			observed = observed | c.Mask()
-		}
+		// Use the pre-calculated components mask.
+		observed := e.Mask()
 		// Add the entity to the filter list, if all components are found.
-		if observed & mask == mask {
+		if observed&mask == mask {
 			// Direct access
 			entities[index] = e
 			index++

@@ -60,13 +60,13 @@ Performance after:
 
 **UPDATE**
 
-The version **v0.0.52** got a minor **Performance Upgrade** by replacing the String-compare <code>if c.Name() == name</code> with a bitmask.
+The version **v0.0.54** got another **Performance Upgrade** by replacing the String-compare <code>if c.Name() == name</code> with a bitmask.
 Thus, the for-loop checking for each component's name could be removed, too.
 
 Performance after:
 
-    BenchmarkEngine_Run/1_system(s)_with_10000_entities-4          	   10551	    106045 ns/op
-    BenchmarkEngine_Run/2_system(s)_with_10000_entities-4          	    5010	    215662 ns/op
-    BenchmarkEngine_Run/4_system(s)_with_10000_entities-4          	    2713	    420268 ns/op
+    BenchmarkEngine_Run/1_system(s)_with_10000_entities-4          	   30087	     38109 ns/op
+    BenchmarkEngine_Run/2_system(s)_with_10000_entities-4          	   15320	     76884 ns/op
+    BenchmarkEngine_Run/4_system(s)_with_10000_entities-4          	    7609	    154035 ns/op
 
-We finally end up running one loop through all the systems and entities **3 times faster** than **v0.0.50** ;-)
+We finally end up running one loop through all the systems and entities **9 times faster** than **v0.0.50** ;-)
