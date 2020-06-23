@@ -44,7 +44,7 @@ Run the benchmarks on your current machine by using the following command:
 
 **Important Notice**
 
-The version **0.0.51** got a major **Performance Upgrade**.
+The version **v0.0.51** got a major **Performance Upgrade** by replacing looped <code>append</code> calls to a single <code>make</code> to allocate the entity slice only once.
 
 Performance before:
     
@@ -57,3 +57,16 @@ Performance after:
     BenchmarkEngine_Run/1_system(s)_with_10000_entities-4               7812            143810 ns/op
     BenchmarkEngine_Run/2_system(s)_with_10000_entities-4               4216            281840 ns/op
     BenchmarkEngine_Run/4_system(s)_with_10000_entities-4               2044            559839 ns/op
+
+**UPDATE**
+
+The version **v0.0.52** got a minor **Performance Upgrade** by replacing the String-compare <code>if c.Name() == name</code> with a bitmask.
+Thus, the for-loop checking for each component's name could be removed, too.
+
+Performance after:
+
+    BenchmarkEngine_Run/1_system(s)_with_10000_entities-4          	   10551	    106045 ns/op
+    BenchmarkEngine_Run/2_system(s)_with_10000_entities-4          	    5010	    215662 ns/op
+    BenchmarkEngine_Run/4_system(s)_with_10000_entities-4          	    2713	    420268 ns/op
+
+We finally end up running one loop through all the systems and entities **3 times faster** than **v0.0.50** ;-)

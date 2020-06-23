@@ -4,19 +4,19 @@ package ecs
 // The Name() method must be implemented, because the EntityManager
 // uses it to filter the entities by component names.
 type Component interface {
-	Name() (name string)
+	Mask() uint64
 }
 
 // Entity is simply a composition of one or more components with an id.
 type Entity struct {
 	Components []Component
-	Id string
+	Id         string
 }
 
-// Get a specific component by name.
-func (e *Entity) Get(name string) Component {
+// Get a specific component by a bitmask.
+func (e *Entity) Get(mask uint64) Component {
 	for _, c := range e.Components {
-		if c.Name() == name {
+		if c.Mask() == mask {
 			return c
 		}
 	}

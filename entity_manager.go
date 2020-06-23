@@ -3,7 +3,7 @@ package ecs
 // EntityManager handles the access to each entity.
 type EntityManager struct {
 	entities []*Entity
-	index []int
+	index    []int
 }
 
 // NewEntityManager creates a new EntityManager and returns its address.
@@ -26,31 +26,25 @@ func (m *EntityManager) Entities() (entities []*Entity) {
 }
 
 // FilterBy returns the mapped entities, which components name matched.
-func (m *EntityManager) FilterBy(components ...string) (entities []*Entity) {
+func (m *EntityManager) FilterByMask(mask uint64) (entities []*Entity) {
 	// Allocate the worst-case amount of memory (all entities needed).
 	entities = make([]*Entity, len(m.entities))
 	index := 0
 	for _, e := range m.entities {
-		count := 0
-		wanted := len(components)
-		// Simply increase the count if the component could be found.
-		for _, name := range components {
-			for _, c := range e.Components {
-				if c.Name() == name {
-					count++
-				}
-			}
+		observed := uint64(0)
+		// Add each bits from the component mask.
+		for _, c := range e.Components {
+			observed = observed | c.Mask()
 		}
 		// Add the entity to the filter list, if all components are found.
-		if count == wanted {
+		if observed == mask {
 			// Direct access
 			entities[index] = e
-			// entities = append(entities, e)
+			index++
 		}
 	}
 	// Return only the needed slice.
 	return entities[:index]
-	// return
 }
 
 // Get a specific entity by id.
