@@ -65,9 +65,9 @@ func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_Two(t *testi
 		&mockComponent{name: "position", mask: 1}, &mockComponent{name: "size", mask: 2},
 	}}
 	em.Add(e1, e2)
-	entities := em.FilterByMask(1)
+	entities := em.FilterByMask(2)
 	assert.That("filter should return one entity", t, len(entities), 1)
-	assert.That("entity should be e1", t, entities[0], e1)
+	assert.That("entity should be e1", t, entities[0], e2)
 }
 
 func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *testing.T) {
@@ -82,9 +82,10 @@ func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *t
 		&mockComponent{name: "position", mask: 1}, &mockComponent{name: "size", mask: 2},
 	}}
 	em.Add(e1, e2, e3)
-	entities := em.FilterByMask(1)
-	assert.That("filter should return one entity", t, len(entities), 1)
-	assert.That("entity should be e1", t, entities[0], e1)
+	entities := em.FilterByMask(2)
+	assert.That("filter should return one entity", t, len(entities), 2)
+	assert.That("entity should be e1", t, entities[0], e2)
+	assert.That("entity should be e1", t, entities[1], e3)
 }
 
 func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t *testing.T) {

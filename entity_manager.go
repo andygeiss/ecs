@@ -37,7 +37,7 @@ func (m *EntityManager) FilterByMask(mask uint64) (entities []*Entity) {
 			observed = observed | c.Mask()
 		}
 		// Add the entity to the filter list, if all components are found.
-		if observed == mask {
+		if observed & mask == mask {
 			// Direct access
 			entities[index] = e
 			index++
