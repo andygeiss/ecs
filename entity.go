@@ -9,14 +9,23 @@ type Component interface {
 
 // Entity is simply a composition of one or more components with an id.
 type Entity struct {
-	Components []Component
-	Id         string
+	components []Component
+	id         string
 	mask       uint64
 }
 
-// Get a specific component by a bitmask.
+// Add a component.
+func (e *Entity) Add(c Component) {
+	if e.mask&c.Mask() == c.Mask() {
+		return
+	}
+	e.components = append(e.components, c)
+	e.mask = maskSlice(e.components)
+}
+
+// Get a component by its bitmask.
 func (e *Entity) Get(mask uint64) Component {
-	for _, c := range e.Components {
+	for _, c := range e.components {
 		if c.Mask() == mask {
 			return c
 		}
@@ -24,20 +33,46 @@ func (e *Entity) Get(mask uint64) Component {
 	return nil
 }
 
-// Mask returns a pre-calculated mask to identify the components.
+// ID ...
+func (e *Entity) ID() string {
+	return e.id
+}
+
+// Mask returns a pre-calculated maskSlice to identify the components.
 func (e *Entity) Mask() uint64 {
 	return e.mask
 }
 
-// NewEntity creates a new entity and pre-calculates the component mask.
+// Remove a component by using its maskSlice.
+func (e *Entity) Remove(mask uint64) {
+	modified := false
+	for i, c := range e.components {
+		if c.Mask() == mask {
+			copy(e.components[i:], e.components[i+1:])
+			e.components[len(e.components)-1] = nil
+			e.components = e.components[:len(e.components)-1]
+			modified = true
+			break
+		}
+	}
+	if modified {
+		e.mask = maskSlice(e.components)
+	}
+}
+
+// NewEntity creates a new entity and pre-calculates the component maskSlice.
 func NewEntity(id string, components []Component) *Entity {
+	return &Entity{
+		components: components,
+		id:         id,
+		mask:       maskSlice(components),
+	}
+}
+
+func maskSlice(components []Component) uint64 {
 	mask := uint64(0)
 	for _, c := range components {
 		mask = mask | c.Mask()
 	}
-	return &Entity{
-		Components: components,
-		Id:         id,
-		mask:       mask,
-	}
+	return mask
 }

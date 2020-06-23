@@ -40,11 +40,12 @@ func BenchmarkEngine_Run(b *testing.B) {
 func generateEntities(count int) []*ecs.Entity {
 	out := make([]*ecs.Entity, count)
 	for i := 0; i < count; i++ {
-		out[i] = &ecs.Entity{Id: fmt.Sprintf("e%d", rand.Uint64()),
-			Components: []ecs.Component{
+		out[i] = ecs.NewEntity(
+			fmt.Sprintf("e%d", rand.Uint64()),
+			[]ecs.Component{
 				&mockComponent{mask: 1},
 			},
-		}
+		)
 	}
 	return out
 }

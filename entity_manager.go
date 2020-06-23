@@ -31,7 +31,7 @@ func (m *EntityManager) FilterByMask(mask uint64) (entities []*Entity) {
 	entities = make([]*Entity, len(m.entities))
 	index := 0
 	for _, e := range m.entities {
-		// Use the pre-calculated components mask.
+		// Use the pre-calculated components maskSlice.
 		observed := e.Mask()
 		// Add the entity to the filter list, if all components are found.
 		if observed&mask == mask {
@@ -47,7 +47,7 @@ func (m *EntityManager) FilterByMask(mask uint64) (entities []*Entity) {
 // Get a specific entity by id.
 func (m *EntityManager) Get(id string) (entity *Entity) {
 	for _, e := range m.entities {
-		if e.Id == id {
+		if e.id == id {
 			return e
 		}
 	}
@@ -57,7 +57,7 @@ func (m *EntityManager) Get(id string) (entity *Entity) {
 // Remove a specific entity.
 func (m *EntityManager) Remove(entity *Entity) {
 	for i, e := range m.entities {
-		if e.Id == entity.Id {
+		if e.id == entity.id {
 			copy(m.entities[i:], m.entities[i+1:])
 			m.entities[len(m.entities)-1] = nil
 			m.entities = m.entities[:len(m.entities)-1]

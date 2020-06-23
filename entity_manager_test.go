@@ -3,7 +3,6 @@ package ecs_test
 import (
 	"github.com/andygeiss/assert"
 	"github.com/andygeiss/ecs"
-	"strconv"
 	"testing"
 )
 
@@ -20,20 +19,20 @@ func TestEntityManager_Entities_Should_Have_One_Entity_After_Adding_One_Entity(t
 
 func TestEntityManager_Entities_Should_Have_Two_Entities_After_Adding_Two_Entities(t *testing.T) {
 	m := ecs.NewEntityManager()
-	m.Add(&ecs.Entity{Id: "1"})
-	m.Add(&ecs.Entity{Id: "2"})
+	m.Add(ecs.NewEntity("e1", nil))
+	m.Add(ecs.NewEntity("e2", nil))
 	assert.That("manager should have two entities", t, len(m.Entities()), 2)
 }
 
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two_Entities(t *testing.T) {
 	m := ecs.NewEntityManager()
-	e1 := &ecs.Entity{Id: "e1"}
-	e2 := &ecs.Entity{Id: "e2"}
+	e1 := ecs.NewEntity("e1", nil)
+	e2 := ecs.NewEntity("e2", nil)
 	m.Add(e1)
 	m.Add(e2)
 	m.Remove(e2)
 	assert.That("manager should have one entity after removing one out of two", t, len(m.Entities()), 1)
-	assert.That("remaining entity should have id e1", t, m.Entities()[0].Id, "e1")
+	assert.That("remaining entity should have id e1", t, m.Entities()[0].ID(), "e1")
 }
 
 func TestEntityManager_FilterByMask_Should_Return_No_Entity_Out_Of_One(t *testing.T) {
@@ -115,7 +114,7 @@ func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t 
 
 func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {
 	m := ecs.NewEntityManager()
-	m.Add(&ecs.Entity{Id: "foo"})
+	m.Add(ecs.NewEntity("foo", nil))
 	for i := 0; i < b.N; i++ {
 		m.Get("foo")
 	}
@@ -124,7 +123,7 @@ func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {
 func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
 	m := ecs.NewEntityManager()
 	for i := 0; i < 1000; i++ {
-		m.Add(&ecs.Entity{Id: strconv.Itoa(i)})
+		m.Add(ecs.NewEntity("foo", nil))
 	}
 	for i := 0; i < b.N; i++ {
 		m.Get("1000")
