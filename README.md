@@ -34,4 +34,26 @@ A **System** handles the behaviour or logic of the components. A movement system
 
 ## Usage
 
-See a real-world example at [ecs-pong](https://github.com/andygeiss/ecs-pong/tree/master/internal/app).
+See a real-world example at [ecs-pong](https://github.com/andygeiss/ecs-pong).
+
+## Benchmarks
+
+Run the benchmarks on your current machine by using the following command:
+
+    go test -bench ./...
+
+**Important Notice**
+
+The version **0.0.51** got a major **Performance Upgrade**.
+
+Performance before:
+    
+    BenchmarkEngine_Run/1_system(s)_with_10000_entities-4       	    3384	    334659 ns/op
+    BenchmarkEngine_Run/2_system(s)_with_10000_entities-4       	    1687	    667612 ns/op
+    BenchmarkEngine_Run/4_system(s)_with_10000_entities-4       	     868	   1355581 ns/op   
+    
+Performance after:
+
+    BenchmarkEngine_Run/1_system(s)_with_10000_entities-4               7812            143810 ns/op
+    BenchmarkEngine_Run/2_system(s)_with_10000_entities-4               4216            281840 ns/op
+    BenchmarkEngine_Run/4_system(s)_with_10000_entities-4               2044            559839 ns/op

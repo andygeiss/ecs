@@ -27,6 +27,9 @@ func (m *EntityManager) Entities() (entities []*Entity) {
 
 // FilterBy returns the mapped entities, which components name matched.
 func (m *EntityManager) FilterBy(components ...string) (entities []*Entity) {
+	// Allocate the worst-case amount of memory (all entities needed).
+	entities = make([]*Entity, len(m.entities))
+	index := 0
 	for _, e := range m.entities {
 		count := 0
 		wanted := len(components)
@@ -40,10 +43,14 @@ func (m *EntityManager) FilterBy(components ...string) (entities []*Entity) {
 		}
 		// Add the entity to the filter list, if all components are found.
 		if count == wanted {
-			entities = append(entities, e)
+			// Direct access
+			entities[index] = e
+			// entities = append(entities, e)
 		}
 	}
-	return
+	// Return only the needed slice.
+	return entities[:index]
+	// return
 }
 
 // Get a specific entity by id.
