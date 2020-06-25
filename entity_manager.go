@@ -47,7 +47,7 @@ func (m *EntityManager) FilterByMask(mask uint64) (entities []*Entity) {
 // Get a specific entity by id.
 func (m *EntityManager) Get(id string) (entity *Entity) {
 	for _, e := range m.entities {
-		if e.id == id {
+		if e.ID() == id {
 			return e
 		}
 	}
