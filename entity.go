@@ -15,12 +15,14 @@ type Entity struct {
 }
 
 // Add a component.
-func (e *Entity) Add(c Component) {
-	if e.mask&c.Mask() == c.Mask() {
-		return
+func (e *Entity) Add(cn ...Component) {
+	for _, c := range cn {
+		if e.mask&c.Mask() == c.Mask() {
+			continue
+		}
+		e.components = append(e.components, c)
+		e.mask = maskSlice(e.components)
 	}
-	e.components = append(e.components, c)
-	e.mask = maskSlice(e.components)
 }
 
 // Get a component by its bitmask.
