@@ -25,6 +25,7 @@ A **System** handles the behaviour or logic of the components. A movement system
 - Provide an **easy-to-use module** to create a ECS architecture.
 - **No dependencies** to other modules.
 - **Minimum overhead** - use only what is really needed.
+- **Plugins** to offer unlimited room for improvements.
 
 ## Installation
 
