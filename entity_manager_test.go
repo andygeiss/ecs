@@ -32,7 +32,7 @@ func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two
 	m.Add(e2)
 	m.Remove(e2)
 	assert.That("manager should have one entity after removing one out of two", t, len(m.Entities()), 1)
-	assert.That("remaining entity should have id e1", t, m.Entities()[0].ID(), "e1")
+	assert.That("remaining entity should have Id e1", t, m.Entities()[0].ID(), "e1")
 }
 
 func TestEntityManager_FilterByMask_Should_Return_No_Entity_Out_Of_One(t *testing.T) {

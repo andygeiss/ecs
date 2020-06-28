@@ -7,27 +7,27 @@ type Component interface {
 	Mask() uint64
 }
 
-// Entity is simply a composition of one or more components with an id.
+// Entity is simply a composition of one or more Components with an Id.
 type Entity struct {
-	components []Component
-	id         string
-	mask       uint64
+	Components []Component `json:"components"`
+	Id         string      `json:"id"`
+	Masked     uint64      `json:"masked"`
 }
 
 // Add a component.
 func (e *Entity) Add(cn ...Component) {
 	for _, c := range cn {
-		if e.mask&c.Mask() == c.Mask() {
+		if e.Masked&c.Mask() == c.Mask() {
 			continue
 		}
-		e.components = append(e.components, c)
-		e.mask = maskSlice(e.components)
+		e.Components = append(e.Components, c)
+		e.Masked = maskSlice(e.Components)
 	}
 }
 
 // Get a component by its bitmask.
 func (e *Entity) Get(mask uint64) Component {
-	for _, c := range e.components {
+	for _, c := range e.Components {
 		if c.Mask() == mask {
 			return c
 		}
@@ -37,37 +37,37 @@ func (e *Entity) Get(mask uint64) Component {
 
 // ID ...
 func (e *Entity) ID() string {
-	return e.id
+	return e.Id
 }
 
-// Mask returns a pre-calculated maskSlice to identify the components.
+// Mask returns a pre-calculated maskSlice to identify the Components.
 func (e *Entity) Mask() uint64 {
-	return e.mask
+	return e.Masked
 }
 
 // Remove a component by using its maskSlice.
 func (e *Entity) Remove(mask uint64) {
 	modified := false
-	for i, c := range e.components {
+	for i, c := range e.Components {
 		if c.Mask() == mask {
-			copy(e.components[i:], e.components[i+1:])
-			e.components[len(e.components)-1] = nil
-			e.components = e.components[:len(e.components)-1]
+			copy(e.Components[i:], e.Components[i+1:])
+			e.Components[len(e.Components)-1] = nil
+			e.Components = e.Components[:len(e.Components)-1]
 			modified = true
 			break
 		}
 	}
 	if modified {
-		e.mask = maskSlice(e.components)
+		e.Masked = maskSlice(e.Components)
 	}
 }
 
 // NewEntity creates a new entity and pre-calculates the component maskSlice.
 func NewEntity(id string, components []Component) *Entity {
 	return &Entity{
-		components: components,
-		id:         id,
-		mask:       maskSlice(components),
+		Components: components,
+		Id:         id,
+		Masked:     maskSlice(components),
 	}
 }
 
