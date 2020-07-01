@@ -39,6 +39,7 @@ A **System** handles the behaviour or logic of the components. A movement system
 An example scenario that distributes the load across multiple processor cores could look like this:
 
 ```go
+func main() {
     // Create a new EntityManager
     em := ecs.NewEntityManager()
     em.Add(
@@ -89,6 +90,7 @@ An example scenario that distributes the load across multiple processor cores co
             ecs.Run(em, systemsCgo)
         })
     })
+}
 ```
 
 
