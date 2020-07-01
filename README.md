@@ -83,7 +83,7 @@ func main() {
     ecs.Prepare(func() {
         // systems1 will be handled by CPU 1
         go ecs.Run(em, systems1)
-        // systems1 will be handled by CPU 2
+        // systems2 will be handled by CPU 2
         go ecs.Run(em, systems2)
         // systemsCgo will be handled by CPU 3 (Cgo calls needs to be locked).
         ecs.RunAsMain(func() {
