@@ -17,6 +17,21 @@ func TestRun(t *testing.T) {
 	assert.That("run should change name to bar", t, component.name, "bar")
 }
 
+func TestRunAsMain(t *testing.T) {
+	em := ecs.NewEntityManager()
+	component := &mockComponent{name: "foo", mask: 1}
+	entity := ecs.NewEntity("foo", []ecs.Component{component})
+	em.Add(entity)
+	sm := ecs.NewSystemManager()
+	sm.Add(&mockupChangeOneEntitySystem{})
+	ecs.Prepare(func() {
+		ecs.RunAsMain(func() {
+			ecs.Run(em, sm)
+		})
+	})
+	assert.That("run should change name to bar", t, component.name, "bar")
+}
+
 type mockupChangeOneEntitySystem struct{}
 
 func (s *mockupChangeOneEntitySystem) Process(em *ecs.EntityManager) (state int) {

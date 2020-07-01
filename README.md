@@ -26,6 +26,7 @@ A **System** handles the behaviour or logic of the components. A movement system
 - **No dependencies** to other modules.
 - **Minimum overhead** - use only what is really needed.
 - **Plugins** to offer unlimited room for improvements.
+- **Interoperability** between Cgo and Go via [Prepare]() 
 
 ## Installation
 
@@ -35,7 +36,63 @@ A **System** handles the behaviour or logic of the components. A movement system
 
 ## Usage
 
-Get a real-world example at [ecs-pong](https://github.com/andygeiss/ecs-pong).
+An example scenario that distributes the load across multiple processor cores could look like this:
+
+```go
+    // Create a new EntityManager
+    em := ecs.NewEntityManager()
+    em.Add(
+        ecs.NewEntity("background", []ecs.Component{
+            components.NewSize(width, height),
+        }))
+    em.Add(en...)
+    
+    // Create a new SystemManager which should only handle collisions.
+    systems1 := ecs.NewSystemManager()
+    systems1.Add(
+        systems.NewCollision(),
+    )
+    
+    // Create another SystemManager which should handle movement.
+    systems2 := ecs.NewSystemManager()
+    systems2.Add(
+        systems.NewMovement(
+            topDown.TranslateInputs2Velocity(),
+            topDown.MoveEntities(),
+        ),
+    )
+    
+    // Create a SystemManager which should handle Cgo calls.
+    systemsCgo := ecs.NewSystemManager()
+    systemsCgo.Add(
+        systems.NewCamera(
+            topDown.UpdateCamera(width, height, 4.0),
+        ),
+        systems.NewInput(
+            topDown.ReadFromKeyboard(),
+        ),
+        systems.NewTexture(
+            topDown.LoadTextures(filepath.Join("assets", "sprites")),
+        ),
+        systems.NewRendering(width, height, "Demo",
+            topDown.RenderEntities(width, height),
+        ),
+    )
+    
+    ecs.Prepare(func() {
+        // systems1 will be handled by CPU 1
+        go ecs.Run(em, systems1)
+        // systems1 will be handled by CPU 2
+        go ecs.Run(em, systems2)
+        // systemsCgo will be handled by CPU 3 (Cgo calls needs to be locked).
+        ecs.RunAsMain(func() {
+            ecs.Run(em, systemsCgo)
+        })
+    })
+```
+
+
+See a real-world example of ECS in action at [ecs-pong](https://github.com/andygeiss/ecs-pong).
 
 ![ecs-pong](https://github.com/andygeiss/ecs-pong/blob/master/assets/pong.png)
 
