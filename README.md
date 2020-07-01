@@ -40,54 +40,16 @@ An example scenario that distributes the load across multiple processor cores co
 
 ```go
 func main() {
-    // Create a new EntityManager
     em := ecs.NewEntityManager()
-    em.Add(
-        ecs.NewEntity("background", []ecs.Component{
-            components.NewSize(width, height),
-        }))
-    em.Add(en...)
-    
-    // Create a new SystemManager which should only handle collisions.
-    systems1 := ecs.NewSystemManager()
-    systems1.Add(
-        systems.NewCollision(),
-    )
-    
-    // Create another SystemManager which should handle movement.
-    systems2 := ecs.NewSystemManager()
-    systems2.Add(
-        systems.NewMovement(
-            topDown.TranslateInputs2Velocity(),
-            topDown.MoveEntities(),
-        ),
-    )
-    
-    // Create a SystemManager which should handle Cgo calls.
-    systemsCgo := ecs.NewSystemManager()
-    systemsCgo.Add(
-        systems.NewCamera(
-            topDown.UpdateCamera(width, height, 4.0),
-        ),
-        systems.NewInput(
-            topDown.ReadFromKeyboard(),
-        ),
-        systems.NewTexture(
-            topDown.LoadTextures(filepath.Join("assets", "sprites")),
-        ),
-        systems.NewRendering(width, height, "Demo",
-            topDown.RenderEntities(width, height),
-        ),
-    )
-    
+    sm := ecs.NewSystemManager()
+    // TODO: Add some entities ...
+    // TODO: Add some systems ...
     ecs.Prepare(func() {
-        // systems1 will be handled by CPU 1
-        go ecs.Run(em, systems1)
-        // systems2 will be handled by CPU 2
-        go ecs.Run(em, systems2)
-        // systemsCgo will be handled by CPU 3 (Cgo calls needs to be locked).
+        // Runs the ECS main loop at the main OS thread.
         ecs.RunAsMain(func() {
-            ecs.Run(em, systemsCgo)
+            ecs.Run(em, sm)
+            // Each system can use ecs.Do() internally
+            // to access Cgo functions via the main OS thread. 
         })
     })
 }
