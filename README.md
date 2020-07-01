@@ -36,22 +36,22 @@ A **System** handles the behaviour or logic of the components. A movement system
 
 ## Usage
 
-An example scenario that distributes the load across multiple processor cores could look like this:
-
+In the following example we ensure that ECS will work with non-Go library functions that depend on per-thread state:
 ```go
+func run() int {
+    // Each system can use ecs.RunAsMain() internally
+    // to access Cgo functions via the main OS thread.
+    ecs.Run(em, sm)
+    return 0
+}
+
 func main() {
-    em := ecs.NewEntityManager()
-    sm := ecs.NewSystemManager()
-    // TODO: Add some entities ...
-    // TODO: Add some systems ...
+    var code int
+    // Run the ECS at the main OS thread.
     ecs.Prepare(func() {
-        // Runs the ECS main loop at the main OS thread.
-        ecs.RunAsMain(func() {
-            ecs.Run(em, sm)
-            // Each system can use ecs.Do() internally
-            // to access Cgo functions via the main OS thread. 
-        })
+        code = run()
     })
+    os.Exit(code)
 }
 ```
 
