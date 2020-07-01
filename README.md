@@ -26,7 +26,7 @@ A **System** handles the behaviour or logic of the components. A movement system
 - **No dependencies** to other modules.
 - **Minimum overhead** - use only what is really needed.
 - **Plugins** to offer unlimited room for improvements.
-- **Interoperability** between Cgo and Go via [Prepare]() 
+- **Interoperability** between Cgo and Go via [Prepare](https://github.com/andygeiss/ecs/blob/master/run.go) 
 
 ## Installation
 
