@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/andygeiss/ecs"
-	"github.com/andygeiss/ecs/examples/engine"
+	"github.com/andygeiss/ecs/_examples/engine"
+	"github.com/andygeiss/ecs/_examples/plugins"
 	"math/rand"
 )
 
@@ -31,7 +32,9 @@ func run() {
 	sm.Add(
 		engine.NewMovement(),
 		engine.NewCollision(Width, Height),
-		engine.NewRendering(Width, Height, "ECS with SDL Demo"),
+		engine.NewRendering(Width, Height, "ECS with SDL Demo",
+			plugins.ShowEngineStats(em),
+		),
 	)
 	ecs.Run(em, sm)
 }

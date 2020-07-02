@@ -121,6 +121,15 @@ func (r *Rendering) Process(em *ecs.EntityManager) (state int) {
 		r.renderer.Present()
 		time.Sleep(time.Millisecond * 1000 / 60)
 	})
+	// Save the window and renderer address for further usage in a plugin context.
+	for _, e := range em.FilterByMask(MaskRenderer) {
+		renderer := e.Get(MaskRenderer).(*Renderer)
+		renderer.Addr = r.renderer
+	}
+	for _, e := range em.FilterByMask(MaskWindow) {
+		window := e.Get(MaskWindow).(*Window)
+		window.Addr = r.window
+	}
 	// Dispatch work to plugins.
 	for _, plugin := range r.plugins {
 		plugin(em)

@@ -11,8 +11,10 @@ package engine
 
 const (
 	MaskPosition = uint64(1 << 0)
-	MaskSize     = uint64(1 << 1)
-	MaskVelocity = uint64(1 << 2)
+	MaskRenderer = uint64(1 << 1)
+	MaskSize     = uint64(1 << 2)
+	MaskVelocity = uint64(1 << 3)
+	MaskWindow   = uint64(1 << 4)
 )
 
 // Position ...
@@ -32,6 +34,23 @@ func NewPosition(x, y int32) *Position {
 		ID: "position",
 		X:  x,
 		Y:  y,
+	}
+}
+
+// Renderer ...
+type Renderer struct {
+	ID   string `json:"id"`
+	Addr interface{}
+}
+
+func (m *Renderer) Mask() uint64 {
+	return MaskWindow
+}
+
+// NewRenderer ...
+func NewRenderer(addr interface{}) *Renderer {
+	return &Renderer{
+		ID: "renderer",
 	}
 }
 
@@ -72,5 +91,22 @@ func NewVelocity(x, y int32) *Velocity {
 		ID: "velocity",
 		X:  x,
 		Y:  y,
+	}
+}
+
+// Window ...
+type Window struct {
+	ID   string `json:"id"`
+	Addr interface{}
+}
+
+func (m *Window) Mask() uint64 {
+	return MaskWindow
+}
+
+// NewWindow ...
+func NewWindow(addr interface{}) *Window {
+	return &Window{
+		ID: "window",
 	}
 }
