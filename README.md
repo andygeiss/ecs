@@ -77,8 +77,8 @@ func (m *Collision) Process(em *ecs.EntityManager) (state int) {
 }
 ```
 The rendering system must be adapted to a specific game library.
-In our example we have used [SDL](https://github.com/veandco/go-sdl2)
-In the example of [Pong](https://github.com/andygeiss/ecs-pong)) we used [Raylib](https://github.com/gen2brain/raylib-go).
+In our example we have used [SDL](https://github.com/veandco/go-sdl2).
+In the example of [Pong](https://github.com/andygeiss/ecs-pong) we used [Raylib](https://github.com/gen2brain/raylib-go).
 
 Finally we create a <code>main.go</code> file (Example: [here](https://github.com/andygeiss/ecs/blob/master/examples/main.go))
 and link the systems together:
