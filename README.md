@@ -102,3 +102,5 @@ func main() {
 	})
 }
 ```
+
+![stats](stats.png)
