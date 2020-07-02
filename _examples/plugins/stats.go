@@ -39,6 +39,7 @@ func ShowEngineStats(em *ecs.EntityManager) ecs.Plugin {
 			_, _ = tm.Println(dash(47))
 			_, _ = tm.Println(format("Engine Statistics:", ""))
 			_, _ = tm.Println(format("Entities:", fmt.Sprintf("%d", len(em.Entities()))))
+			_, _ = tm.Println(format("Version:", ecs.Version))
 			_, _ = tm.Println(dash(47))
 			_, _ = tm.Println()
 			tm.Flush()
