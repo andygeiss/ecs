@@ -18,7 +18,7 @@ A **System** handles the behaviour or logic of the components. A movement system
 
 - [Goals](README.md#goals)
 - [Installation](README.md#installation)
-- [Usage](README.md#usage)
+- [Steps to start](README.md#steps-to-start)
 
 ## Goals
 
