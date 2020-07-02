@@ -1,0 +1,9 @@
+github.com/andygeiss/assert v0.0.9/go.mod h1:fCwXr8GkRVuJWDwiCS73+NTcHXyhQSx4uqV/0Fl5T3g=
+github.com/andygeiss/ecs v0.0.65 h1:sYCoRbZKu0aa2h5OIboL6wi/la0159CaU04zeC42z/E=
+github.com/andygeiss/ecs v0.0.65/go.mod h1:1sxAaV2NVtvah/k+Z+5cOzmu51fuWKJ3HPZAUfXS9Rc=
+github.com/buger/goterm v0.0.0-20200322175922-2f3e71b85129 h1:gfAMKE626QEuKG3si0pdTRcr/YEbBoxY+3GOH3gWvl4=
+github.com/buger/goterm v0.0.0-20200322175922-2f3e71b85129/go.mod h1:u9UyCz2eTrSGy6fbupqJ54eY5c4IC8gREQ1053dK12U=
+github.com/veandco/go-sdl2 v0.4.4 h1:coOJGftOdvNvGoUIZmm4XD+ZRQF4mg9ZVHmH3/42zFQ=
+github.com/veandco/go-sdl2 v0.4.4/go.mod h1:FB+kTpX9YTE+urhYiClnRzpOXbiWgaU3+5F2AB78DPg=
+golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae h1:Ih9Yo4hSPImZOpfGuA4bR/ORKTAbhZo2AbWNRCnevdo=
+golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=

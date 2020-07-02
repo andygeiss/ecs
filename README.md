@@ -50,14 +50,14 @@ We decide to use 2D and define the **three most important components**:
 * Size
 * Velocity
 
-We store these as <code>components.go</code> (Example: [here](https://github.com/andygeiss/ecs/blob/master/examples/engine/components.go)).
+We store these as <code>components.go</code> (Example: [here](https://github.com/andygeiss/ecs/blob/master/_examples/engine/components.go)).
 
 In the next step, the **three most important systems** implement
 * Collision
 * Movement
 * Rendering
 
-We store these as <code>systems.go</code> (Example: [here](https://github.com/andygeiss/ecs/blob/master/examples/engine/systems.go)).
+We store these as <code>systems.go</code> (Example: [here](https://github.com/andygeiss/ecs/blob/master/_examples/engine/systems.go)).
 
 The collision and movement system contains the actual game mechanics:
 
@@ -80,7 +80,7 @@ The rendering system must be adapted to a specific game library.
 In our example we have used [SDL](https://github.com/veandco/go-sdl2)
 In the example of [Pong](https://github.com/andygeiss/ecs-pong)) we used [Raylib](https://github.com/gen2brain/raylib-go).
 
-Finally we create a <code>main.go</code> file (Example: [here](https://github.com/andygeiss/ecs/blob/master/examples/main.go))
+Finally we create a <code>main.go</code> file (Example: [here](https://github.com/andygeiss/ecs/blob/master/_examples/main.go))
 and link the systems together:
 
 ```go
