@@ -26,7 +26,7 @@ A **System** handles the behaviour or logic of the components. A movement system
 - **No dependencies** to other modules.
 - **Minimum overhead** - use only what is really needed.
 - **Plugins** to offer unlimited room for improvements.
-- **Interoperability** between Cgo and Go via [Prepare](https://github.com/andygeiss/ecs/blob/master/run.go) 
+- **Interoperability** between non-Go libraries and Go via [Main/Do](https://github.com/andygeiss/ecs/blob/master/run.go) 
 
 ## Installation
 
@@ -39,7 +39,7 @@ A **System** handles the behaviour or logic of the components. A movement system
 In the following example we ensure that ECS will work with non-Go library functions that depend on per-thread state:
 ```go
 func run() int {
-    // Each system can use ecs.RunAsMain() internally
+    // Each system can use ecs.Do() internally
     // to access Cgo functions via the main OS thread.
     ecs.Run(em, sm)
     return 0
@@ -48,7 +48,7 @@ func run() int {
 func main() {
     var code int
     // Run the ECS at the main OS thread.
-    ecs.Prepare(func() {
+    ecs.Main(func() {
         code = run()
     })
     os.Exit(code)

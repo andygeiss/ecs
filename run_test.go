@@ -24,8 +24,8 @@ func TestRunAsMain(t *testing.T) {
 	em.Add(entity)
 	sm := ecs.NewSystemManager()
 	sm.Add(&mockupChangeOneEntitySystem{})
-	ecs.Prepare(func() {
-		ecs.RunAsMain(func() {
+	ecs.Main(func() {
+		ecs.Do(func() {
 			ecs.Run(em, sm)
 		})
 	})
