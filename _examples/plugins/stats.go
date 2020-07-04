@@ -3,6 +3,7 @@ package plugins
 import (
 	"fmt"
 	"github.com/andygeiss/ecs"
+	"github.com/andygeiss/ecs/_examples/engine"
 	tm "github.com/buger/goterm"
 	"runtime"
 	"time"
@@ -10,11 +11,23 @@ import (
 
 // ShowEngineStats ...
 func ShowEngineStats(em *ecs.EntityManager) ecs.Plugin {
-	updated := time.Now()
+	frameTime := time.Now()
+	updateTime := time.Now()
 	// Return a plugin which will be called by the renderer.
 	return func(entityManager *ecs.EntityManager) (state int) {
-		// Statistics will be updated every 2 seconds.
-		if time.Since(updated) >= time.Second*2 {
+		dt := time.Since(frameTime)
+		frameTime = time.Now()
+		// Statistics will be updateTime every 2 seconds.
+		if time.Since(updateTime) >= time.Second*2 {
+
+			t0 := time.Now()
+			em.Get("worst_case_lookup")
+			lookupTime := time.Since(t0)
+
+			t1 := time.Now()
+			em.FilterByMask(engine.MaskPosition | engine.MaskSize)
+			filterTime := time.Since(t1)
+
 			tm.Clear()
 			tm.MoveCursor(0, 0)
 			_, _ = tm.Println(dash(47))
@@ -39,18 +52,17 @@ func ShowEngineStats(em *ecs.EntityManager) ecs.Plugin {
 			_, _ = tm.Println(dash(47))
 			_, _ = tm.Println(format("Engine Statistics:", ""))
 			_, _ = tm.Println(format("Entities:", fmt.Sprintf("%d", len(em.Entities()))))
+			_, _ = tm.Println(format("FilterTime:", fmt.Sprintf("%v", filterTime)))
+			_, _ = tm.Println(format("FrameTime:", fmt.Sprintf("%v", dt)))
+			_, _ = tm.Println(format("LookupTime:", fmt.Sprintf("%v", lookupTime)))
 			_, _ = tm.Println(format("Version:", ecs.Version))
 			_, _ = tm.Println(dash(47))
 			_, _ = tm.Println()
 			tm.Flush()
-			updated = time.Now()
+			updateTime = time.Now()
 		}
 		return ecs.StateEngineContinue
 	}
-}
-
-func format(key, val string) string {
-	return fmt.Sprintf("| %-20s | %-20s |", key, val)
 }
 
 func dash(num int) (out string) {
@@ -58,4 +70,8 @@ func dash(num int) (out string) {
 		out += "-"
 	}
 	return out
+}
+
+func format(key, val string) string {
+	return fmt.Sprintf("| %-20s | %-20s |", key, val)
 }

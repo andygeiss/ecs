@@ -3,7 +3,7 @@ package ecs
 const (
 	StateEngineContinue = 0
 	StateEngineStop     = 1
-	Version             = "v0.0.67"
+	Version             = "v0.0.68"
 )
 
 // engine is simple a composition of an EntityManager and a SystemManager.

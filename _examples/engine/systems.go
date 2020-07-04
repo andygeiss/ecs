@@ -3,7 +3,6 @@ package engine
 import (
 	"github.com/andygeiss/ecs"
 	"github.com/veandco/go-sdl2/sdl"
-	"time"
 )
 
 /*
@@ -119,7 +118,7 @@ func (r *Rendering) Process(em *ecs.EntityManager) (state int) {
 	// Set FPS to 60
 	ecs.Do(func() {
 		r.renderer.Present()
-		time.Sleep(time.Millisecond * 1000 / 60)
+		sdl.Delay(1000 / 60)
 	})
 	// Save the window and renderer address for further usage in a plugin context.
 	for _, e := range em.FilterByMask(MaskRenderer) {
