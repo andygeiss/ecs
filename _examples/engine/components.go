@@ -24,10 +24,6 @@ type Position struct {
 	Y  int32  `json:"y"`
 }
 
-func (p *Position) Mask() uint64 {
-	return MaskPosition
-}
-
 // NewPosition ...
 func NewPosition(x, y int32) *Position {
 	return &Position{
@@ -37,14 +33,14 @@ func NewPosition(x, y int32) *Position {
 	}
 }
 
+func (p *Position) Mask() uint64 {
+	return MaskPosition
+}
+
 // Renderer ...
 type Renderer struct {
 	ID   string `json:"id"`
 	Addr interface{}
-}
-
-func (m *Renderer) Mask() uint64 {
-	return MaskWindow
 }
 
 // NewRenderer ...
@@ -54,15 +50,15 @@ func NewRenderer(addr interface{}) *Renderer {
 	}
 }
 
+func (m *Renderer) Mask() uint64 {
+	return MaskWindow
+}
+
 // Size ...
 type Size struct {
 	ID     string `json:"id"`
 	Height int32  `json:"height"`
 	Width  int32  `json:"width"`
-}
-
-func (s *Size) Mask() uint64 {
-	return MaskSize
 }
 
 // NewSize ...
@@ -74,15 +70,15 @@ func NewSize(width, height int32) *Size {
 	}
 }
 
+func (s *Size) Mask() uint64 {
+	return MaskSize
+}
+
 // Velocity ...
 type Velocity struct {
 	ID string `json:"id"`
 	X  int32  `json:"x"`
 	Y  int32  `json:"y"`
-}
-
-func (s *Velocity) Mask() uint64 {
-	return MaskVelocity
 }
 
 // NewVelocity ...
@@ -94,14 +90,14 @@ func NewVelocity(x, y int32) *Velocity {
 	}
 }
 
+func (s *Velocity) Mask() uint64 {
+	return MaskVelocity
+}
+
 // Window ...
 type Window struct {
 	ID   string `json:"id"`
 	Addr interface{}
-}
-
-func (m *Window) Mask() uint64 {
-	return MaskWindow
 }
 
 // NewWindow ...
@@ -109,4 +105,8 @@ func NewWindow(addr interface{}) *Window {
 	return &Window{
 		ID: "window",
 	}
+}
+
+func (m *Window) Mask() uint64 {
+	return MaskWindow
 }
