@@ -67,7 +67,7 @@ func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_Two(t *testi
 	em.Add(e1, e2)
 	entities := em.FilterByMask(2)
 	assert.That("filter should return one entity", t, len(entities), 1)
-	assert.That("entity should be e1", t, entities[0], e2)
+	assert.That("entity should be e2", t, entities[0], e2)
 }
 
 func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *testing.T) {
