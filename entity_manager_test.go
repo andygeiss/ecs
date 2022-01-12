@@ -112,22 +112,26 @@ func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t 
 	assert.That("entity should be e3", t, entities[2], e3)
 }
 
-func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {
-	m := ecs.NewEntityManager()
-	m.Add(ecs.NewEntity("foo", nil))
-	for i := 0; i < b.N; i++ {
-		m.Get("foo")
-	}
-}
-
-func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
-	m := ecs.NewEntityManager()
-	for i := 0; i < 1000; i++ {
-		m.Add(ecs.NewEntity("foo", nil))
-	}
-	for i := 0; i < b.N; i++ {
-		m.Get("1000")
-	}
+func TestEntityManager_FilterByNames_Should_Return_Three_Entities_Out_Of_Three(t *testing.T) {
+	em := ecs.NewEntityManager()
+	e1 := ecs.NewEntity("e1", []ecs.Component{
+		&mockComponent{name: "position", mask: 1},
+		&mockComponent{name: "size", mask: 2},
+	})
+	e2 := ecs.NewEntity("e2", []ecs.Component{
+		&mockComponent{name: "position", mask: 1},
+		&mockComponent{name: "size", mask: 2},
+	})
+	e3 := ecs.NewEntity("e3", []ecs.Component{
+		&mockComponent{name: "position", mask: 1},
+		&mockComponent{name: "size", mask: 2},
+	})
+	em.Add(e1, e2, e3)
+	entities := em.FilterByNames("position", "size")
+	assert.That("filter should return one entity", t, len(entities), 3)
+	assert.That("entity should be e1", t, entities[0], e1)
+	assert.That("entity should be e2", t, entities[1], e2)
+	assert.That("entity should be e3", t, entities[2], e3)
 }
 
 /*

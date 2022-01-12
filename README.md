@@ -104,3 +104,11 @@ func main() {
 ```
 
 ![stats](stats.png)
+
+## I want more than 64 Components !
+
+Yes! You can do that by adding a `Name()` function to your component and using `FilterByNames` instead of `FilerByMask`.
+However if you want the fastest possible solution you need to know that `FilterByNames` is `40` times slower than `FilterByMask`.
+This will maybe not impact your Game if there are only a few thousands of entities. ;-)
+
+![bench](bench.png)

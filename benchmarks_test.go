@@ -7,6 +7,52 @@ import (
 	"testing"
 )
 
+func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {
+	m := ecs.NewEntityManager()
+	m.Add(ecs.NewEntity("foo", nil))
+	for i := 0; i < b.N; i++ {
+		m.Get("foo")
+	}
+}
+
+func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
+	m := ecs.NewEntityManager()
+	for i := 0; i < 1000; i++ {
+		m.Add(ecs.NewEntity("foo", nil))
+	}
+	for i := 0; i < b.N; i++ {
+		m.Get("1000")
+	}
+}
+
+func BenchmarkEntityManager_FilterByMask_With_1000_Entities(b *testing.B) {
+	m := ecs.NewEntityManager()
+	for i := 0; i < 1000; i++ {
+		m.Add(ecs.NewEntity(fmt.Sprintf("%d", i), []ecs.Component{
+			&mockComponent{name: "position", mask: 1},
+			&mockComponent{name: "size", mask: 2},
+			&mockComponent{name: "velocity", mask: 3},
+		}))
+	}
+	for i := 0; i < b.N; i++ {
+		m.FilterByMask(1 | 2 | 3)
+	}
+}
+
+func BenchmarkEntityManager_FilterByNames_With_1000_Entities(b *testing.B) {
+	m := ecs.NewEntityManager()
+	for i := 0; i < 1000; i++ {
+		m.Add(ecs.NewEntity(fmt.Sprintf("%d", i), []ecs.Component{
+			&mockComponent{name: "position", mask: 1},
+			&mockComponent{name: "size", mask: 2},
+			&mockComponent{name: "velocity", mask: 3},
+		}))
+	}
+	for i := 0; i < b.N; i++ {
+		m.FilterByNames("position", "size", "velocity")
+	}
+}
+
 func BenchmarkEngine_Run(b *testing.B) {
 	entityCounts := []int{100, 1000, 10000}
 	systemCounts := []int{1, 2, 4}

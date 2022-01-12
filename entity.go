@@ -7,6 +7,12 @@ type Component interface {
 	Mask() uint64
 }
 
+// ComponentWithName is used by FilterByNames to enable more than 64 Components (if needed).
+type ComponentWithName interface {
+	Component
+	Name() string
+}
+
 // Entity is simply a composition of one or more Components with an Id.
 type Entity struct {
 	Components []Component `json:"components"`

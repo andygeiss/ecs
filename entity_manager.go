@@ -3,7 +3,6 @@ package ecs
 // EntityManager handles the access to each entity.
 type EntityManager struct {
 	entities []*Entity
-	index    []int
 }
 
 // NewEntityManager creates a new EntityManager and returns its address.
@@ -15,9 +14,7 @@ func NewEntityManager() *EntityManager {
 
 // Add entries to the manager.
 func (m *EntityManager) Add(entities ...*Entity) {
-	for _, entity := range entities {
-		m.entities = append(m.entities, entity)
-	}
+	m.entities = append(m.entities, entities...)
 }
 
 // Entities returns all the entities.
@@ -25,7 +22,7 @@ func (m *EntityManager) Entities() (entities []*Entity) {
 	return m.entities
 }
 
-// FilterBy returns the mapped entities, which Components name matched.
+// FilterBy returns the mapped entities, which Components mask matched.
 func (m *EntityManager) FilterByMask(mask uint64) (entities []*Entity) {
 	// Allocate the worst-case amount of memory (all entities needed).
 	entities = make([]*Entity, len(m.entities))
@@ -35,6 +32,35 @@ func (m *EntityManager) FilterByMask(mask uint64) (entities []*Entity) {
 		observed := e.Mask()
 		// Add the entity to the filter list, if all Components are found.
 		if observed&mask == mask {
+			// Direct access
+			entities[index] = e
+			index++
+		}
+	}
+	// Return only the needed slice.
+	return entities[:index]
+}
+
+// FilterBy returns the mapped entities, which Components names matched.
+func (m *EntityManager) FilterByNames(names ...string) (entities []*Entity) {
+	// Allocate the worst-case amount of memory (all entities needed).
+	entities = make([]*Entity, len(m.entities))
+	index := 0
+	for _, e := range m.entities {
+		// Each component should match
+		matched := 0
+		for _, name := range names {
+			for _, c := range e.Components {
+				switch v := c.(type) {
+				case ComponentWithName:
+					if v.Name() == name {
+						matched++
+					}
+				}
+			}
+		}
+		// Add the entity to the filter list, if all Components are found.
+		if matched == len(names) {
 			// Direct access
 			entities[index] = e
 			index++
