@@ -1,9 +1,10 @@
 package ecs_test
 
 import (
-	"github.com/andygeiss/assert"
-	"github.com/andygeiss/ecs"
 	"testing"
+
+	"github.com/andygeiss/ecs"
+	"github.com/andygeiss/utils/assert"
 )
 
 func TestSystemManager_Systems_Should_Have_No_System_At_Start(t *testing.T) {
