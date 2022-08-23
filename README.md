@@ -33,7 +33,7 @@ A **System** handles the behaviour or logic of the components. A movement system
 
     go get -u github.com/andygeiss/ecs
 
-## Steps to start
+## Usage
 
 In the first step we have to be clear about what our game engine should do.
 The main task is to make sure that we have all the essential components that are necessary for the technical and logical aspects 
@@ -50,59 +50,18 @@ We decide to use 2D and define the **three most important components**:
 * Size
 * Velocity
 
-We store these as <code>components.go</code> (Example: [here](https://github.com/andygeiss/ecs-example/blob/master/_examples/engine/components.go)).
+We store these as [components.go](https://github.com/andygeiss/ecs-example/blob/main/engine/components.go).
 
 In the next step, the **three most important systems** implement
 * Collision
 * Movement
 * Rendering
 
-We store these as <code>systems.go</code> (Example: [here](https://github.com/andygeiss/ecs/blob/master/_examples/engine/systems.go)).
+We store these as [systems.go](https://github.com/andygeiss/ecs-example/blob/main/engine/systems.go).
 
-The collision and movement system contains the actual game mechanics:
+The rendering system uses a specific game library like [Raylib](https://www.raylib.com/index.html).
 
-```go
-func (m *Collision) Process(em *ecs.EntityManager) (state int) {
-	for _, entity := range em.FilterByMask(MaskPosition | MaskVelocity) {
-		position := entity.Get(MaskPosition).(*Position)
-		velocity := entity.Get(MaskVelocity).(*Velocity)
-		if position.X >= m.width || position.X <= 0 {
-			velocity.X = -velocity.X
-		}
-		if position.Y >= m.height || position.Y <= 0 {
-			velocity.Y = -velocity.Y
-		}
-	}
-	return ecs.StateEngineContinue
-}
-```
-The rendering system must be adapted to a specific game library.
-In our example we have used [SDL](https://github.com/veandco/go-sdl2).
-
-Finally we create a <code>main.go</code> file (Example: [here](https://github.com/andygeiss/ecs/blob/master/_examples/main.go))
-and link the systems together:
-
-```go
-func run() {
-	em := ecs.NewEntityManager()
-	em.Add(generateEntities(1000)...)
-	sm := ecs.NewSystemManager()
-	sm.Add(
-		engine.NewMovement(),
-		engine.NewCollision(Width, Height),
-		engine.NewRendering(Width, Height, "ECS with SDL Demo"),
-	)
-	ecs.Run(em, sm)
-}
-
-func main() {
-	ecs.Main(func() {
-		run()
-	})
-}
-```
-
-![stats](stats.png)
+Finally we create [main.go](https://github.com/andygeiss/ecs-example/blob/main/main.go) and link the systems together:
 
 ## I want more than 64 Components !
 
