@@ -35,13 +35,9 @@ A **System** handles the behaviour or logic of the components. A movement system
 
 ## Steps to start
 
-In the first step we have to be clear about what our game engine should do.
-The main task is to make sure that we have all the essential components that are necessary for the technical and logical aspects 
-are responsible, are combined with each other.
+The first step is to be clear about what we want our game engine to do. The main task is to make sure that we have combined all the essential components that are responsible for the technical and logical aspects.
 
-An Entity Component System (ECS) helps us to do just that, as the logical components (data) such as entities and their components
-can be separated from the actual logic. 
-One of the advantages of this is that we can implement and test the game mechanics independently of the rest.
+An Entity Component System (ECS) helps us to do this because the logical components (data) such as entities and their components can be separated from the actual logic. Among other things, this has the advantage that we can implement and test the game mechanics independently from the rest.
 
 So let's start...
 
