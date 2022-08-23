@@ -33,7 +33,7 @@ A **System** handles the behaviour or logic of the components. A movement system
 
     go get -u github.com/andygeiss/ecs
 
-## Usage
+## Steps to start
 
 In the first step we have to be clear about what our game engine should do.
 The main task is to make sure that we have all the essential components that are necessary for the technical and logical aspects 
