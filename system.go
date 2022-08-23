@@ -4,6 +4,6 @@ package ecs
 // which is stored in each component of the entity.
 type System interface {
 	Setup()
-	Process(entityManager *EntityManager) (state int)
+	Process(entityManager EntityManager) (state int)
 	Teardown()
 }

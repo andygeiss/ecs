@@ -1,7 +1,7 @@
 package ecs
 
 // Component contains only the data (no behaviour at all).
-// The Name() method must be implemented, because the EntityManager
+// The Name() method must be implemented, because the defaultEntityManager
 // uses it to filter the entities by component names.
 type Component interface {
 	Mask() uint64

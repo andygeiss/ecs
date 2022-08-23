@@ -1,29 +1,31 @@
 package ecs
 
 // EntityManager handles the access to each entity.
-type EntityManager struct {
+type EntityManager interface {
+	Add(entities ...*Entity)
+	Entities() (entities []*Entity)
+	FilterByMask(mask uint64) (entities []*Entity)
+	FilterByNames(names ...string) (entities []*Entity)
+	Get(id string) (entity *Entity)
+	Remove(entity *Entity)
+}
+
+type defaultEntityManager struct {
 	entities []*Entity
 }
 
-// NewEntityManager creates a new EntityManager and returns its address.
-func NewEntityManager() *EntityManager {
-	return &EntityManager{
-		entities: []*Entity{},
-	}
-}
-
 // Add entries to the manager.
-func (m *EntityManager) Add(entities ...*Entity) {
+func (m *defaultEntityManager) Add(entities ...*Entity) {
 	m.entities = append(m.entities, entities...)
 }
 
 // Entities returns all the entities.
-func (m *EntityManager) Entities() (entities []*Entity) {
+func (m *defaultEntityManager) Entities() (entities []*Entity) {
 	return m.entities
 }
 
-// FilterBy returns the mapped entities, which Components mask matched.
-func (m *EntityManager) FilterByMask(mask uint64) (entities []*Entity) {
+// FilterByMask returns the mapped entities, which Components mask matched.
+func (m *defaultEntityManager) FilterByMask(mask uint64) (entities []*Entity) {
 	// Allocate the worst-case amount of memory (all entities needed).
 	entities = make([]*Entity, len(m.entities))
 	index := 0
@@ -41,8 +43,8 @@ func (m *EntityManager) FilterByMask(mask uint64) (entities []*Entity) {
 	return entities[:index]
 }
 
-// FilterBy returns the mapped entities, which Components names matched.
-func (m *EntityManager) FilterByNames(names ...string) (entities []*Entity) {
+// FilterByNames returns the mapped entities, which Components names matched.
+func (m *defaultEntityManager) FilterByNames(names ...string) (entities []*Entity) {
 	// Allocate the worst-case amount of memory (all entities needed).
 	entities = make([]*Entity, len(m.entities))
 	index := 0
@@ -71,7 +73,7 @@ func (m *EntityManager) FilterByNames(names ...string) (entities []*Entity) {
 }
 
 // Get a specific entity by Id.
-func (m *EntityManager) Get(id string) (entity *Entity) {
+func (m *defaultEntityManager) Get(id string) (entity *Entity) {
 	for _, e := range m.entities {
 		if e.ID() == id {
 			return e
@@ -81,7 +83,7 @@ func (m *EntityManager) Get(id string) (entity *Entity) {
 }
 
 // Remove a specific entity.
-func (m *EntityManager) Remove(entity *Entity) {
+func (m *defaultEntityManager) Remove(entity *Entity) {
 	for i, e := range m.entities {
 		if e.Id == entity.Id {
 			copy(m.entities[i:], m.entities[i+1:])
@@ -89,5 +91,12 @@ func (m *EntityManager) Remove(entity *Entity) {
 			m.entities = m.entities[:len(m.entities)-1]
 			break
 		}
+	}
+}
+
+// NewEntityManager creates a new defaultEntityManager and returns its address.
+func NewEntityManager() EntityManager {
+	return &defaultEntityManager{
+		entities: []*Entity{},
 	}
 }

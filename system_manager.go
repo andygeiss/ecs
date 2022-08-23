@@ -1,25 +1,31 @@
 package ecs
 
 // SystemManager handles the access to each system.
-type SystemManager struct {
+type SystemManager interface {
+	Add(systems ...System)
+	Systems() []System
+}
+
+// defaultSystemManager
+type defaultSystemManager struct {
 	systems []System
 }
 
-// NewSystemManager creates a new SystemManager and returns its address.
-func NewSystemManager() *SystemManager {
-	return &SystemManager{
-		systems: []System{},
-	}
-}
-
-// Add systems to the SystemManager.
-func (m *SystemManager) Add(systems ...System) {
+// Add systems to the defaultSystemManager.
+func (m *defaultSystemManager) Add(systems ...System) {
 	for _, system := range systems {
 		m.systems = append(m.systems, system)
 	}
 }
 
 // Systems returns the system, which are internally stored.
-func (m *SystemManager) Systems() []System {
+func (m *defaultSystemManager) Systems() []System {
 	return m.systems
+}
+
+// NewSystemManager creates a new defaultSystemManager and returns its address.
+func NewSystemManager() SystemManager {
+	return &defaultSystemManager{
+		systems: []System{},
+	}
 }

@@ -35,10 +35,10 @@ func TestSystemManager_Systems_Should_Have_Two_System_After_Adding_Two_System(t 
  \__,_|\__|_|_|___/
 */
 
-// mockupDedicatedSystem is used without an engine to test the SystemManager behaviour.
+// mockupDedicatedSystem is used without an defaultEngine to test the defaultSystemManager behaviour.
 type mockupDedicatedSystem struct{}
 
-func (s *mockupDedicatedSystem) Process(entityManager *ecs.EntityManager) (state int) {
+func (s *mockupDedicatedSystem) Process(entityManager ecs.EntityManager) (state int) {
 	return ecs.StateEngineContinue
 }
 func (s *mockupDedicatedSystem) Setup()    {}

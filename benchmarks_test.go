@@ -64,7 +64,7 @@ func BenchmarkEngine_Run(b *testing.B) {
 				em.Add(generateEntities(entityCount)...)
 				sm := ecs.NewSystemManager()
 				sm.Add(generateUseAllEntitiesSystems(systemCount)...)
-				engine := ecs.NewEngine(em, sm)
+				engine := ecs.NewDefaultEngine(em, sm)
 				engine.Setup()
 				defer engine.Teardown()
 				for i := 0; i < b.N; i++ {
@@ -105,10 +105,10 @@ func generateUseAllEntitiesSystems(count int) []ecs.System {
 	return out
 }
 
-// mockupUseAllEntitiesSystem works on all entities from the EntityManager which represents the worst-case scenario for performance.
+// mockupUseAllEntitiesSystem works on all entities from the defaultEntityManager which represents the worst-case scenario for performance.
 type mockupUseAllEntitiesSystem struct{}
 
-func (s *mockupUseAllEntitiesSystem) Process(entityManager *ecs.EntityManager) (state int) {
+func (s *mockupUseAllEntitiesSystem) Process(entityManager ecs.EntityManager) (state int) {
 	for range entityManager.FilterByMask(1) {
 	}
 	return ecs.StateEngineContinue
@@ -118,10 +118,10 @@ func (s *mockupUseAllEntitiesSystem) Setup() {
 func (s *mockupUseAllEntitiesSystem) Teardown() {
 }
 
-// mockupShouldStopSystem is the last System in the queue and should stop the engine.
+// mockupShouldStopSystem is the last System in the queue and should stop the defaultEngine.
 type mockupShouldStopSystem struct{}
 
-func (s *mockupShouldStopSystem) Process(entityManager *ecs.EntityManager) (state int) {
+func (s *mockupShouldStopSystem) Process(entityManager ecs.EntityManager) (state int) {
 	for range entityManager.FilterByMask(1) {
 	}
 	return ecs.StateEngineStop
