@@ -14,7 +14,7 @@ func TestDefaultEngine(t *testing.T) {
 	sm.Add(sys)
 	engine := engines.NewDefaultEngine(em, sm)
 	engine.Setup()
-	// engine.Run()
+	// app.Run()
 	engine.Teardown()
 	assert.That("value should be 1", t, sys.Value, 1)
 }

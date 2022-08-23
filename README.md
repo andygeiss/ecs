@@ -46,22 +46,20 @@ One of the advantages of this is that we can implement and test the game mechani
 So let's start...
 
 We decide to use 2D and define the **three most important components**:
-* Position
-* Size
-* Velocity
+* [Position](https://github.com/andygeiss/ecs-example/blob/main/internal/components/position.go)
+* [Size](https://github.com/andygeiss/ecs-example/blob/main/internal/components/size.go)
+* [Velocity](https://github.com/andygeiss/ecs-example/blob/main/internal/components/velocity.go)
 
-We store these as [components.go](https://github.com/andygeiss/ecs-example/blob/main/engine/components.go).
+In the next step, the **three most important systems** implement:
+* [Collision](https://github.com/andygeiss/ecs-example/blob/main/internal/app/collision.go)
+* [Movement](https://github.com/andygeiss/ecs-example/blob/main/internal/app/movement.go)
+* [Rendering](https://github.com/andygeiss/ecs-example/blob/main/internal/app/rendering.go)
 
-In the next step, the **three most important systems** implement
-* Collision
-* Movement
-* Rendering
+The Benchmark itself is an Application with ...
+* [App](https://github.com/andygeiss/ecs-example/blob/main/internal/app/app.go) handling the data and
+* [Entrypoint](https://github.com/andygeiss/ecs-example/blob/main/internal/app/entrypoint.go) initializing the environment.
 
-We store these as [systems.go](https://github.com/andygeiss/ecs-example/blob/main/engine/systems.go).
-
-The rendering system uses a specific game library like [Raylib](https://www.raylib.com/index.html).
-
-Finally we create [main.go](https://github.com/andygeiss/ecs-example/blob/main/main.go) and link the systems together:
+We use [main.go](https://github.com/andygeiss/ecs-example/blob/main/main.go) to call the entrypoint safely.
 
 ## I want more than 64 Components !
 
