@@ -1,21 +1,13 @@
-package ecs
+package engines
 
-const (
-	StateEngineContinue = 0
-	StateEngineStop     = 1
+import (
+	"github.com/andygeiss/ecs/core"
 )
-
-// Engine handles the stages Setup(), Run() and Teardown() for all the systems.
-type Engine interface {
-	Run()
-	Setup()
-	Teardown()
-}
 
 // defaultEngine is simple a composition of an defaultEntityManager and a defaultSystemManager.
 type defaultEngine struct {
-	entityManager EntityManager
-	systemManager SystemManager
+	entityManager core.EntityManager
+	systemManager core.SystemManager
 }
 
 // Run calls the Process() method for each System
@@ -25,7 +17,7 @@ func (e *defaultEngine) Run() {
 	for !shouldStop {
 		for _, system := range e.systemManager.Systems() {
 			state := system.Process(e.entityManager)
-			if state == StateEngineStop {
+			if state == core.StateEngineStop {
 				shouldStop = true
 				break
 			}
@@ -49,7 +41,7 @@ func (e *defaultEngine) Teardown() {
 }
 
 // NewDefaultEngine creates a new Engine and returns its address.
-func NewDefaultEngine(entityManager EntityManager, systemManager SystemManager) Engine {
+func NewDefaultEngine(entityManager core.EntityManager, systemManager core.SystemManager) core.Engine {
 	return &defaultEngine{
 		entityManager: entityManager,
 		systemManager: systemManager,

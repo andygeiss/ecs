@@ -26,7 +26,6 @@ A **System** handles the behaviour or logic of the components. A movement system
 - **No dependencies** to other modules or specific game libraries - Feel free to use what fits your needs.
 - **Minimum overhead** - use only what is really needed.
 - **Plugins** to offer unlimited room for improvements.
-- **Interoperability** between non-Go libraries and Go via [Main/Do](https://github.com/andygeiss/ecs/blob/master/run.go). 
 
 ## Installation
 
@@ -43,6 +42,7 @@ are responsible, are combined with each other.
 An Entity Component System (ECS) helps us to do just that, as the logical components (data) such as entities and their components
 can be separated from the actual logic. 
 One of the advantages of this is that we can implement and test the game mechanics independently of the rest.
+
 So let's start...
 
 We decide to use 2D and define the **three most important components**:
@@ -50,7 +50,7 @@ We decide to use 2D and define the **three most important components**:
 * Size
 * Velocity
 
-We store these as <code>components.go</code> (Example: [here](https://github.com/andygeiss/ecs/blob/master/_examples/engine/components.go)).
+We store these as <code>components.go</code> (Example: [here](https://github.com/andygeiss/ecs-example/blob/master/_examples/engine/components.go)).
 
 In the next step, the **three most important systems** implement
 * Collision
@@ -78,7 +78,6 @@ func (m *Collision) Process(em *ecs.EntityManager) (state int) {
 ```
 The rendering system must be adapted to a specific game library.
 In our example we have used [SDL](https://github.com/veandco/go-sdl2).
-In the example of [Pong](https://github.com/andygeiss/ecs-pong) we used [Raylib](https://github.com/gen2brain/raylib-go).
 
 Finally we create a <code>main.go</code> file (Example: [here](https://github.com/andygeiss/ecs/blob/master/_examples/main.go))
 and link the systems together:

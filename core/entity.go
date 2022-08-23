@@ -1,4 +1,4 @@
-package ecs
+package core
 
 // Component contains only the data (no behaviour at all).
 // The Name() method must be implemented, because the defaultEntityManager
