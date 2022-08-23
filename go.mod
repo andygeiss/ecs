@@ -1,5 +1,5 @@
 module github.com/andygeiss/ecs
 
-go 1.18
+go 1.19
 
-require github.com/andygeiss/utils v0.4.0
+require github.com/andygeiss/utils v0.5.1
