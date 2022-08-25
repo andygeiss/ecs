@@ -47,13 +47,9 @@ We decide to use 2D and define the **three most important components**:
 * [Velocity](https://github.com/andygeiss/ecs-example/blob/main/internal/components/velocity.go)
 
 In the next step, the **three most important systems** implement:
-* [Collision](https://github.com/andygeiss/ecs-example/blob/main/internal/app/collision.go)
-* [Movement](https://github.com/andygeiss/ecs-example/blob/main/internal/app/movement.go)
-* [Rendering](https://github.com/andygeiss/ecs-example/blob/main/internal/app/rendering.go)
-
-The Benchmark itself is an Application with ...
-* [App](https://github.com/andygeiss/ecs-example/blob/main/internal/app/app.go) handling the data and
-* [Entrypoint](https://github.com/andygeiss/ecs-example/blob/main/internal/app/entrypoint.go) initializing the environment.
+* [Collision](https://github.com/andygeiss/ecs-example/blob/main/internal/systems/collision.go)
+* [Movement](https://github.com/andygeiss/ecs-example/blob/main/internal/systems/movement.go)
+* [Rendering](https://github.com/andygeiss/ecs-example/blob/main/internal/systems/rendering.go)
 
 We use [main.go](https://github.com/andygeiss/ecs-example/blob/main/main.go) to call the entrypoint safely.
 
