@@ -25,6 +25,13 @@ func (e *defaultEngine) Run() {
 	}
 }
 
+// Tick calls the Process() method for each System exactly once
+func (e *defaultEngine) Tick() {
+	for _, system := range e.systemManager.Systems() {
+		state := system.Process(e.entityManager)
+	}
+}
+
 // Setup calls the Setup() method for each System
 // and initializes ShouldEngineStop and ShouldEnginePause with false.
 func (e *defaultEngine) Setup() {
