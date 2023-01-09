@@ -51,8 +51,6 @@ In the next step, the **three most important systems** implement:
 * [Movement](https://github.com/andygeiss/ecs-example/blob/main/internal/systems/movement.go)
 * [Rendering](https://github.com/andygeiss/ecs-example/blob/main/internal/systems/rendering.go)
 
-We use [main.go](https://github.com/andygeiss/ecs-example/blob/main/main.go) to call the entrypoint safely.
-
 ## I want more than 64 Components !
 
 Yes! You can do that by adding a `Name()` function to your component and using `FilterByNames` instead of `FilterByMask`.
