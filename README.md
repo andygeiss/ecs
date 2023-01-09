@@ -1,7 +1,6 @@
 # ECS - Entity Component System
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/andygeiss/ecs)](https://goreportcard.com/report/github.com/andygeiss/ecs)
-[![BCH compliance](https://bettercodehub.com/edge/badge/andygeiss/ecs?branch=master)](https://bettercodehub.com/)
 
 **Build your own Game-Engine based on the Entity Component System concept in Golang**
 
