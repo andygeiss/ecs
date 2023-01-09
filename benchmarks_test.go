@@ -3,15 +3,12 @@ package ecs_test
 import (
 	"fmt"
 	"github.com/andygeiss/ecs/core"
-	"github.com/andygeiss/ecs/engines"
-	"github.com/andygeiss/ecs/entities"
-	"github.com/andygeiss/ecs/systems"
 	"math/rand"
 	"testing"
 )
 
 func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {
-	m := entities.NewEntityManager()
+	m := core.NewEntityManager()
 	m.Add(core.NewEntity("foo", nil))
 	for i := 0; i < b.N; i++ {
 		m.Get("foo")
@@ -19,7 +16,7 @@ func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {
 }
 
 func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
-	m := entities.NewEntityManager()
+	m := core.NewEntityManager()
 	for i := 0; i < 1000; i++ {
 		m.Add(core.NewEntity("foo", nil))
 	}
@@ -29,7 +26,7 @@ func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
 }
 
 func BenchmarkEntityManager_FilterByMask_With_1000_Entities(b *testing.B) {
-	m := entities.NewEntityManager()
+	m := core.NewEntityManager()
 	for i := 0; i < 1000; i++ {
 		m.Add(core.NewEntity(fmt.Sprintf("%d", i), []core.Component{
 			&mockComponent{name: "position", mask: 1},
@@ -43,7 +40,7 @@ func BenchmarkEntityManager_FilterByMask_With_1000_Entities(b *testing.B) {
 }
 
 func BenchmarkEntityManager_FilterByNames_With_1000_Entities(b *testing.B) {
-	m := entities.NewEntityManager()
+	m := core.NewEntityManager()
 	for i := 0; i < 1000; i++ {
 		m.Add(core.NewEntity(fmt.Sprintf("%d", i), []core.Component{
 			&mockComponent{name: "position", mask: 1},
@@ -63,11 +60,11 @@ func BenchmarkEngine_Run(b *testing.B) {
 		for _, entityCount := range entityCounts {
 			b.Run(fmt.Sprintf("%d system(s) with %d entities", systemCount, entityCount), func(b *testing.B) {
 				b.ResetTimer()
-				em := entities.NewEntityManager()
+				em := core.NewEntityManager()
 				em.Add(generateEntities(entityCount)...)
-				sm := systems.NewSystemManager()
+				sm := core.NewSystemManager()
 				sm.Add(generateUseAllEntitiesSystems(systemCount)...)
-				engine := engines.NewDefaultEngine(em, sm)
+				engine := core.NewDefaultEngine(em, sm)
 				engine.Setup()
 				defer engine.Teardown()
 				for i := 0; i < b.N; i++ {

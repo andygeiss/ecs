@@ -1,32 +1,31 @@
-package entities_test
+package core_test
 
 import (
 	"github.com/andygeiss/ecs/core"
-	"github.com/andygeiss/ecs/entities"
 	"github.com/andygeiss/utils/assert"
 	"testing"
 )
 
 func TestEntityManager_Entities_Should_Have_No_Entity_At_Start(t *testing.T) {
-	m := entities.NewEntityManager()
+	m := core.NewEntityManager()
 	assert.That("manager should have no entity at start", t, len(m.Entities()), 0)
 }
 
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Adding_One_Entity(t *testing.T) {
-	m := entities.NewEntityManager()
+	m := core.NewEntityManager()
 	m.Add(&core.Entity{})
 	assert.That("manager should have one entity", t, len(m.Entities()), 1)
 }
 
 func TestEntityManager_Entities_Should_Have_Two_Entities_After_Adding_Two_Entities(t *testing.T) {
-	m := entities.NewEntityManager()
+	m := core.NewEntityManager()
 	m.Add(core.NewEntity("e1", nil))
 	m.Add(core.NewEntity("e2", nil))
 	assert.That("manager should have two entities", t, len(m.Entities()), 2)
 }
 
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two_Entities(t *testing.T) {
-	m := entities.NewEntityManager()
+	m := core.NewEntityManager()
 	e1 := core.NewEntity("e1", nil)
 	e2 := core.NewEntity("e2", nil)
 	m.Add(e1)
@@ -37,7 +36,7 @@ func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two
 }
 
 func TestEntityManager_FilterByMask_Should_Return_No_Entity_Out_Of_One(t *testing.T) {
-	em := entities.NewEntityManager()
+	em := core.NewEntityManager()
 	e := core.NewEntity("e", []core.Component{
 		&mockComponent{name: "position", mask: 1},
 	})
@@ -47,7 +46,7 @@ func TestEntityManager_FilterByMask_Should_Return_No_Entity_Out_Of_One(t *testin
 }
 
 func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_One(t *testing.T) {
-	em := entities.NewEntityManager()
+	em := core.NewEntityManager()
 	e := core.NewEntity("e", []core.Component{
 		&mockComponent{name: "position", mask: 1},
 	})
@@ -57,7 +56,7 @@ func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_One(t *testi
 }
 
 func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_Two(t *testing.T) {
-	em := entities.NewEntityManager()
+	em := core.NewEntityManager()
 	e1 := core.NewEntity("e1", []core.Component{
 		&mockComponent{name: "position", mask: 1},
 	})
@@ -72,7 +71,7 @@ func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_Two(t *testi
 }
 
 func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *testing.T) {
-	em := entities.NewEntityManager()
+	em := core.NewEntityManager()
 	e1 := core.NewEntity("e1", []core.Component{
 		&mockComponent{name: "position", mask: 1},
 	})
@@ -92,7 +91,7 @@ func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *t
 }
 
 func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t *testing.T) {
-	em := entities.NewEntityManager()
+	em := core.NewEntityManager()
 	e1 := core.NewEntity("e1", []core.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
@@ -114,7 +113,7 @@ func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t 
 }
 
 func TestEntityManager_FilterByNames_Should_Return_Three_Entities_Out_Of_Three(t *testing.T) {
-	em := entities.NewEntityManager()
+	em := core.NewEntityManager()
 	e1 := core.NewEntity("e1", []core.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
@@ -134,20 +133,3 @@ func TestEntityManager_FilterByNames_Should_Return_Three_Entities_Out_Of_Three(t
 	assert.That("entity should be e2", t, filtered[1], e2)
 	assert.That("entity should be e3", t, filtered[2], e3)
 }
-
-/*
-       _   _ _
- _   _| |_(_) |___
-| | | | __| | / __|
-| |_| | |_| | \__ \
- \__,_|\__|_|_|___/
-*/
-
-type mockComponent struct {
-	mask uint64
-	name string
-}
-
-func (c *mockComponent) Mask() uint64 { return c.mask }
-
-func (c *mockComponent) Name() string { return c.name }

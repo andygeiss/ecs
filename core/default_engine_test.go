@@ -1,8 +1,7 @@
-package engines_test
+package core_test
 
 import (
 	"github.com/andygeiss/ecs/core"
-	"github.com/andygeiss/ecs/engines"
 	"github.com/andygeiss/utils/assert"
 	"testing"
 )
@@ -10,13 +9,13 @@ import (
 func TestDefaultEngine(t *testing.T) {
 	em := &mockupEntityManager{}
 	sm := &mockupSystemManager{}
-	sys := &mockupSystem{Value: 0}
+	sys := &mockupSystem{Value: core.StateEngineStop}
 	sm.Add(sys)
-	engine := engines.NewDefaultEngine(em, sm)
+	engine := core.NewDefaultEngine(em, sm)
 	engine.Setup()
 	// app.Run()
 	engine.Teardown()
-	assert.That("value should be 1", t, sys.Value, 1)
+	assert.That("state should be correct", t, sys.Value, core.StateEngineStop)
 }
 
 /*

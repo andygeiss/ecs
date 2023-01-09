@@ -1,29 +1,25 @@
-package systems
-
-import (
-	"github.com/andygeiss/ecs/core"
-)
+package core
 
 // defaultSystemManager
 type defaultSystemManager struct {
-	systems []core.System
+	systems []System
 }
 
 // Add systems to the defaultSystemManager.
-func (m *defaultSystemManager) Add(systems ...core.System) {
+func (m *defaultSystemManager) Add(systems ...System) {
 	for _, system := range systems {
 		m.systems = append(m.systems, system)
 	}
 }
 
 // Systems returns the system, which are internally stored.
-func (m *defaultSystemManager) Systems() []core.System {
+func (m *defaultSystemManager) Systems() []System {
 	return m.systems
 }
 
 // NewSystemManager creates a new defaultSystemManager and returns its address.
-func NewSystemManager() core.SystemManager {
+func NewSystemManager() SystemManager {
 	return &defaultSystemManager{
-		systems: []core.System{},
+		systems: []System{},
 	}
 }

@@ -1,13 +1,9 @@
-package engines
-
-import (
-	"github.com/andygeiss/ecs/core"
-)
+package core
 
 // defaultEngine is simple a composition of an defaultEntityManager and a defaultSystemManager.
 type defaultEngine struct {
-	entityManager core.EntityManager
-	systemManager core.SystemManager
+	entityManager EntityManager
+	systemManager SystemManager
 }
 
 // Run calls the Process() method for each System
@@ -17,7 +13,7 @@ func (e *defaultEngine) Run() {
 	for !shouldStop {
 		for _, system := range e.systemManager.Systems() {
 			state := system.Process(e.entityManager)
-			if state == core.StateEngineStop {
+			if state == StateEngineStop {
 				shouldStop = true
 				break
 			}
@@ -28,7 +24,9 @@ func (e *defaultEngine) Run() {
 // Tick calls the Process() method for each System exactly once
 func (e *defaultEngine) Tick() {
 	for _, system := range e.systemManager.Systems() {
-		state := system.Process(e.entityManager)
+		if state := system.Process(e.entityManager); state == StateEngineStop {
+			break
+		}
 	}
 }
 
@@ -48,7 +46,7 @@ func (e *defaultEngine) Teardown() {
 }
 
 // NewDefaultEngine creates a new Engine and returns its address.
-func NewDefaultEngine(entityManager core.EntityManager, systemManager core.SystemManager) core.Engine {
+func NewDefaultEngine(entityManager EntityManager, systemManager SystemManager) Engine {
 	return &defaultEngine{
 		entityManager: entityManager,
 		systemManager: systemManager,
