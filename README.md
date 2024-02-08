@@ -41,14 +41,14 @@ An Entity Component System (ECS) helps us to do this because the logical compone
 So let's start...
 
 We decide to use 2D and define the **three most important components**:
-* [Position](https://github.com/andygeiss/ecs-example/blob/main/internal/components/position.go)
-* [Size](https://github.com/andygeiss/ecs-example/blob/main/internal/components/size.go)
-* [Velocity](https://github.com/andygeiss/ecs-example/blob/main/internal/components/velocity.go)
+* [Position](./example/components/position.go)
+* [Size](./example/components/size.go)
+* [Velocity](./example/components/velocity.go)
 
 In the next step, the **three most important systems** implement:
-* [Collision](https://github.com/andygeiss/ecs-example/blob/main/internal/systems/collision.go)
-* [Movement](https://github.com/andygeiss/ecs-example/blob/main/internal/systems/movement.go)
-* [Rendering](https://github.com/andygeiss/ecs-example/blob/main/internal/systems/rendering.go)
+* [Collision](./example/systems/collision.go)
+* [Movement](./example/systems/movement.go)
+* [Rendering](./example/systems/rendering.go)
 
 ## I want more than 64 Components !
 
