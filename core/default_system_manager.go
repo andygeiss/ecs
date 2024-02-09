@@ -7,9 +7,7 @@ type defaultSystemManager struct {
 
 // Add systems to the defaultSystemManager.
 func (m *defaultSystemManager) Add(systems ...System) {
-	for _, system := range systems {
-		m.systems = append(m.systems, system)
-	}
+	m.systems = append(m.systems, systems...)
 }
 
 // Systems returns the system, which are internally stored.
