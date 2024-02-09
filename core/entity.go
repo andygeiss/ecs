@@ -41,7 +41,7 @@ func (e *Entity) Get(mask uint64) Component {
 	return nil
 }
 
-// ID ...
+// ID returns entity ID
 func (e *Entity) ID() string {
 	return e.Id
 }
