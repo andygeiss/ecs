@@ -1,9 +1,10 @@
 package core_test
 
 import (
+	"testing"
+
 	"github.com/andygeiss/ecs/core"
 	"github.com/andygeiss/utils/assert"
-	"testing"
 )
 
 func TestDefaultEngine(t *testing.T) {
@@ -28,27 +29,27 @@ func TestDefaultEngine(t *testing.T) {
 
 type mockupEntityManager struct{}
 
-func (m mockupEntityManager) Add(entities ...*core.Entity) {}
+func (m *mockupEntityManager) Add(entities ...*core.Entity) {}
 
-func (m mockupEntityManager) Entities() (entities []*core.Entity) { return nil }
+func (m *mockupEntityManager) Entities() (entities []*core.Entity) { return nil }
 
-func (m mockupEntityManager) FilterByMask(mask uint64) (entities []*core.Entity) { return nil }
+func (m *mockupEntityManager) FilterByMask(mask uint64) (entities []*core.Entity) { return nil }
 
-func (m mockupEntityManager) FilterByNames(names ...string) (entities []*core.Entity) { return nil }
+func (m *mockupEntityManager) FilterByNames(names ...string) (entities []*core.Entity) { return nil }
 
-func (m mockupEntityManager) Get(id string) (entity *core.Entity) { return nil }
+func (m *mockupEntityManager) Get(id string) (entity *core.Entity) { return nil }
 
-func (m mockupEntityManager) Remove(entity *core.Entity) {}
+func (m *mockupEntityManager) Remove(entity *core.Entity) {}
 
 type mockupSystemManager struct {
 	systems []core.System
 }
 
-func (m mockupSystemManager) Add(systems ...core.System) {
+func (m *mockupSystemManager) Add(systems ...core.System) {
 	m.systems = append(m.systems, systems...)
 }
 
-func (m mockupSystemManager) Systems() []core.System {
+func (m *mockupSystemManager) Systems() []core.System {
 	return m.systems
 }
 
