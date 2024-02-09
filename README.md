@@ -1,6 +1,8 @@
 # ECS - Entity Component System
 
+[![GoDoc](https://godoc.org/github.com/andygeiss/ecs?status.svg)](https://pkg.go.dev/github.com/andygeiss/ecs)
 [![Go Report Card](https://goreportcard.com/badge/github.com/andygeiss/ecs)](https://goreportcard.com/report/github.com/andygeiss/ecs)
+
 
 **Build your own Game-Engine based on the Entity Component System concept in Golang**
 
@@ -13,11 +15,10 @@ An **Entity** is basically a composition of different components and has an ID.
 A **Component** contains only the state or data of one specific aspect like health, position, velocity etc.  
 A **System** handles the behaviour or logic of the components. A movement system uses the position and velocity to implement an entities movement. 
 
-**Table of Contents**
-
-- [Goals](README.md#goals)
-- [Installation](README.md#installation)
-- [Steps to start](README.md#steps-to-start)
+- [Goals](#goals)
+- [Installation](#installation)
+- [Steps to start](#steps-to-start)
+- [I want more than 64 Components !](#i-want-more-than-64-components-)
 
 ## Goals
 
