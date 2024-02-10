@@ -65,7 +65,7 @@ func (m *defaultEntityManager) FilterByNames(names ...string) (entities []*Entit
 // Get a specific entity by Id.
 func (m *defaultEntityManager) Get(id string) (entity *Entity) {
 	for _, e := range m.entities {
-		if e.ID() == id {
+		if e.Id == id {
 			return e
 		}
 	}

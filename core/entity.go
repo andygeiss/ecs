@@ -41,11 +41,6 @@ func (e *Entity) Get(mask uint64) Component {
 	return nil
 }
 
-// ID returns entity ID
-func (e *Entity) ID() string {
-	return e.Id
-}
-
 // Mask returns a pre-calculated maskSlice to identify the Components.
 func (e *Entity) Mask() uint64 {
 	return e.Masked
