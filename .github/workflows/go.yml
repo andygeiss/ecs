@@ -30,4 +30,4 @@ jobs:
         run: curl -o get.sh -Ls https://coverage.codacy.com/get.sh
 
       - name: Upload to Codacy
-        run: CODACY_PROJECT_TOKEN=a1929d8d601b4b97a8cef7233ff368ff bash get.sh report --force-coverage-parser go -r unit.coverage.out
+        run: ${{ secrets.CODACY_PROJECT_TOKEN }} bash get.sh report --force-coverage-parser go -r unit.coverage.out
