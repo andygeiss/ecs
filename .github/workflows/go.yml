@@ -23,5 +23,11 @@ jobs:
       - name: Test
         run: go test -v ./...
 
-      - name: Coverprofile
-        run: make coverprofile
+      - name: Create coverprofile
+        run: go test -coverprofile=unit.coverage.out github.com/andygeiss/ecs/core/...
+
+      - name: Get Codacy script
+        run: curl -o get.sh -Ls https://coverage.codacy.com/get.sh
+
+      - name: Upload to Codacy
+        run: CODACY_PROJECT_TOKEN=a1929d8d601b4b97a8cef7233ff368ff bash get.sh report --force-coverage-parser go -r unit.coverage.out
