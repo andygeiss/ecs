@@ -1,11 +1,2 @@
 github.com/andygeiss/utils v0.11.10 h1:DetlrrjUE3xsyXr1GERLxv2FJbsGdqDhUBhv+buJ0kg=
 github.com/andygeiss/utils v0.11.10/go.mod h1:Jatj6UsFNUMgf+9vPeMZ9il72nARlhMvc54r7AiPPiU=
-github.com/buger/goterm v1.0.4 h1:Z9YvGmOih81P0FbVtEYTFF6YsSgxSUKEhf/f9bTMXbY=
-github.com/buger/goterm v1.0.4/go.mod h1:HiFWV3xnkolgrBV3mY8m0X0Pumt4zg4QhbdOzQtB8tE=
-github.com/ebitengine/purego v0.6.0-alpha.1.0.20231122024802-192c5e846faa h1:Ik7QikRgeH+bFOfAcMpttCbs6XxWXxCLXMm4awxtOXk=
-github.com/ebitengine/purego v0.6.0-alpha.1.0.20231122024802-192c5e846faa/go.mod h1:ah1In8AOtksoNK6yk5z1HTJeUkC1Ez4Wk2idgGslMwQ=
-github.com/gen2brain/raylib-go/raylib v0.0.0-20240125111008-83d871a38f28 h1:e0HOaKlvsdC0ZtfWbEaaWAxYTSxUZoCAFS36jLfsVRA=
-github.com/gen2brain/raylib-go/raylib v0.0.0-20240125111008-83d871a38f28/go.mod h1:P/hDjVwz/9fhR0ww3+umzDpDA7Bf7Tce4xNChHIEFqE=
-golang.org/x/sys v0.0.0-20210331175145-43e1dd70ce54/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
-golang.org/x/sys v0.14.0 h1:Vz7Qs629MkJkGyHxUlRHizWJRG2j8fbQKjELVSNhy7Q=
-golang.org/x/sys v0.14.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
