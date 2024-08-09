@@ -1,5 +1,5 @@
 <p align="center">  
-[![Logo](logo.png)](logo.png)
+<img src="https://github.com/andygeiss/ecs/blob/master/logo.png?raw=true" />
 </p>
 
 # ECS - Entity Component System
