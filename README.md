@@ -16,7 +16,6 @@
 - [x] Provide an **easy-to-use** framework to build a game engine from scratch.
 - [x] **No dependencies** to other modules or specific game libraries - Feel free to use what fits your needs.
 - [x] **Minimum overhead** - use only what is really needed.
-- [x] **Plugins** to offer unlimited room for improvements.
 
 ## Walkthrough
 
