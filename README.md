@@ -1,3 +1,7 @@
+<p align="center">  
+[![Logo](logo.png)](logo.png)
+</p>
+
 # ECS - Entity Component System
 
 [![License](https://img.shields.io/github/license/andygeiss/ecs)](https://github.com/andygeiss/ecs/blob/master/LICENSE)
@@ -8,8 +12,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/5a2fd230f2eae6f244f2/maintainability)](https://codeclimate.com/github/andygeiss/ecs/maintainability)
 
 **Build your own Game-Engine based on the Entity Component System concept in Golang**
-
-[![Logo](logo.png)](logo.png)
 
 ## Features
 
