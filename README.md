@@ -38,16 +38,16 @@ Next we create a `main.go` with the following content:
 package main
 
 import (
-ecs "github.com/andygeiss/ecs/core"
+    ecs "github.com/andygeiss/ecs/core"
 )
 
 func main() {
-em := ecs.NewEntityManager()
-sm := ecs.NewSystemManager()
-de := ecs.NewDefaultEngine(em, sm)
-de.Setup()
-defer de.Teardown()
-de.Run()
+    em := ecs.NewEntityManager()
+    sm := ecs.NewSystemManager()
+    de := ecs.NewDefaultEngine(em, sm)
+    de.Setup()
+    defer de.Teardown()
+    de.Run()
 }
 ```
 
@@ -62,14 +62,14 @@ So we create a new file locally at `systems/movement.go`:
 package systems
 
 import (
-ecs "github.com/andygeiss/ecs/core"
+    ecs "github.com/andygeiss/ecs/core"
 )
 
 type movementSystem struct{}
 
 func (a *movementSystem) Process(em ecs.EntityManager) (state int) {
-// This state simply tells the engine to stop after the first call.
-return ecs.StateEngineStop
+    // This state simply tells the engine to stop after the first call.
+    return ecs.StateEngineStop
 }
 
 func (a *movementSystem) Setup() {}
@@ -77,7 +77,7 @@ func (a *movementSystem) Setup() {}
 func (a *movementSystem) Teardown() {}
 
 func NewMovementSystem() ecs.System {
-return &movementSystem{}
+    return &movementSystem{}
 }
 ```
 
@@ -104,8 +104,8 @@ Let's define our `Player` components by first creating a mask at `components/com
 package components
 
 const (
-MaskPosition = uint64(1 << 0)
-MaskVelocity = uint64(1 << 1)
+    MaskPosition = uint64(1 << 0)
+    MaskVelocity = uint64(1 << 1)
 )
 ```
 
@@ -115,26 +115,26 @@ Then create a component for `Position` and `Velocity` by creating corresponding 
 package components
 
 type Position struct {
-X  float32 `json:"x"`
-Y  float32 `json:"y"`
+    X  float32 `json:"x"`
+    Y  float32 `json:"y"`
 }
 
 func (a *Position) Mask() uint64 {
-return MaskPosition
+    return MaskPosition
 }
 
 func (a *Position) WithX(x float32) *Position {
-a.X = x
-return a
+    a.X = x
+    return a
 }
 
 func (a *Position) WithY(y float32) *Position {
-a.Y = y
-return a
+    a.Y = y
+    return a
 }
 
 func NewPosition() *Position {
-return &Position{}
+    return &Position{}
 }
 ```
 
@@ -143,12 +143,12 @@ Now we can add the following lines to `main.go`:
 ```go
 em := ecs.NewEntityManager()
 em.Add(ecs.NewEntity("player", []core.Component{ // <--
-components.NewPosition().
-WithX(10).
-WithY(10),
+    components.NewPosition().
+    WithX(10).
+    WithY(10),
 components.NewVelocity().
-WithX(1).
-WithY(1),
+    WithX(1).
+    WithY(1),
 })) // -->
 ```
 
@@ -158,13 +158,13 @@ Our final step is to add behavior to our movement system:
 
 ```go
 func (a *movementSystem) Process(em ecs.EntityManager) (state int) {
-for _, e := range em.FilterByMask(components.MaskPosition | components.MaskVelocity) {
-position := e.Get(components.MaskPosition).(*components.Position)
-velocity := e.Get(components.MaskVelocity).(*components.Velocity)
-position.X += velocity.X
-position.Y += velocity.Y
-}
-return ecs.StateEngineStop
+    for _, e := range em.FilterByMask(components.MaskPosition | components.MaskVelocity) {
+        position := e.Get(components.MaskPosition).(*components.Position)
+        velocity := e.Get(components.MaskVelocity).(*components.Velocity)
+        position.X += velocity.X
+        position.Y += velocity.Y
+    }
+    return ecs.StateEngineStop
 }
 ```
 
@@ -178,26 +178,26 @@ This system could look like this with raylib:
 ```go
 // ...
 func (a *renderingSystem) Setup() {
-rl.InitWindow(a.width, a.height, a.title)
+    rl.InitWindow(a.width, a.height, a.title)
 }
 
 func (a *renderingSystem) Process(em core.EntityManager) (state int) {
-// First check if app should stop.
-if rl.WindowShouldClose() {
-return core.StateEngineStop
-}
-// Clear the screen
-if rl.IsWindowReady() {
-rl.BeginDrawing()
-rl.ClearBackground(rl.Black)
-rl.DrawFPS(10, 10)
-rl.EndDrawing()
-}
-return core.StateEngineContinue
+    // First check if app should stop.
+    if rl.WindowShouldClose() {
+        return core.StateEngineStop
+    }
+    // Clear the screen
+    if rl.IsWindowReady() {
+        rl.BeginDrawing()
+        rl.ClearBackground(rl.Black)
+        rl.DrawFPS(10, 10)
+        rl.EndDrawing()
+    }
+    return core.StateEngineContinue
 }
 
 func (a *renderingSystem) Teardown() {
-rl.CloseWindow()
+    rl.CloseWindow()
 }
 ```
 
