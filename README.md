@@ -115,7 +115,6 @@ Then create a component for `Position` and `Velocity` by creating corresponding 
 package components
 
 type Position struct {
-	ID string  `json:"id"`
 	X  float32 `json:"x"`
 	Y  float32 `json:"y"`
 }
@@ -135,9 +134,7 @@ func (a *Position) WithY(y float32) *Position {
 }
 
 func NewPosition() *Position {
-	return &Position{
-		ID: "position",
-	}
+	return &Position{}
 }
 ```
 
