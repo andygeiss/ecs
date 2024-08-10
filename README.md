@@ -98,7 +98,7 @@ If we start our program now, it returns immediately without looping forever.
 A game engine usually processes different types of components that represent
 information about the game world itself. A component only represents the data,
 and the systems are there to implement the behavior or game logic and change
-these components.Entities are simply a composition of components that provide
+these components. Entities are simply a composition of components that provide
 a scalable data-oriented architecture.
 
 A component needs to implement the methods defined by the interface
