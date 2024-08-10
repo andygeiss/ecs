@@ -11,7 +11,7 @@
 [![Codacy Coverage Badge](https://app.codacy.com/project/badge/Coverage/b4f4c9b35f4b46d8bf19f73379864b45)](https://app.codacy.com/gh/andygeiss/ecs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/5a2fd230f2eae6f244f2/maintainability)](https://codeclimate.com/github/andygeiss/ecs/maintainability)
 
-**Build your own Game-Engine based on the Entity Component System concept in Golang**
+Build your own Game-Engine based on the Entity Component System concept in Golang.
 
 ## Features
 
@@ -51,11 +51,13 @@ func main() {
 }
 ```
 
-The execution of the program leads to an endless loop, as our engine is not yet able to react to user input.
+The execution of the program leads to an endless loop, as our engine is not yet
+able to react to user input.
 
 ### The movement system
 
-A system needs to implement the methods defined by the interface [System](https://github.com/andygeiss/ecs/blob/master/core/system.go).
+A system needs to implement the methods defined by the interface
+[System](https://github.com/andygeiss/ecs/blob/master/core/system.go).
 So we create a new file locally at `systems/movement.go`:
 
 ```go
@@ -93,12 +95,16 @@ If we start our program now, it returns immediately without looping forever.
 
 ### The player entity
 
-A game engine usually processes different types of components that represent information about the game world itself.
-A component only represents the data, and the systems are there to implement the behavior or game logic and change these components.
-Entities are simply a composition of components that provide a scalable data-oriented architecture.
+A game engine usually processes different types of components that represent
+information about the game world itself. A component only represents the data,
+and the systems are there to implement the behavior or game logic and change
+these components.Entities are simply a composition of components that provide
+a scalable data-oriented architecture.
 
-A component needs to implement the methods defined by the interface [Component](https://github.com/andygeiss/ecs/blob/master/core/entity.go).
-Let's define our `Player` components by first creating a mask at `components/components.go`:
+A component needs to implement the methods defined by the interface
+[Component](https://github.com/andygeiss/ecs/blob/master/core/entity.go).
+Let's define our `Player` components by first creating a mask at
+`components/components.go`:
 
 ```go
 package components
@@ -109,7 +115,8 @@ const (
 )
 ```
 
-Then create a component for `Position` and `Velocity` by creating corresponding files such as `components/position.go`:
+Then create a component for `Position` and `Velocity` by creating
+corresponding files such as `components/position.go`:
 
 ```go
 package components
@@ -170,9 +177,12 @@ func (a *movementSystem) Process(em ecs.EntityManager) (state int) {
 
 The movement system now moves every entity which has a position and velocity component.
 
-We can replace `ecs.StateEngineStop` with `ecs.StateEngineContinue` later if we add another system to handle user input.
+We can replace `ecs.StateEngineStop` with `ecs.StateEngineContinue` later if we add
+another system to handle user input.
 
-A rendering system is also essential for a game, so you can use game libraries such as [Raylib](https://pkg.go.dev/github.com/gen2brain/raylib-go/raylib) or [SDL2](https://pkg.go.dev/github.com/veandco/go-sdl2).
+A rendering system is also essential for a game, so you can use game libraries
+such as [Raylib](https://pkg.go.dev/github.com/gen2brain/raylib-go/raylib) or
+[SDL2](https://pkg.go.dev/github.com/veandco/go-sdl2).
 This system could look like this with raylib:
 
 ```go
@@ -203,4 +213,5 @@ func (a *renderingSystem) Teardown() {
 
 ### Example code
 
-See [ecs-example](https://github.com/andygeiss/ecs-example) for a basic implementation using [raylib](https://pkg.go.dev/github.com/gen2brain/raylib-go/raylib).
+See [ecs-example](https://github.com/andygeiss/ecs-example) for a basic
+implementation using [raylib](https://pkg.go.dev/github.com/gen2brain/raylib-go/raylib).
