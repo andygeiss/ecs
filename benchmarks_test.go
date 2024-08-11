@@ -2,9 +2,10 @@ package ecs_test
 
 import (
 	"fmt"
-	"github.com/andygeiss/ecs/core"
 	"math/rand"
 	"testing"
+
+	"github.com/andygeiss/ecs/core"
 )
 
 func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {

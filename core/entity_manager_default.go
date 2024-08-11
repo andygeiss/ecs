@@ -85,7 +85,7 @@ func (m *defaultEntityManager) Remove(entity *Entity) {
 }
 
 // NewEntityManager creates a new defaultEntityManager and returns its address.
-func NewEntityManager() EntityManager {
+func NewEntityManager() *defaultEntityManager {
 	return &defaultEntityManager{
 		entities: []*Entity{},
 	}
