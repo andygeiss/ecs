@@ -154,8 +154,8 @@ em.Add(ecs.NewEntity("player", []core.Component{ // <--
     WithX(10).
     WithY(10),
 components.NewVelocity().
-    WithX(1).
-    WithY(1),
+    WithX(100).
+    WithY(100),
 })) // -->
 ```
 
@@ -168,8 +168,8 @@ func (a *movementSystem) Process(em ecs.EntityManager) (state int) {
     for _, e := range em.FilterByMask(components.MaskPosition | components.MaskVelocity) {
         position := e.Get(components.MaskPosition).(*components.Position)
         velocity := e.Get(components.MaskVelocity).(*components.Velocity)
-        position.X += velocity.X
-        position.Y += velocity.Y
+        position.X += velocity.X * rl.GetFrameTime()
+        position.Y += velocity.Y * rl.GetFrameTime()
     }
     return ecs.StateEngineStop
 }
