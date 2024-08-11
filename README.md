@@ -19,6 +19,11 @@ Build your own Game-Engine based on the Entity Component System concept in Golan
 - [x] **No dependencies** to other modules or specific game libraries - Feel free to use what fits your needs.
 - [x] **Minimum overhead** - use only what is really needed.
 
+### Example engine
+
+See [engine-example](https://github.com/andygeiss/engine-example) for a basic
+implementation using [raylib](https://pkg.go.dev/github.com/gen2brain/raylib-go/raylib).
+
 ## Walkthrough
 
 ### Project layout
@@ -210,8 +215,3 @@ func (a *renderingSystem) Teardown() {
     rl.CloseWindow()
 }
 ```
-
-### Example code
-
-See [ecs-example](https://github.com/andygeiss/ecs-example) for a basic
-implementation using [raylib](https://pkg.go.dev/github.com/gen2brain/raylib-go/raylib).
