@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/andygeiss/ecs/core"
-	"github.com/andygeiss/utils/assert"
 )
 
 func TestDefaultEngine(t *testing.T) {
@@ -16,7 +15,9 @@ func TestDefaultEngine(t *testing.T) {
 	engine.Setup()
 	// app.Run()
 	engine.Teardown()
-	assert.That("state should be correct", t, sys.Value, core.StateEngineStop)
+	if sys.Value != core.StateEngineStop {
+		t.Error("State should be correct")
+	}
 }
 
 /*

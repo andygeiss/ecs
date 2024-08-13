@@ -4,25 +4,30 @@ import (
 	"testing"
 
 	"github.com/andygeiss/ecs/core"
-	"github.com/andygeiss/utils/assert"
 )
 
 func TestEntityManager_Entities_Should_Have_No_Entity_At_Start(t *testing.T) {
 	m := core.NewEntityManager()
-	assert.That("manager should have no entity at start", t, len(m.Entities()), 0)
+	if len(m.Entities()) != 0 {
+		t.Errorf("EntityManager should have no entity at start, but got %d", len(m.Entities()))
+	}
 }
 
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Adding_One_Entity(t *testing.T) {
 	m := core.NewEntityManager()
 	m.Add(&core.Entity{})
-	assert.That("manager should have one entity", t, len(m.Entities()), 1)
+	if len(m.Entities()) != 1 {
+		t.Errorf("EntityManager should have one entity, but got %d", len(m.Entities()))
+	}
 }
 
 func TestEntityManager_Entities_Should_Have_Two_Entities_After_Adding_Two_Entities(t *testing.T) {
 	m := core.NewEntityManager()
 	m.Add(core.NewEntity("e1", nil))
 	m.Add(core.NewEntity("e2", nil))
-	assert.That("manager should have two entities", t, len(m.Entities()), 2)
+	if len(m.Entities()) != 2 {
+		t.Errorf("EntityManager should have two entities, but got %d", len(m.Entities()))
+	}
 }
 
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two_Entities(t *testing.T) {
@@ -32,8 +37,12 @@ func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two
 	m.Add(e1)
 	m.Add(e2)
 	m.Remove(e2)
-	assert.That("manager should have one entity after removing one out of two", t, len(m.Entities()), 1)
-	assert.That("remaining entity should have Id e1", t, m.Entities()[0].Id, "e1")
+	if len(m.Entities()) != 1 {
+		t.Errorf("EntityManager should have one entity after removing one, but got %d", len(m.Entities()))
+	}
+	if m.Entities()[0].Id != "e1" {
+		t.Errorf("Entity should have correct Id, but got %s", m.Entities()[0].Id)
+	}
 }
 
 func TestEntityManager_FilterByMask_Should_Return_No_Entity_Out_Of_One(t *testing.T) {
@@ -43,7 +52,9 @@ func TestEntityManager_FilterByMask_Should_Return_No_Entity_Out_Of_One(t *testin
 	})
 	em.Add(e)
 	filtered := em.FilterByMask(2)
-	assert.That("filter should return no entity", t, len(filtered), 0)
+	if len(filtered) != 0 {
+		t.Errorf("EntityManager should return no entity, but got %d", len(filtered))
+	}
 }
 
 func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_One(t *testing.T) {
@@ -53,7 +64,9 @@ func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_One(t *testi
 	})
 	em.Add(e)
 	filtered := em.FilterByMask(1)
-	assert.That("filter should return one entity", t, len(filtered), 1)
+	if len(filtered) != 1 {
+		t.Errorf("EntityManager should return one entity, but got %d", len(filtered))
+	}
 }
 
 func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_Two(t *testing.T) {
@@ -67,8 +80,12 @@ func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_Two(t *testi
 	})
 	em.Add(e1, e2)
 	filtered := em.FilterByMask(2)
-	assert.That("filter should return one entity", t, len(filtered), 1)
-	assert.That("entity should be e2", t, filtered[0], e2)
+	if len(filtered) != 1 {
+		t.Errorf("EntityManager should return one entity, but got %d", len(filtered))
+	}
+	if filtered[0].Id != "e2" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id)
+	}
 }
 
 func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *testing.T) {
@@ -86,9 +103,15 @@ func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *t
 	})
 	em.Add(e1, e2, e3)
 	filtered := em.FilterByMask(2)
-	assert.That("filter should return one entity", t, len(filtered), 2)
-	assert.That("entity should be e2", t, filtered[0], e2)
-	assert.That("entity should be e3", t, filtered[1], e3)
+	if len(filtered) != 2 {
+		t.Errorf("EntityManager should return two entities, but got %d", len(filtered))
+	}
+	if filtered[0].Id != "e2" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id)
+	}
+	if filtered[1].Id != "e3" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[1].Id)
+	}
 }
 
 func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t *testing.T) {
@@ -107,10 +130,18 @@ func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t 
 	})
 	em.Add(e1, e2, e3)
 	filtered := em.FilterByMask(1 | 2)
-	assert.That("filter should return one entity", t, len(filtered), 3)
-	assert.That("entity should be e1", t, filtered[0], e1)
-	assert.That("entity should be e2", t, filtered[1], e2)
-	assert.That("entity should be e3", t, filtered[2], e3)
+	if len(filtered) != 3 {
+		t.Errorf("EntityManager should return three entities, but got %d", len(filtered))
+	}
+	if filtered[0].Id != "e1" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id)
+	}
+	if filtered[1].Id != "e2" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[1].Id)
+	}
+	if filtered[2].Id != "e3" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[2].Id)
+	}
 }
 
 func TestEntityManager_FilterByNames_Should_Return_Three_Entities_Out_Of_Three(t *testing.T) {
@@ -129,8 +160,16 @@ func TestEntityManager_FilterByNames_Should_Return_Three_Entities_Out_Of_Three(t
 	})
 	em.Add(e1, e2, e3)
 	filtered := em.FilterByNames("position", "size")
-	assert.That("filter should return one entity", t, len(filtered), 3)
-	assert.That("entity should be e1", t, filtered[0], e1)
-	assert.That("entity should be e2", t, filtered[1], e2)
-	assert.That("entity should be e3", t, filtered[2], e3)
+	if len(filtered) != 3 {
+		t.Errorf("EntityManager should return three entities, but got %d", len(filtered))
+	}
+	if filtered[0].Id != "e1" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id)
+	}
+	if filtered[1].Id != "e2" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[1].Id)
+	}
+	if filtered[2].Id != "e3" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[2].Id)
+	}
 }
