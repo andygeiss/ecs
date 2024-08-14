@@ -21,8 +21,8 @@ Build your own Game-Engine based on the Entity Component System concept in Golan
 
 ### Example engine
 
-See [engine-example](https://github.com/andygeiss/engine-example) for a basic
-implementation using [raylib](https://pkg.go.dev/github.com/gen2brain/raylib-go/raylib).
+See [engine-example](https://github.com/andygeiss/engine-example) for a basic 
+implementation using [raylib](https://www.raylib.com)).
 
 ## Walkthrough
 
