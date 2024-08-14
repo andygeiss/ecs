@@ -22,7 +22,7 @@ Build your own Game-Engine based on the Entity Component System concept in Golan
 ### Example engine
 
 See [engine-example](https://github.com/andygeiss/engine-example) for a basic 
-implementation using [raylib](https://www.raylib.com)).
+implementation using [raylib](https://www.raylib.com).
 
 ## Walkthrough
 
