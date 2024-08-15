@@ -186,8 +186,8 @@ We can replace `ecs.StateEngineStop` with `ecs.StateEngineContinue` later if we 
 another system to handle user input.
 
 A rendering system is also essential for a game, so you can use game libraries
-such as [Raylib](https://pkg.go.dev/github.com/gen2brain/raylib-go/raylib) or
-[SDL2](https://pkg.go.dev/github.com/veandco/go-sdl2).
+such as [raylib](https://www.raylib.com) or
+[SDL](https://github.com/libsdl-org/SDL).
 This system could look like this with raylib:
 
 ```go
