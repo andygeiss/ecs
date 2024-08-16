@@ -6,17 +6,46 @@ import (
 	"github.com/andygeiss/ecs/core"
 )
 
-func TestDefaultEngine(t *testing.T) {
+func prepare() (e core.Engine, sys *mockupSystem) {
 	em := &mockupEntityManager{}
 	sm := &mockupSystemManager{}
-	sys := &mockupSystem{Value: core.StateEngineStop}
-	sm.Add(sys)
+	system := &mockupSystem{State: core.StateEngineStop}
+	sm.Add(system)
 	engine := core.NewDefaultEngine(em, sm)
+	return engine, system
+}
+
+func TestDefaultEngine_Teardown_After_Setup_Should_Set_StateEngineStop(t *testing.T) {
+	engine, system := prepare()
 	engine.Setup()
 	// app.Run()
 	engine.Teardown()
-	if sys.Value != core.StateEngineStop {
+	if system.State != core.StateEngineStop {
 		t.Error("State should be correct")
+	}
+}
+
+func TestDefaultEngine_Run_Twice_Should_Increase_Counter_By_Two(t *testing.T) {
+	engine, system := prepare()
+	engine.Run()
+	if system.Counter == 1 {
+		t.Errorf("Value should be 1, but got %d", system.Counter)
+	}
+	engine.Run()
+	if system.Counter == 2 {
+		t.Errorf("Value should be 2, but got %d", system.Counter)
+	}
+}
+
+func TestDefaultEngine_Tick_Twice_Should_Increase_Counter_By_Two(t *testing.T) {
+	engine, system := prepare()
+	engine.Tick()
+	if system.Counter == 1 {
+		t.Errorf("Value should be 1, but got %d", system.Counter)
+	}
+	engine.Run()
+	if system.Counter == 2 {
+		t.Errorf("Value should be 2, but got %d", system.Counter)
 	}
 }
 
@@ -55,11 +84,12 @@ func (m *mockupSystemManager) Systems() []core.System {
 }
 
 type mockupSystem struct {
-	Value int
+	Counter int
+	State   int
 }
 
 func (s *mockupSystem) Process(entityManager core.EntityManager) (state int) {
-	s.Value = 1
+	s.Counter++
 	return core.StateEngineStop
 }
 func (s *mockupSystem) Setup()    {}

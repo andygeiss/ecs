@@ -25,6 +25,27 @@ func TestEntity_Add_Should_Work_With_Multiple_Components(t *testing.T) {
 	}
 }
 
+func TestEntity_Add_Should_Not_Add_Existing_Component(t *testing.T) {
+	entity := core.NewEntity("e", []core.Component{
+		&mockComponent{name: "position", mask: 1},
+		&mockComponent{name: "velocity", mask: 2},
+	})
+	entity.Add(&mockComponent{name: "velocity", mask: 2})
+	if len(entity.Components) != 2 {
+		t.Errorf("Component count should be 2, but got %d", len(entity.Components))
+	}
+}
+
+func TestEntity_Get_Should_Return_Component(t *testing.T) {
+	entity := core.NewEntity("e", []core.Component{
+		&mockComponent{name: "position", mask: 1},
+	})
+	component := entity.Get(1)
+	if component == nil {
+		t.Error("Component should not be nil")
+	}
+}
+
 func TestEntity_Remove_Should_Work_With_Multiple_Components(t *testing.T) {
 	entity := core.NewEntity("e", []core.Component{
 		&mockComponent{name: "position", mask: 1},
