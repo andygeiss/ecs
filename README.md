@@ -107,7 +107,7 @@ these components. Entities are simply a composition of components that provide
 a scalable data-oriented architecture.
 
 A component needs to implement the methods defined by the interface
-[Component](https://github.com/andygeiss/ecs/blob/master/core/entity.go).
+[Component](https://github.com/andygeiss/ecs/blob/master/core/component.go).
 Let's define our `Player` components by first creating a mask at
 `components/components.go`:
 
