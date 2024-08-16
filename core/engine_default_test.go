@@ -28,24 +28,24 @@ func TestDefaultEngine_Teardown_After_Setup_Should_Set_StateEngineStop(t *testin
 func TestDefaultEngine_Run_Twice_Should_Increase_Counter_By_Two(t *testing.T) {
 	engine, system := prepare()
 	engine.Run()
-	if system.Counter == 1 {
-		t.Errorf("Value should be 1, but got %d", system.Counter)
+	if system.Counter != 1 {
+		t.Errorf("Counter should be 1, but got %d", system.Counter)
 	}
 	engine.Run()
-	if system.Counter == 2 {
-		t.Errorf("Value should be 2, but got %d", system.Counter)
+	if system.Counter != 2 {
+		t.Errorf("Counter should be 2, but got %d", system.Counter)
 	}
 }
 
 func TestDefaultEngine_Tick_Twice_Should_Increase_Counter_By_Two(t *testing.T) {
 	engine, system := prepare()
 	engine.Tick()
-	if system.Counter == 1 {
-		t.Errorf("Value should be 1, but got %d", system.Counter)
+	if system.Counter != 1 {
+		t.Errorf("Counter should be 1, but got %d", system.Counter)
 	}
 	engine.Run()
-	if system.Counter == 2 {
-		t.Errorf("Value should be 2, but got %d", system.Counter)
+	if system.Counter != 2 {
+		t.Errorf("Counter should be 2, but got %d", system.Counter)
 	}
 }
 
