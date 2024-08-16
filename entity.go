@@ -1,4 +1,4 @@
-package core
+package ecs
 
 // Entity is simply a composition of one or more Components with an Id.
 type Entity struct {

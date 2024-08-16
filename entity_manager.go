@@ -1,4 +1,4 @@
-package core
+package ecs
 
 // EntityManager handles the access to each entity.
 type EntityManager interface {

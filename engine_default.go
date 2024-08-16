@@ -1,4 +1,4 @@
-package core
+package ecs
 
 // defaultEngine is simple a composition of an defaultEntityManager and a defaultSystemManager.
 type defaultEngine struct {

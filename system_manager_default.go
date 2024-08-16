@@ -1,4 +1,4 @@
-package core
+package ecs
 
 // defaultSystemManager
 type defaultSystemManager struct {

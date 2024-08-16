@@ -1,17 +1,17 @@
-package core_test
+package ecs_test
 
 import (
 	"testing"
 
-	"github.com/andygeiss/ecs/core"
+	"github.com/andygeiss/ecs"
 )
 
-func prepare() (e core.Engine, sys *mockupSystem) {
+func prepare() (e ecs.Engine, sys *mockupSystem) {
 	em := &mockupEntityManager{}
 	sm := &mockupSystemManager{}
-	system := &mockupSystem{State: core.StateEngineStop}
+	system := &mockupSystem{State: ecs.StateEngineStop}
 	sm.Add(system)
-	engine := core.NewDefaultEngine(em, sm)
+	engine := ecs.NewDefaultEngine(em, sm)
 	return engine, system
 }
 
@@ -20,7 +20,7 @@ func TestDefaultEngine_Teardown_After_Setup_Should_Set_StateEngineStop(t *testin
 	engine.Setup()
 	// app.Run()
 	engine.Teardown()
-	if system.State != core.StateEngineStop {
+	if system.State != ecs.StateEngineStop {
 		t.Error("State should be correct")
 	}
 }
@@ -59,27 +59,27 @@ func TestDefaultEngine_Tick_Twice_Should_Increase_Counter_By_Two(t *testing.T) {
 
 type mockupEntityManager struct{}
 
-func (m *mockupEntityManager) Add(entities ...*core.Entity) {}
+func (m *mockupEntityManager) Add(entities ...*ecs.Entity) {}
 
-func (m *mockupEntityManager) Entities() (entities []*core.Entity) { return nil }
+func (m *mockupEntityManager) Entities() (entities []*ecs.Entity) { return nil }
 
-func (m *mockupEntityManager) FilterByMask(mask uint64) (entities []*core.Entity) { return nil }
+func (m *mockupEntityManager) FilterByMask(mask uint64) (entities []*ecs.Entity) { return nil }
 
-func (m *mockupEntityManager) FilterByNames(names ...string) (entities []*core.Entity) { return nil }
+func (m *mockupEntityManager) FilterByNames(names ...string) (entities []*ecs.Entity) { return nil }
 
-func (m *mockupEntityManager) Get(id string) (entity *core.Entity) { return nil }
+func (m *mockupEntityManager) Get(id string) (entity *ecs.Entity) { return nil }
 
-func (m *mockupEntityManager) Remove(entity *core.Entity) {}
+func (m *mockupEntityManager) Remove(entity *ecs.Entity) {}
 
 type mockupSystemManager struct {
-	systems []core.System
+	systems []ecs.System
 }
 
-func (m *mockupSystemManager) Add(systems ...core.System) {
+func (m *mockupSystemManager) Add(systems ...ecs.System) {
 	m.systems = append(m.systems, systems...)
 }
 
-func (m *mockupSystemManager) Systems() []core.System {
+func (m *mockupSystemManager) Systems() []ecs.System {
 	return m.systems
 }
 
@@ -88,9 +88,9 @@ type mockupSystem struct {
 	State   int
 }
 
-func (s *mockupSystem) Process(entityManager core.EntityManager) (state int) {
+func (s *mockupSystem) Process(entityManager ecs.EntityManager) (state int) {
 	s.Counter++
-	return core.StateEngineStop
+	return ecs.StateEngineStop
 }
 func (s *mockupSystem) Setup()    {}
 func (s *mockupSystem) Teardown() {}

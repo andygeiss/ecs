@@ -1,13 +1,13 @@
-package core_test
+package ecs_test
 
 import (
 	"testing"
 
-	"github.com/andygeiss/ecs/core"
+	"github.com/andygeiss/ecs"
 )
 
 func TestEntity_NewEntity_Should_Create_A_Correct_Mask(t *testing.T) {
-	entity := core.NewEntity("e", []core.Component{
+	entity := ecs.NewEntity("e", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 	})
 	if entity.Mask() != 1 {
@@ -16,7 +16,7 @@ func TestEntity_NewEntity_Should_Create_A_Correct_Mask(t *testing.T) {
 }
 
 func TestEntity_Add_Should_Work_With_Multiple_Components(t *testing.T) {
-	entity := core.NewEntity("e", []core.Component{
+	entity := ecs.NewEntity("e", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 	})
 	entity.Add(&mockComponent{name: "velocity", mask: 2})
@@ -26,7 +26,7 @@ func TestEntity_Add_Should_Work_With_Multiple_Components(t *testing.T) {
 }
 
 func TestEntity_Add_Should_Not_Add_Existing_Component(t *testing.T) {
-	entity := core.NewEntity("e", []core.Component{
+	entity := ecs.NewEntity("e", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "velocity", mask: 2},
 	})
@@ -37,7 +37,7 @@ func TestEntity_Add_Should_Not_Add_Existing_Component(t *testing.T) {
 }
 
 func TestEntity_Get_Should_Return_Component(t *testing.T) {
-	entity := core.NewEntity("e", []core.Component{
+	entity := ecs.NewEntity("e", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 	})
 	component := entity.Get(1)
@@ -47,7 +47,7 @@ func TestEntity_Get_Should_Return_Component(t *testing.T) {
 }
 
 func TestEntity_Remove_Should_Work_With_Multiple_Components(t *testing.T) {
-	entity := core.NewEntity("e", []core.Component{
+	entity := ecs.NewEntity("e", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 		&mockComponent{name: "velocity", mask: 4},

@@ -5,21 +5,21 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/andygeiss/ecs/core"
+	"github.com/andygeiss/ecs"
 )
 
 func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {
-	m := core.NewEntityManager()
-	m.Add(core.NewEntity("foo", nil))
+	m := ecs.NewEntityManager()
+	m.Add(ecs.NewEntity("foo", nil))
 	for i := 0; i < b.N; i++ {
 		m.Get("foo")
 	}
 }
 
 func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
-	m := core.NewEntityManager()
+	m := ecs.NewEntityManager()
 	for i := 0; i < 1000; i++ {
-		m.Add(core.NewEntity("foo", nil))
+		m.Add(ecs.NewEntity("foo", nil))
 	}
 	for i := 0; i < b.N; i++ {
 		m.Get("1000")
@@ -27,9 +27,9 @@ func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
 }
 
 func BenchmarkEntityManager_FilterByMask_With_1000_Entities(b *testing.B) {
-	m := core.NewEntityManager()
+	m := ecs.NewEntityManager()
 	for i := 0; i < 1000; i++ {
-		m.Add(core.NewEntity(fmt.Sprintf("%d", i), []core.Component{
+		m.Add(ecs.NewEntity(fmt.Sprintf("%d", i), []ecs.Component{
 			&mockComponent{name: "position", mask: 1},
 			&mockComponent{name: "size", mask: 2},
 			&mockComponent{name: "velocity", mask: 3},
@@ -41,9 +41,9 @@ func BenchmarkEntityManager_FilterByMask_With_1000_Entities(b *testing.B) {
 }
 
 func BenchmarkEntityManager_FilterByNames_With_1000_Entities(b *testing.B) {
-	m := core.NewEntityManager()
+	m := ecs.NewEntityManager()
 	for i := 0; i < 1000; i++ {
-		m.Add(core.NewEntity(fmt.Sprintf("%d", i), []core.Component{
+		m.Add(ecs.NewEntity(fmt.Sprintf("%d", i), []ecs.Component{
 			&mockComponent{name: "position", mask: 1},
 			&mockComponent{name: "size", mask: 2},
 			&mockComponent{name: "velocity", mask: 3},
@@ -61,11 +61,11 @@ func BenchmarkEngine_Run(b *testing.B) {
 		for _, entityCount := range entityCounts {
 			b.Run(fmt.Sprintf("%d system(s) with %d entities", systemCount, entityCount), func(b *testing.B) {
 				b.ResetTimer()
-				em := core.NewEntityManager()
+				em := ecs.NewEntityManager()
 				em.Add(generateEntities(entityCount)...)
-				sm := core.NewSystemManager()
+				sm := ecs.NewSystemManager()
 				sm.Add(generateUseAllEntitiesSystems(systemCount)...)
-				engine := core.NewDefaultEngine(em, sm)
+				engine := ecs.NewDefaultEngine(em, sm)
 				engine.Setup()
 				defer engine.Teardown()
 				for i := 0; i < b.N; i++ {
@@ -84,12 +84,12 @@ func BenchmarkEngine_Run(b *testing.B) {
  \__,_|\__|_|_|___/
 */
 
-func generateEntities(count int) []*core.Entity {
-	out := make([]*core.Entity, count)
+func generateEntities(count int) []*ecs.Entity {
+	out := make([]*ecs.Entity, count)
 	for i := 0; i < count; i++ {
-		out[i] = core.NewEntity(
+		out[i] = ecs.NewEntity(
 			fmt.Sprintf("e%d", rand.Uint64()),
-			[]core.Component{
+			[]ecs.Component{
 				&mockComponent{mask: 1},
 			},
 		)
@@ -97,8 +97,8 @@ func generateEntities(count int) []*core.Entity {
 	return out
 }
 
-func generateUseAllEntitiesSystems(count int) []core.System {
-	out := make([]core.System, count)
+func generateUseAllEntitiesSystems(count int) []ecs.System {
+	out := make([]ecs.System, count)
 	for i := 0; i < count-1; i++ {
 		out[i] = &mockupUseAllEntitiesSystem{}
 	}
@@ -109,10 +109,10 @@ func generateUseAllEntitiesSystems(count int) []core.System {
 // mockupUseAllEntitiesSystem works on all entities from the defaultEntityManager which represents the worst-case scenario for performance.
 type mockupUseAllEntitiesSystem struct{}
 
-func (s *mockupUseAllEntitiesSystem) Process(entityManager core.EntityManager) (state int) {
+func (s *mockupUseAllEntitiesSystem) Process(entityManager ecs.EntityManager) (state int) {
 	for range entityManager.FilterByMask(1) {
 	}
-	return core.StateEngineContinue
+	return ecs.StateEngineContinue
 }
 func (s *mockupUseAllEntitiesSystem) Setup() {
 }
@@ -122,21 +122,12 @@ func (s *mockupUseAllEntitiesSystem) Teardown() {
 // mockupShouldStopSystem is the last System in the queue and should stop the defaultEngine.
 type mockupShouldStopSystem struct{}
 
-func (s *mockupShouldStopSystem) Process(entityManager core.EntityManager) (state int) {
+func (s *mockupShouldStopSystem) Process(entityManager ecs.EntityManager) (state int) {
 	for range entityManager.FilterByMask(1) {
 	}
-	return core.StateEngineStop
+	return ecs.StateEngineStop
 }
 func (s *mockupShouldStopSystem) Setup() {
 }
 func (s *mockupShouldStopSystem) Teardown() {
 }
-
-type mockComponent struct {
-	mask uint64
-	name string
-}
-
-func (c *mockComponent) Mask() uint64 { return c.mask }
-
-func (c *mockComponent) Name() string { return c.name }

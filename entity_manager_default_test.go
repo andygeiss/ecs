@@ -1,39 +1,39 @@
-package core_test
+package ecs_test
 
 import (
 	"testing"
 
-	"github.com/andygeiss/ecs/core"
+	"github.com/andygeiss/ecs"
 )
 
 func TestEntityManager_Entities_Should_Have_No_Entity_At_Start(t *testing.T) {
-	m := core.NewEntityManager()
+	m := ecs.NewEntityManager()
 	if len(m.Entities()) != 0 {
 		t.Errorf("EntityManager should have no entity at start, but got %d", len(m.Entities()))
 	}
 }
 
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Adding_One_Entity(t *testing.T) {
-	m := core.NewEntityManager()
-	m.Add(&core.Entity{})
+	m := ecs.NewEntityManager()
+	m.Add(&ecs.Entity{})
 	if len(m.Entities()) != 1 {
 		t.Errorf("EntityManager should have one entity, but got %d", len(m.Entities()))
 	}
 }
 
 func TestEntityManager_Entities_Should_Have_Two_Entities_After_Adding_Two_Entities(t *testing.T) {
-	m := core.NewEntityManager()
-	m.Add(core.NewEntity("e1", nil))
-	m.Add(core.NewEntity("e2", nil))
+	m := ecs.NewEntityManager()
+	m.Add(ecs.NewEntity("e1", nil))
+	m.Add(ecs.NewEntity("e2", nil))
 	if len(m.Entities()) != 2 {
 		t.Errorf("EntityManager should have two entities, but got %d", len(m.Entities()))
 	}
 }
 
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two_Entities(t *testing.T) {
-	m := core.NewEntityManager()
-	e1 := core.NewEntity("e1", nil)
-	e2 := core.NewEntity("e2", nil)
+	m := ecs.NewEntityManager()
+	e1 := ecs.NewEntity("e1", nil)
+	e2 := ecs.NewEntity("e2", nil)
 	m.Add(e1)
 	m.Add(e2)
 	m.Remove(e2)
@@ -46,8 +46,8 @@ func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two
 }
 
 func TestEntityManager_FilterByMask_Should_Return_No_Entity_Out_Of_One(t *testing.T) {
-	em := core.NewEntityManager()
-	e := core.NewEntity("e", []core.Component{
+	em := ecs.NewEntityManager()
+	e := ecs.NewEntity("e", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 	})
 	em.Add(e)
@@ -58,8 +58,8 @@ func TestEntityManager_FilterByMask_Should_Return_No_Entity_Out_Of_One(t *testin
 }
 
 func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_One(t *testing.T) {
-	em := core.NewEntityManager()
-	e := core.NewEntity("e", []core.Component{
+	em := ecs.NewEntityManager()
+	e := ecs.NewEntity("e", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 	})
 	em.Add(e)
@@ -70,11 +70,11 @@ func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_One(t *testi
 }
 
 func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_Two(t *testing.T) {
-	em := core.NewEntityManager()
-	e1 := core.NewEntity("e1", []core.Component{
+	em := ecs.NewEntityManager()
+	e1 := ecs.NewEntity("e1", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 	})
-	e2 := core.NewEntity("e2", []core.Component{
+	e2 := ecs.NewEntity("e2", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 	})
@@ -89,15 +89,15 @@ func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_Two(t *testi
 }
 
 func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *testing.T) {
-	em := core.NewEntityManager()
-	e1 := core.NewEntity("e1", []core.Component{
+	em := ecs.NewEntityManager()
+	e1 := ecs.NewEntity("e1", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 	})
-	e2 := core.NewEntity("e2", []core.Component{
+	e2 := ecs.NewEntity("e2", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 	})
-	e3 := core.NewEntity("e3", []core.Component{
+	e3 := ecs.NewEntity("e3", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 	})
@@ -115,16 +115,16 @@ func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *t
 }
 
 func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t *testing.T) {
-	em := core.NewEntityManager()
-	e1 := core.NewEntity("e1", []core.Component{
+	em := ecs.NewEntityManager()
+	e1 := ecs.NewEntity("e1", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 	})
-	e2 := core.NewEntity("e2", []core.Component{
+	e2 := ecs.NewEntity("e2", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 	})
-	e3 := core.NewEntity("e3", []core.Component{
+	e3 := ecs.NewEntity("e3", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 	})
@@ -145,16 +145,16 @@ func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t 
 }
 
 func TestEntityManager_FilterByNames_Should_Return_Three_Entities_Out_Of_Three(t *testing.T) {
-	em := core.NewEntityManager()
-	e1 := core.NewEntity("e1", []core.Component{
+	em := ecs.NewEntityManager()
+	e1 := ecs.NewEntity("e1", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 	})
-	e2 := core.NewEntity("e2", []core.Component{
+	e2 := ecs.NewEntity("e2", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 	})
-	e3 := core.NewEntity("e3", []core.Component{
+	e3 := ecs.NewEntity("e3", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 	})
@@ -175,12 +175,12 @@ func TestEntityManager_FilterByNames_Should_Return_Three_Entities_Out_Of_Three(t
 }
 
 func TestEntityManager_Get_Should_Return_Entity(t *testing.T) {
-	em := core.NewEntityManager()
-	e1 := core.NewEntity("e1", []core.Component{
+	em := ecs.NewEntityManager()
+	e1 := ecs.NewEntity("e1", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 	})
-	e2 := core.NewEntity("e2", []core.Component{
+	e2 := ecs.NewEntity("e2", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
 		&mockComponent{name: "size", mask: 2},
 	})
