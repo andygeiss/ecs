@@ -173,3 +173,22 @@ func TestEntityManager_FilterByNames_Should_Return_Three_Entities_Out_Of_Three(t
 		t.Errorf("Entity should have correct Id, but got %s", filtered[2].Id)
 	}
 }
+
+func TestEntityManager_Get_Should_Return_Entity(t *testing.T) {
+	em := core.NewEntityManager()
+	e1 := core.NewEntity("e1", []core.Component{
+		&mockComponent{name: "position", mask: 1},
+		&mockComponent{name: "size", mask: 2},
+	})
+	e2 := core.NewEntity("e2", []core.Component{
+		&mockComponent{name: "position", mask: 1},
+		&mockComponent{name: "size", mask: 2},
+	})
+	em.Add(e1, e2)
+	if e := em.Get("e1"); e == nil {
+		t.Error("Entity should not be nil")
+	}
+	if e := em.Get("e2"); e == nil {
+		t.Error("Entity should not be nil")
+	}
+}
