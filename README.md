@@ -155,7 +155,7 @@ Now we can add the following lines to `main.go`:
 ```go
 em := ecs.NewEntityManager()
 em.Add(ecs.NewEntity("player", []core.Component{ // <--
-    components.NewPosition().
+components.NewPosition().
     WithX(10).
     WithY(10),
 components.NewVelocity().
