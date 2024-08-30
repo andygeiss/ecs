@@ -65,10 +65,9 @@ func (m *defaultEntityManager) FilterByNames(names ...string) (entities []*Entit
 }
 
 // Get a specific entity by Id.
-func (m *defaultEntityManager) Get(id string) (entity *Entity) {
-	handle := unique.Make(id)
+func (m *defaultEntityManager) Get(id unique.Handle[string]) (entity *Entity) {
 	for _, e := range m.entities {
-		if e.Id == handle {
+		if e.Id == id {
 			return e
 		}
 	}

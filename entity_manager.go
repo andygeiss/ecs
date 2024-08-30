@@ -1,5 +1,7 @@
 package ecs
 
+import "unique"
+
 // EntityManager handles the access to each entity.
 type EntityManager interface {
 	// Add entries to the manager.
@@ -11,7 +13,7 @@ type EntityManager interface {
 	// FilterByNames returns the mapped entities, which Components names matched.
 	FilterByNames(names ...string) (entities []*Entity)
 	// Get a specific entity by Id.
-	Get(id string) (entity *Entity)
+	Get(id unique.Handle[string]) (entity *Entity)
 	// Remove a specific entity.
 	Remove(entity *Entity)
 }

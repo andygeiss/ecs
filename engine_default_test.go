@@ -2,6 +2,7 @@ package ecs_test
 
 import (
 	"testing"
+	"unique"
 
 	"github.com/andygeiss/ecs"
 )
@@ -67,7 +68,7 @@ func (m *mockupEntityManager) FilterByMask(mask uint64) (entities []*ecs.Entity)
 
 func (m *mockupEntityManager) FilterByNames(names ...string) (entities []*ecs.Entity) { return nil }
 
-func (m *mockupEntityManager) Get(id string) (entity *ecs.Entity) { return nil }
+func (m *mockupEntityManager) Get(id unique.Handle[string]) (entity *ecs.Entity) { return nil }
 
 func (m *mockupEntityManager) Remove(entity *ecs.Entity) {}
 

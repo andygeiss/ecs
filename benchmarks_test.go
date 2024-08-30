@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"testing"
+	"unique"
 
 	"github.com/andygeiss/ecs"
 )
@@ -11,8 +12,11 @@ import (
 func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {
 	m := ecs.NewEntityManager()
 	m.Add(ecs.NewEntity("foo", nil))
+	id := unique.Make("1000")
+	b.ResetTimer()
+	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		m.Get("foo")
+		m.Get(id)
 	}
 }
 
@@ -21,8 +25,11 @@ func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
 	for i := 0; i < 1000; i++ {
 		m.Add(ecs.NewEntity("foo", nil))
 	}
+	id := unique.Make("1000")
+	b.ResetTimer()
+	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		m.Get("1000")
+		m.Get(id)
 	}
 }
 

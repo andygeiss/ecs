@@ -2,6 +2,7 @@ package ecs_test
 
 import (
 	"testing"
+	"unique"
 
 	"github.com/andygeiss/ecs"
 )
@@ -185,10 +186,10 @@ func TestEntityManager_Get_Should_Return_Entity(t *testing.T) {
 		&mockComponent{name: "size", mask: 2},
 	})
 	em.Add(e1, e2)
-	if e := em.Get("e1"); e == nil {
+	if e := em.Get(unique.Make("e1")); e == nil {
 		t.Error("Entity should not be nil")
 	}
-	if e := em.Get("e2"); e == nil {
+	if e := em.Get(unique.Make("e2")); e == nil {
 		t.Error("Entity should not be nil")
 	}
 }
