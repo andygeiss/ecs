@@ -1,5 +1,7 @@
 package ecs
 
+import "unique"
+
 type defaultEntityManager struct {
 	entities []*Entity
 }
@@ -64,8 +66,9 @@ func (m *defaultEntityManager) FilterByNames(names ...string) (entities []*Entit
 
 // Get a specific entity by Id.
 func (m *defaultEntityManager) Get(id string) (entity *Entity) {
+	handle := unique.Make(id)
 	for _, e := range m.entities {
-		if e.Id == id {
+		if e.Id == handle {
 			return e
 		}
 	}

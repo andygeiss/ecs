@@ -1,10 +1,12 @@
 package ecs
 
+import "unique"
+
 // Entity is simply a composition of one or more Components with an Id.
 type Entity struct {
-	Components []Component `json:"components"`
-	Id         string      `json:"id"`
-	Masked     uint64      `json:"masked"`
+	Components []Component           `json:"components"`
+	Id         unique.Handle[string] `json:"id"`
+	Masked     uint64                `json:"masked"`
 }
 
 // Add a component.
@@ -54,7 +56,7 @@ func (e *Entity) Remove(mask uint64) {
 func NewEntity(id string, components []Component) *Entity {
 	return &Entity{
 		Components: components,
-		Id:         id,
+		Id:         unique.Make(id),
 		Masked:     maskSlice(components),
 	}
 }

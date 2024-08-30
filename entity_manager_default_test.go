@@ -40,8 +40,8 @@ func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two
 	if len(m.Entities()) != 1 {
 		t.Errorf("EntityManager should have one entity after removing one, but got %d", len(m.Entities()))
 	}
-	if m.Entities()[0].Id != "e1" {
-		t.Errorf("Entity should have correct Id, but got %s", m.Entities()[0].Id)
+	if m.Entities()[0].Id.Value() != "e1" {
+		t.Errorf("Entity should have correct Id, but got %s", m.Entities()[0].Id.Value())
 	}
 }
 
@@ -83,8 +83,8 @@ func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_Two(t *testi
 	if len(filtered) != 1 {
 		t.Errorf("EntityManager should return one entity, but got %d", len(filtered))
 	}
-	if filtered[0].Id != "e2" {
-		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id)
+	if filtered[0].Id.Value() != "e2" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id.Value())
 	}
 }
 
@@ -106,11 +106,11 @@ func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *t
 	if len(filtered) != 2 {
 		t.Errorf("EntityManager should return two entities, but got %d", len(filtered))
 	}
-	if filtered[0].Id != "e2" {
-		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id)
+	if filtered[0].Id.Value() != "e2" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id.Value())
 	}
-	if filtered[1].Id != "e3" {
-		t.Errorf("Entity should have correct Id, but got %s", filtered[1].Id)
+	if filtered[1].Id.Value() != "e3" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[1].Id.Value())
 	}
 }
 
@@ -133,14 +133,14 @@ func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t 
 	if len(filtered) != 3 {
 		t.Errorf("EntityManager should return three entities, but got %d", len(filtered))
 	}
-	if filtered[0].Id != "e1" {
-		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id)
+	if filtered[0].Id.Value() != "e1" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id.Value())
 	}
-	if filtered[1].Id != "e2" {
-		t.Errorf("Entity should have correct Id, but got %s", filtered[1].Id)
+	if filtered[1].Id.Value() != "e2" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[1].Id.Value())
 	}
-	if filtered[2].Id != "e3" {
-		t.Errorf("Entity should have correct Id, but got %s", filtered[2].Id)
+	if filtered[2].Id.Value() != "e3" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[2].Id.Value())
 	}
 }
 
@@ -163,14 +163,14 @@ func TestEntityManager_FilterByNames_Should_Return_Three_Entities_Out_Of_Three(t
 	if len(filtered) != 3 {
 		t.Errorf("EntityManager should return three entities, but got %d", len(filtered))
 	}
-	if filtered[0].Id != "e1" {
-		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id)
+	if filtered[0].Id.Value() != "e1" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[0].Id.Value())
 	}
-	if filtered[1].Id != "e2" {
-		t.Errorf("Entity should have correct Id, but got %s", filtered[1].Id)
+	if filtered[1].Id.Value() != "e2" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[1].Id.Value())
 	}
-	if filtered[2].Id != "e3" {
-		t.Errorf("Entity should have correct Id, but got %s", filtered[2].Id)
+	if filtered[2].Id.Value() != "e3" {
+		t.Errorf("Entity should have correct Id, but got %s", filtered[2].Id.Value())
 	}
 }
 
