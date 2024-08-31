@@ -34,7 +34,7 @@ At first we create a basic project layout:
 mkdir ecs-example
 cd ecs-example
 go mod init example
-mkdir components plugins systems
+mkdir components systems
 ```
 
 Next we create a `main.go` with the following content:
