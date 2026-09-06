@@ -12,6 +12,9 @@ type DefaultEngine struct {
 // Run calls Process on each System over and over, until a System returns
 // StateEngineStop or ctx is cancelled.
 //
+// Run never sleeps. With no system to pace it — a renderer waiting for vsync,
+// say — it spins a core flat out.
+//
 // Cancellation is checked once per pass over the systems, so a Process that
 // never returns still blocks forever.
 func (e *DefaultEngine) Run(ctx context.Context) {

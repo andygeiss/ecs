@@ -13,12 +13,14 @@ const (
 // over and over, Teardown once.
 type Engine interface {
 	// Run calls Process on each System over and over, until a System returns
-	// StateEngineStop or ctx is cancelled.
+	// StateEngineStop or ctx is cancelled. It does not sleep between passes,
+	// so a system paces the loop.
 	Run(ctx context.Context)
 	// Setup calls Setup on each System, once, before the first Process.
 	Setup()
 	// Teardown calls Teardown on each System, once, after the last Process.
 	Teardown()
-	// Tick calls Process on each System exactly once.
+	// Tick calls Process on each System exactly once, stopping early when a
+	// System returns StateEngineStop.
 	Tick()
 }

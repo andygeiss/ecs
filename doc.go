@@ -26,4 +26,8 @@
 // A system finds its entities through the manager it is handed. Use
 // [DefaultEntityManager.FilterByMask] while 64 component types are enough,
 // and [DefaultEntityManager.FilterByNames] when they are not.
+//
+// Nothing here is safe for concurrent use. The engine calls one system after
+// another on one goroutine, so systems need no locking between themselves. A
+// system that fans its own work out to goroutines owns the locking for that.
 package ecs

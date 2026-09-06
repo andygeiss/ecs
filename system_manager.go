@@ -4,6 +4,7 @@ package ecs
 type SystemManager interface {
 	// Add appends systems to this SystemManager.
 	Add(systems ...System)
-	// Systems returns internally stored systems.
+	// Systems returns the systems in the order they were added. The slice may
+	// be the manager's own, so changing it may change the manager.
 	Systems() []System
 }

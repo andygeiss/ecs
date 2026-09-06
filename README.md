@@ -121,6 +121,8 @@ func main() {
 ```
 
 The program loops until you press Ctrl-C, because no system tells it to stop yet.
+It spins a core flat out while it does: `Run` never sleeps, so pacing the loop is a
+system's job — a renderer waiting for vsync, say.
 
 ### The movement system
 

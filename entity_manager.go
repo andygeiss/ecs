@@ -4,7 +4,8 @@ package ecs
 type EntityManager interface {
 	// Add appends entities to the manager.
 	Add(entities ...*Entity)
-	// Entities returns all the entities.
+	// Entities returns all the entities. The slice may be the manager's own,
+	// so changing it may change the manager.
 	Entities() (entities []*Entity)
 	// FilterByMask returns every entity that carries all the components in mask.
 	FilterByMask(mask uint64) (entities []*Entity)
@@ -13,6 +14,7 @@ type EntityManager interface {
 	FilterByNames(names ...string) (entities []*Entity)
 	// Get returns the entity with the given Id, or nil when there is none.
 	Get(id string) (entity *Entity)
-	// Remove deletes the entity with the same Id.
+	// Remove deletes the entity with the same Id. It does nothing when entity
+	// is nil, so Remove(Get(id)) is safe for an id that is not there.
 	Remove(entity *Entity)
 }
