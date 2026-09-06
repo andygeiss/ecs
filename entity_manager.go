@@ -2,16 +2,17 @@ package ecs
 
 // EntityManager handles the access to each entity.
 type EntityManager interface {
-	// Add entries to the manager.
+	// Add appends entities to the manager.
 	Add(entities ...*Entity)
 	// Entities returns all the entities.
 	Entities() (entities []*Entity)
-	// FilterByMask returns the mapped entities, which Components mask matched.
+	// FilterByMask returns every entity that carries all the components in mask.
 	FilterByMask(mask uint64) (entities []*Entity)
-	// FilterByNames returns the mapped entities, which Components names matched.
+	// FilterByNames returns every entity that carries a component for
+	// each of the given names.
 	FilterByNames(names ...string) (entities []*Entity)
-	// Get a specific entity by Id.
+	// Get returns the entity with the given Id, or nil when there is none.
 	Get(id string) (entity *Entity)
-	// Remove a specific entity.
+	// Remove deletes the entity with the same Id.
 	Remove(entity *Entity)
 }

@@ -7,7 +7,8 @@ type Entity struct {
 	Masked     uint64      `json:"masked"`
 }
 
-// Add a component.
+// Add appends the components the entity does not already carry, and
+// recalculates its mask.
 func (e *Entity) Add(cn ...Component) {
 	for _, c := range cn {
 		if e.Masked&c.Mask() == c.Mask() {
@@ -18,7 +19,8 @@ func (e *Entity) Add(cn ...Component) {
 	}
 }
 
-// Get a component by its bitmask.
+// Get returns the component with the given mask, or nil when the entity
+// does not carry one.
 func (e *Entity) Get(mask uint64) Component {
 	for _, c := range e.Components {
 		if c.Mask() == mask {
@@ -28,12 +30,13 @@ func (e *Entity) Get(mask uint64) Component {
 	return nil
 }
 
-// Mask returns a pre-calculated maskSlice to identify the Components.
+// Mask returns the pre-calculated bitmask of the entity's components.
 func (e *Entity) Mask() uint64 {
 	return e.Masked
 }
 
-// Remove a component by using its maskSlice.
+// Remove deletes the component with the given mask, and recalculates the
+// entity's mask. It does nothing when the entity does not carry one.
 func (e *Entity) Remove(mask uint64) {
 	modified := false
 	for i, c := range e.Components {
@@ -50,7 +53,7 @@ func (e *Entity) Remove(mask uint64) {
 	}
 }
 
-// NewEntity creates a new entity and pre-calculates the component maskSlice.
+// NewEntity creates a new entity and pre-calculates its component mask.
 func NewEntity(id string, components []Component) *Entity {
 	return &Entity{
 		Components: components,

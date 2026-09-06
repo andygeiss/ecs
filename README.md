@@ -6,21 +6,78 @@
 
 [![License](https://img.shields.io/github/license/andygeiss/ecs)](https://github.com/andygeiss/ecs/blob/master/LICENSE)
 [![Releases](https://img.shields.io/github/v/release/andygeiss/ecs)](https://github.com/andygeiss/ecs/releases)
-[![Go Report Card](https://goreportcard.com/badge/github.com/andygeiss/ecs)](https://goreportcard.com/report/github.com/andygeiss/ecs)
-[![Codacy Grade Badge](https://app.codacy.com/project/badge/Grade/b4f4c9b35f4b46d8bf19f73379864b45)](https://app.codacy.com/gh/andygeiss/ecs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![Codacy Coverage Badge](https://app.codacy.com/project/badge/Coverage/b4f4c9b35f4b46d8bf19f73379864b45)](https://app.codacy.com/gh/andygeiss/ecs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 
-Build your own Game-Engine based on the Entity Component System concept in Golang.
+Build a game engine in Go out of entities, components and systems. It is for people who
+want that core and nothing else: no rendering, no input, no physics, and no dependencies
+— you bring the game library you like.
 
-## Features
+- **Data and behaviour stay apart.** A component is data. A system is behaviour. An
+  entity is just an id and a bag of components.
+- **Nothing else is in the box.** The module has zero dependencies, so it adds none to
+  your game.
+- **Small enough to read in one sitting.** About 200 lines of code.
 
-- [x] Provide an **easy-to-use** framework to build a game engine from scratch.
-- [x] **No dependencies** to other modules or specific game libraries - Feel free to use what fits your needs.
-- [x] **Minimum overhead** - use only what is really needed.
+## Install
+
+```bash
+go get github.com/andygeiss/ecs
+```
+
+## 30 seconds
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/andygeiss/ecs"
+)
+
+const maskPosition = uint64(1 << 0)
+
+type position struct{ X, Y int }
+
+func (p *position) Mask() uint64 { return maskPosition }
+
+// stepSystem moves every position by one, three times, then stops the engine.
+type stepSystem struct{ steps int }
+
+func (s *stepSystem) Setup() { s.steps = 3 }
+
+func (s *stepSystem) Process(em ecs.EntityManager) (state int) {
+	for _, e := range em.FilterByMask(maskPosition) {
+		e.Get(maskPosition).(*position).X++
+	}
+	s.steps--
+	if s.steps == 0 {
+		return ecs.StateEngineStop
+	}
+	return ecs.StateEngineContinue
+}
+
+func (s *stepSystem) Teardown() {}
+
+func main() {
+	em := ecs.NewEntityManager()
+	em.Add(ecs.NewEntity("player", []ecs.Component{&position{}}))
+
+	sm := ecs.NewSystemManager()
+	sm.Add(&stepSystem{})
+
+	engine := ecs.NewDefaultEngine(em, sm)
+	engine.Setup()
+	defer engine.Teardown()
+	engine.Run(context.Background())
+
+	fmt.Println(em.Get("player").Get(maskPosition).(*position).X) // 3
+}
+```
 
 ### Example engine
 
-See [engine-example](https://github.com/andygeiss/engine-example) for a basic
+See [engine-example](https://github.com/andygeiss/engine-example) for a real
 implementation using [raylib](https://www.raylib.com).
 
 ## Walkthrough
@@ -42,26 +99,33 @@ Next we create a `main.go` with the following content:
 package main
 
 import (
+    "context"
+    "os"
+    "os/signal"
+
     "github.com/andygeiss/ecs"
 )
 
 func main() {
+    // Ctrl-C cancels the context, and the engine stops after the current pass.
+    ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+    defer stop()
+
     em := ecs.NewEntityManager()
     sm := ecs.NewSystemManager()
     de := ecs.NewDefaultEngine(em, sm)
     de.Setup()
     defer de.Teardown()
-    de.Run()
+    de.Run(ctx)
 }
 ```
 
-The execution of the program leads to an endless loop, as our engine is not yet
-able to react to user input.
+The program loops until you press Ctrl-C, because no system tells it to stop yet.
 
 ### The movement system
 
 A system needs to implement the methods defined by the interface
-[System](https://github.com/andygeiss/ecs/blob/master/core/system.go).
+[System](https://github.com/andygeiss/ecs/blob/master/system.go).
 So we create a new file locally at `systems/movement.go`:
 
 ```go
@@ -106,7 +170,7 @@ these components. Entities are simply a composition of components that provide
 a scalable data-oriented architecture.
 
 A component needs to implement the methods defined by the interface
-[Component](https://github.com/andygeiss/ecs/blob/master/core/component.go).
+[Component](https://github.com/andygeiss/ecs/blob/master/component.go).
 Let's define our `Player` components by first creating a mask at
 `components/components.go`:
 
@@ -195,10 +259,10 @@ func (a *renderingSystem) Setup() {
     rl.InitWindow(a.width, a.height, a.title)
 }
 
-func (a *renderingSystem) Process(em core.EntityManager) (state int) {
+func (a *renderingSystem) Process(em ecs.EntityManager) (state int) {
     // First check if app should stop.
     if rl.WindowShouldClose() {
-        return core.StateEngineStop
+        return ecs.StateEngineStop
     }
     // Clear the screen
     if rl.IsWindowReady() {
@@ -207,10 +271,37 @@ func (a *renderingSystem) Process(em core.EntityManager) (state int) {
         rl.DrawFPS(10, 10)
         rl.EndDrawing()
     }
-    return core.StateEngineContinue
+    return ecs.StateEngineContinue
 }
 
 func (a *renderingSystem) Teardown() {
     rl.CloseWindow()
 }
 ```
+
+## Upgrading to v0.4.0
+
+Two changes, and only the first one touches your code.
+
+1. **`Run` takes a `context.Context`.** `de.Run()` becomes `de.Run(ctx)`, and the engine
+   now stops when that context is cancelled — checked once per pass over the systems.
+   Pass `context.Background()` if you do not want that. `System.Process` is unchanged, so
+   your systems stay as they are.
+2. **The constructors return structs rather than interfaces**: `*DefaultEngine`,
+   `*DefaultEntityManager`, `*DefaultSystemManager`. Existing call sites keep compiling —
+   the interfaces `Engine`, `EntityManager` and `SystemManager` are still there.
+
+One bug went with them: `FilterByNames` counted a name once per matching component, so an
+entity carrying two components with the same name matched a name it did not carry at all.
+
+## Working on this repository
+
+```bash
+make        # every gate against the working tree; run before a commit
+make ci     # the same gates against the commit; run before a push
+make fmt    # apply goimports and go fix
+make test   # the inner loop
+```
+
+Built to the [engineering baseline](https://github.com/andygeiss/baseline) — its
+`checklists/library.md` is the definition of done here. No rule is waived.
