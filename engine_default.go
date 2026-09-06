@@ -2,6 +2,8 @@ package ecs
 
 import "context"
 
+var _ Engine = (*DefaultEngine)(nil)
+
 // DefaultEngine is simply a composition of an EntityManager and a
 // SystemManager. Create one with NewDefaultEngine.
 type DefaultEngine struct {

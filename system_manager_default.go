@@ -1,5 +1,7 @@
 package ecs
 
+var _ SystemManager = (*DefaultSystemManager)(nil)
+
 // DefaultSystemManager keeps the systems in the order they were added. Its
 // zero value is ready to use; NewSystemManager exists for symmetry with the
 // other constructors.

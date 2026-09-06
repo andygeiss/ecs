@@ -1,5 +1,7 @@
 package ecs
 
+var _ EntityManager = (*DefaultEntityManager)(nil)
+
 // DefaultEntityManager keeps the entities in a slice and scans it on every
 // lookup. Its zero value is ready to use; NewEntityManager exists for
 // symmetry with the other constructors.
