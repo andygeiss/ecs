@@ -59,7 +59,7 @@ func TestEntity_Remove_Should_Work_With_Multiple_Components(t *testing.T) {
 	})
 	entity.Remove(4)
 	if entity.Mask() != 3 {
-		t.Errorf("Entity mask should be 1, but got %d", entity.Mask())
+		t.Errorf("Entity mask should be 3, but got %d", entity.Mask())
 	}
 }
 
@@ -104,6 +104,34 @@ func TestEntity_Remove_Should_Empty_The_Mask_After_The_Last_Component(t *testing
 	entity.Remove(1)
 	if len(entity.Components) != 0 {
 		t.Errorf("Component count should be 0, but got %d", len(entity.Components))
+	}
+	if entity.Mask() != 0 {
+		t.Errorf("Entity mask should be 0, but got %d", entity.Mask())
+	}
+}
+
+func TestEntity_Add_Should_Add_A_Component_Whose_Bits_Another_Component_Covers(t *testing.T) {
+	t.Parallel()
+	// The entity's mask is already 3, but it carries no component with mask 3.
+	entity := ecs.NewEntity("e", []ecs.Component{
+		&mockComponent{name: "position", mask: 1},
+		&mockComponent{name: "size", mask: 2},
+	})
+	entity.Add(&mockComponent{name: "bounds", mask: 3})
+	if len(entity.Components) != 3 {
+		t.Errorf("Component count should be 3, but got %d", len(entity.Components))
+	}
+	if entity.Get(3) == nil {
+		t.Error("Component with mask 3 should not be nil")
+	}
+}
+
+func TestEntity_Add_Should_Add_A_Component_Without_A_Mask(t *testing.T) {
+	t.Parallel()
+	entity := ecs.NewEntity("e", nil)
+	entity.Add(&mockComponent{name: "tag", mask: 0})
+	if len(entity.Components) != 1 {
+		t.Errorf("Component count should be 1, but got %d", len(entity.Components))
 	}
 	if entity.Mask() != 0 {
 		t.Errorf("Entity mask should be 0, but got %d", entity.Mask())
