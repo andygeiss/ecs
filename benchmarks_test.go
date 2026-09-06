@@ -2,7 +2,7 @@ package ecs_test
 
 import (
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 	"testing"
 
 	"github.com/andygeiss/ecs"
@@ -18,7 +18,7 @@ func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {
 
 func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
 	m := ecs.NewEntityManager()
-	for i := 0; i < 1000; i++ {
+	for range 1000 {
 		m.Add(ecs.NewEntity("foo", nil))
 	}
 	for i := 0; i < b.N; i++ {
@@ -28,7 +28,7 @@ func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
 
 func BenchmarkEntityManager_FilterByMask_With_1000_Entities(b *testing.B) {
 	m := ecs.NewEntityManager()
-	for i := 0; i < 1000; i++ {
+	for i := range 1000 {
 		m.Add(ecs.NewEntity(fmt.Sprintf("%d", i), []ecs.Component{
 			&mockComponent{name: "position", mask: 1},
 			&mockComponent{name: "size", mask: 2},
@@ -42,7 +42,7 @@ func BenchmarkEntityManager_FilterByMask_With_1000_Entities(b *testing.B) {
 
 func BenchmarkEntityManager_FilterByNames_With_1000_Entities(b *testing.B) {
 	m := ecs.NewEntityManager()
-	for i := 0; i < 1000; i++ {
+	for i := range 1000 {
 		m.Add(ecs.NewEntity(fmt.Sprintf("%d", i), []ecs.Component{
 			&mockComponent{name: "position", mask: 1},
 			&mockComponent{name: "size", mask: 2},
@@ -60,7 +60,6 @@ func BenchmarkEngine_Run(b *testing.B) {
 	for _, systemCount := range systemCounts {
 		for _, entityCount := range entityCounts {
 			b.Run(fmt.Sprintf("%d system(s) with %d entities", systemCount, entityCount), func(b *testing.B) {
-				b.ResetTimer()
 				em := ecs.NewEntityManager()
 				em.Add(generateEntities(entityCount)...)
 				sm := ecs.NewSystemManager()
@@ -68,6 +67,9 @@ func BenchmarkEngine_Run(b *testing.B) {
 				engine := ecs.NewDefaultEngine(em, sm)
 				engine.Setup()
 				defer engine.Teardown()
+				// Reset after the setup, not before it: building the entities
+				// would otherwise be counted as engine time.
+				b.ResetTimer()
 				for i := 0; i < b.N; i++ {
 					engine.Run()
 				}
@@ -86,7 +88,7 @@ func BenchmarkEngine_Run(b *testing.B) {
 
 func generateEntities(count int) []*ecs.Entity {
 	out := make([]*ecs.Entity, count)
-	for i := 0; i < count; i++ {
+	for i := range count {
 		out[i] = ecs.NewEntity(
 			fmt.Sprintf("e%d", rand.Uint64()),
 			[]ecs.Component{
