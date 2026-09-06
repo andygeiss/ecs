@@ -7,6 +7,7 @@ import (
 )
 
 func TestEntityManager_Entities_Should_Have_No_Entity_At_Start(t *testing.T) {
+	t.Parallel()
 	m := ecs.NewEntityManager()
 	if len(m.Entities()) != 0 {
 		t.Errorf("EntityManager should have no entity at start, but got %d", len(m.Entities()))
@@ -14,6 +15,7 @@ func TestEntityManager_Entities_Should_Have_No_Entity_At_Start(t *testing.T) {
 }
 
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Adding_One_Entity(t *testing.T) {
+	t.Parallel()
 	m := ecs.NewEntityManager()
 	m.Add(&ecs.Entity{})
 	if len(m.Entities()) != 1 {
@@ -22,6 +24,7 @@ func TestEntityManager_Entities_Should_Have_One_Entity_After_Adding_One_Entity(t
 }
 
 func TestEntityManager_Entities_Should_Have_Two_Entities_After_Adding_Two_Entities(t *testing.T) {
+	t.Parallel()
 	m := ecs.NewEntityManager()
 	m.Add(ecs.NewEntity("e1", nil))
 	m.Add(ecs.NewEntity("e2", nil))
@@ -31,6 +34,7 @@ func TestEntityManager_Entities_Should_Have_Two_Entities_After_Adding_Two_Entiti
 }
 
 func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two_Entities(t *testing.T) {
+	t.Parallel()
 	m := ecs.NewEntityManager()
 	e1 := ecs.NewEntity("e1", nil)
 	e2 := ecs.NewEntity("e2", nil)
@@ -46,6 +50,7 @@ func TestEntityManager_Entities_Should_Have_One_Entity_After_Removing_One_Of_Two
 }
 
 func TestEntityManager_FilterByMask_Should_Return_No_Entity_Out_Of_One(t *testing.T) {
+	t.Parallel()
 	em := ecs.NewEntityManager()
 	e := ecs.NewEntity("e", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
@@ -58,6 +63,7 @@ func TestEntityManager_FilterByMask_Should_Return_No_Entity_Out_Of_One(t *testin
 }
 
 func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_One(t *testing.T) {
+	t.Parallel()
 	em := ecs.NewEntityManager()
 	e := ecs.NewEntity("e", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
@@ -70,6 +76,7 @@ func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_One(t *testi
 }
 
 func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_Two(t *testing.T) {
+	t.Parallel()
 	em := ecs.NewEntityManager()
 	e1 := ecs.NewEntity("e1", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
@@ -89,6 +96,7 @@ func TestEntityManager_FilterByMask_Should_Return_One_Entity_Out_Of_Two(t *testi
 }
 
 func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *testing.T) {
+	t.Parallel()
 	em := ecs.NewEntityManager()
 	e1 := ecs.NewEntity("e1", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
@@ -115,6 +123,7 @@ func TestEntityManager_FilterByMask_Should_Return_Two_Entities_Out_Of_Three(t *t
 }
 
 func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t *testing.T) {
+	t.Parallel()
 	em := ecs.NewEntityManager()
 	e1 := ecs.NewEntity("e1", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
@@ -145,6 +154,7 @@ func TestEntityManager_FilterByMask_Should_Return_Three_Entities_Out_Of_Three(t 
 }
 
 func TestEntityManager_FilterByNames_Should_Return_Three_Entities_Out_Of_Three(t *testing.T) {
+	t.Parallel()
 	em := ecs.NewEntityManager()
 	e1 := ecs.NewEntity("e1", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
@@ -175,6 +185,7 @@ func TestEntityManager_FilterByNames_Should_Return_Three_Entities_Out_Of_Three(t
 }
 
 func TestEntityManager_Get_Should_Return_Entity(t *testing.T) {
+	t.Parallel()
 	em := ecs.NewEntityManager()
 	e1 := ecs.NewEntity("e1", []ecs.Component{
 		&mockComponent{name: "position", mask: 1},
@@ -193,6 +204,56 @@ func TestEntityManager_Get_Should_Return_Entity(t *testing.T) {
 	}
 }
 
+func TestEntityManager_Zero_Value_Should_Be_Usable(t *testing.T) {
+	t.Parallel()
+	var m ecs.DefaultEntityManager
+	m.Add(ecs.NewEntity("e1", nil))
+	if len(m.Entities()) != 1 {
+		t.Errorf("EntityManager should have one entity, but got %d", len(m.Entities()))
+	}
+}
+
+func TestEntityManager_Get_Should_Return_Nil_For_An_Unknown_Id(t *testing.T) {
+	t.Parallel()
+	em := ecs.NewEntityManager()
+	em.Add(ecs.NewEntity("e1", nil))
+	if e := em.Get("e2"); e != nil {
+		t.Errorf("Entity should be nil, but got %s", e.Id)
+	}
+}
+
+func TestEntityManager_Remove_Should_Change_Nothing_For_An_Unknown_Id(t *testing.T) {
+	t.Parallel()
+	em := ecs.NewEntityManager()
+	em.Add(ecs.NewEntity("e1", nil))
+	em.Remove(ecs.NewEntity("e2", nil))
+	if len(em.Entities()) != 1 {
+		t.Errorf("EntityManager should have one entity, but got %d", len(em.Entities()))
+	}
+}
+
+func TestEntityManager_FilterByNames_Should_Return_No_Entity_For_An_Unknown_Name(t *testing.T) {
+	t.Parallel()
+	em := ecs.NewEntityManager()
+	em.Add(ecs.NewEntity("e", []ecs.Component{
+		&mockComponent{name: "position", mask: 1},
+	}))
+	if filtered := em.FilterByNames("velocity"); len(filtered) != 0 {
+		t.Errorf("EntityManager should return no entity, but got %d", len(filtered))
+	}
+}
+
+func TestEntityManager_FilterByNames_Should_Not_Match_A_Component_Without_A_Name(t *testing.T) {
+	t.Parallel()
+	em := ecs.NewEntityManager()
+	em.Add(ecs.NewEntity("e", []ecs.Component{
+		&maskOnlyComponent{mask: 1},
+	}))
+	if filtered := em.FilterByNames("position"); len(filtered) != 0 {
+		t.Errorf("EntityManager should return no entity, but got %d", len(filtered))
+	}
+}
+
 func TestEntityManager_FilterByNames_Should_Not_Let_One_Name_Match_Twice(t *testing.T) {
 	t.Parallel()
 	em := ecs.NewEntityManager()
@@ -203,5 +264,14 @@ func TestEntityManager_FilterByNames_Should_Not_Let_One_Name_Match_Twice(t *test
 	}))
 	if filtered := em.FilterByNames("position", "velocity"); len(filtered) != 0 {
 		t.Errorf("EntityManager should return no entity, but got %d", len(filtered))
+	}
+}
+
+func TestEntityManager_FilterByNames_Without_A_Name_Should_Return_Every_Entity(t *testing.T) {
+	t.Parallel()
+	em := ecs.NewEntityManager()
+	em.Add(ecs.NewEntity("e1", nil), ecs.NewEntity("e2", nil))
+	if filtered := em.FilterByNames(); len(filtered) != 2 {
+		t.Errorf("EntityManager should return two entities, but got %d", len(filtered))
 	}
 }
