@@ -43,15 +43,14 @@ func (m *DefaultEntityManager) FilterByNames(names ...string) (entities []*Entit
 	entities = make([]*Entity, len(m.entities))
 	index := 0
 	for _, e := range m.entities {
-		// Each component should match
+		// Count each name at most once. Two components sharing a name would
+		// otherwise stand in for a name the entity does not carry at all.
 		matched := 0
 		for _, name := range names {
 			for _, c := range e.Components {
-				switch v := c.(type) {
-				case ComponentWithName:
-					if v.Name() == name {
-						matched++
-					}
+				if v, ok := c.(ComponentWithName); ok && v.Name() == name {
+					matched++
+					break
 				}
 			}
 		}

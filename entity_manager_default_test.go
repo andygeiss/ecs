@@ -192,3 +192,16 @@ func TestEntityManager_Get_Should_Return_Entity(t *testing.T) {
 		t.Error("Entity should not be nil")
 	}
 }
+
+func TestEntityManager_FilterByNames_Should_Not_Let_One_Name_Match_Twice(t *testing.T) {
+	t.Parallel()
+	em := ecs.NewEntityManager()
+	// Two components share a name, and the entity carries no velocity at all.
+	em.Add(ecs.NewEntity("e", []ecs.Component{
+		&mockComponent{name: "position", mask: 1},
+		&mockComponent{name: "position", mask: 2},
+	}))
+	if filtered := em.FilterByNames("position", "velocity"); len(filtered) != 0 {
+		t.Errorf("EntityManager should return no entity, but got %d", len(filtered))
+	}
+}
