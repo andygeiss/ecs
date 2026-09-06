@@ -20,7 +20,7 @@ func TestSystemManager_Systems_Should_Have_One_System_After_Adding_One_System(t 
 	s := &mockupDedicatedSystem{}
 	m.Add(s)
 	if len(m.Systems()) != 1 {
-		t.Errorf("SystemManager should have one system at start, but got %d", len(m.Systems()))
+		t.Errorf("SystemManager should have one system, but got %d", len(m.Systems()))
 	}
 }
 
@@ -31,7 +31,7 @@ func TestSystemManager_Systems_Should_Have_Two_System_After_Adding_Two_System(t 
 	s2 := &mockupDedicatedSystem{}
 	m.Add(s1, s2)
 	if len(m.Systems()) != 2 {
-		t.Errorf("SystemManager should have one system at start, but got %d", len(m.Systems()))
+		t.Errorf("SystemManager should have two systems, but got %d", len(m.Systems()))
 	}
 }
 
@@ -52,7 +52,8 @@ func TestSystemManager_Zero_Value_Should_Be_Usable(t *testing.T) {
  \__,_|\__|_|_|___/
 */
 
-// mockupDedicatedSystem is used without an DefaultEngine to test the DefaultSystemManager behaviour.
+// mockupDedicatedSystem is used without a DefaultEngine to test the
+// DefaultSystemManager behaviour.
 type mockupDedicatedSystem struct{}
 
 func (s *mockupDedicatedSystem) Process(entityManager ecs.EntityManager) (state int) {

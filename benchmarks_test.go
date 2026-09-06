@@ -11,7 +11,7 @@ import (
 func BenchmarkEntityManager_Get_With_1_Entity_Id_Found(b *testing.B) {
 	m := ecs.NewEntityManager()
 	m.Add(ecs.NewEntity("foo", nil))
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		m.Get("foo")
 	}
 }
@@ -21,7 +21,7 @@ func BenchmarkEntityManager_Get_With_1000_Entities_Id_Not_Found(b *testing.B) {
 	for range 1000 {
 		m.Add(ecs.NewEntity("foo", nil))
 	}
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		m.Get("1000")
 	}
 }
@@ -32,11 +32,11 @@ func BenchmarkEntityManager_FilterByMask_With_1000_Entities(b *testing.B) {
 		m.Add(ecs.NewEntity(fmt.Sprintf("%d", i), []ecs.Component{
 			&mockComponent{name: "position", mask: 1},
 			&mockComponent{name: "size", mask: 2},
-			&mockComponent{name: "velocity", mask: 3},
+			&mockComponent{name: "velocity", mask: 4},
 		}))
 	}
-	for i := 0; i < b.N; i++ {
-		m.FilterByMask(1 | 2 | 3)
+	for b.Loop() {
+		m.FilterByMask(1 | 2 | 4)
 	}
 }
 
@@ -46,10 +46,10 @@ func BenchmarkEntityManager_FilterByNames_With_1000_Entities(b *testing.B) {
 		m.Add(ecs.NewEntity(fmt.Sprintf("%d", i), []ecs.Component{
 			&mockComponent{name: "position", mask: 1},
 			&mockComponent{name: "size", mask: 2},
-			&mockComponent{name: "velocity", mask: 3},
+			&mockComponent{name: "velocity", mask: 4},
 		}))
 	}
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		m.FilterByNames("position", "size", "velocity")
 	}
 }
@@ -68,10 +68,9 @@ func BenchmarkEngine_Run(b *testing.B) {
 				engine := ecs.NewDefaultEngine(em, sm)
 				engine.Setup()
 				defer engine.Teardown()
-				// Reset after the setup, not before it: building the entities
-				// would otherwise be counted as engine time.
-				b.ResetTimer()
-				for i := 0; i < b.N; i++ {
+				// b.Loop starts the clock on its first call, so building the
+				// entities above is not counted as engine time.
+				for b.Loop() {
 					engine.Run(ctx)
 				}
 			})
