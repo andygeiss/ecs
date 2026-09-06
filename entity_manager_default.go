@@ -3,16 +3,21 @@ package ecs
 // DefaultEntityManager keeps the entities in a slice and scans it on every
 // lookup. Its zero value is ready to use; NewEntityManager exists for
 // symmetry with the other constructors.
+//
+// It is not safe for concurrent use. A system that fans work out to goroutines
+// guards the manager itself.
 type DefaultEntityManager struct {
 	entities []*Entity
 }
 
-// Add appends entities to the manager.
+// Add appends entities to the manager. A nil entity is a programmer error, and
+// it panics later — in Get or one of the filters — not here.
 func (m *DefaultEntityManager) Add(entities ...*Entity) {
 	m.entities = append(m.entities, entities...)
 }
 
-// Entities returns all the entities.
+// Entities returns all the entities. The slice is the manager's own, not a
+// copy, so changing it changes the manager.
 func (m *DefaultEntityManager) Entities() (entities []*Entity) {
 	return m.entities
 }
@@ -23,16 +28,12 @@ func (m *DefaultEntityManager) FilterByMask(mask uint64) (entities []*Entity) {
 	entities = make([]*Entity, len(m.entities))
 	index := 0
 	for _, e := range m.entities {
-		// Use the pre-calculated component mask.
 		observed := e.Mask()
-		// Add the entity to the filter list, if all Components are found.
 		if observed&mask == mask {
-			// Direct access
 			entities[index] = e
 			index++
 		}
 	}
-	// Return only the needed slice.
 	return entities[:index]
 }
 
@@ -54,14 +55,11 @@ func (m *DefaultEntityManager) FilterByNames(names ...string) (entities []*Entit
 				}
 			}
 		}
-		// Add the entity to the filter list, if all Components are found.
 		if matched == len(names) {
-			// Direct access
 			entities[index] = e
 			index++
 		}
 	}
-	// Return only the needed slice.
 	return entities[:index]
 }
 
@@ -75,9 +73,13 @@ func (m *DefaultEntityManager) Get(id string) (entity *Entity) {
 	return
 }
 
-// Remove deletes the entity with the same Id. It does nothing when the
-// manager does not hold one.
+// Remove deletes the entity with the same Id. It does nothing when entity is
+// nil, or when the manager does not hold one — so Remove(Get(id)) is safe for
+// an id that is not there.
 func (m *DefaultEntityManager) Remove(entity *Entity) {
+	if entity == nil {
+		return
+	}
 	for i, e := range m.entities {
 		if e.Id == entity.Id {
 			copy(m.entities[i:], m.entities[i+1:])

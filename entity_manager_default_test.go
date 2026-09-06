@@ -275,3 +275,15 @@ func TestEntityManager_FilterByNames_Without_A_Name_Should_Return_Every_Entity(t
 		t.Errorf("EntityManager should return two entities, but got %d", len(filtered))
 	}
 }
+
+func TestEntityManager_Remove_Should_Change_Nothing_For_A_Nil_Entity(t *testing.T) {
+	t.Parallel()
+	em := ecs.NewEntityManager()
+	em.Add(ecs.NewEntity("e1", nil))
+	// Get returns nil for an id the manager does not hold, so this chain is
+	// the ordinary way a caller reaches Remove with nil.
+	em.Remove(em.Get("e2"))
+	if len(em.Entities()) != 1 {
+		t.Errorf("EntityManager should have one entity, but got %d", len(em.Entities()))
+	}
+}
