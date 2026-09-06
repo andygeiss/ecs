@@ -1,20 +1,24 @@
 package ecs
 
+import "context"
+
 const (
+	// StateEngineContinue tells the engine to keep going after this System.
 	StateEngineContinue = 0
-	StateEngineStop     = 1
+	// StateEngineStop tells the engine to stop after this System.
+	StateEngineStop = 1
 )
 
-// Engine handles the stages Setup(), Run() and Teardown() for all the systems.
+// Engine drives the systems through their three stages: Setup once, Process
+// over and over, Teardown once.
 type Engine interface {
-	// Run calls the Process() method for each System
-	// until ShouldEngineStop is set to true.
-	Run()
-	// Setup calls the Setup() method for each System
-	// and initializes ShouldEngineStop and ShouldEnginePause with false.
+	// Run calls Process on each System over and over, until a System returns
+	// StateEngineStop or ctx is cancelled.
+	Run(ctx context.Context)
+	// Setup calls Setup on each System, once, before the first Process.
 	Setup()
-	// Teardown calls the Teardown() method for each System.
+	// Teardown calls Teardown on each System, once, after the last Process.
 	Teardown()
-	// Tick calls the Process() method for each System exactly once
+	// Tick calls Process on each System exactly once.
 	Tick()
 }
